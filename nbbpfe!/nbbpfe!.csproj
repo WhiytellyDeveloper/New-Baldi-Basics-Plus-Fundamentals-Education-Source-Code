@@ -2,14 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>nbbpfe_</AssemblyName>
-    <Description>Template for BBPlus Mods</Description>
-    <Version>1.0.0</Version>
+    <AssemblyName>nbbpfe</AssemblyName>
+    <Description>Baldi's Basics Plus</Description>
+    <Version>0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;Cheat</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Talespire.BepInEx" Version="5.4.22" />
     <PackageReference Include="UnityEngine.Modules" Version="2020.3.38" IncludeAssets="compile" />
   </ItemGroup>
@@ -33,8 +35,6 @@
     </Reference>
   </ItemGroup>
 
-	<!-- IMPORTANT 
-	/// YOU CAN CHANGE THE EXPORT DIRECTORY AT ANY TIME IF YOU INSTALLED BBP ON A HARD DRIVE!! -->
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="echo F|xcopy /Y &quot;$(ProjectDir)bin\$(Configuration)\netstandard2.0\$(AssemblyName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Baldi's Basics Plus\BepInEx\plugins\$(SolutionName)\$(AssemblyName).dll&quot;" />
 		<Exec Command="echo F|xcopy /Y &quot;$(ProjectDir)bin\$(Configuration)\netstandard2.0\$(AssemblyName).pdb&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Baldi's Basics Plus\BepInEx\plugins\$(SolutionName)\$(AssemblyName).pdb&quot;" />

@@ -53,5 +53,5 @@ namespace nbbpfe_ // Rename the namespace!
             ___attackSpinSpeed = 30f;
         }
     }
-*/
 }
+*/
