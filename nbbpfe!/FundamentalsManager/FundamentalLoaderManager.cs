@@ -1,5 +1,6 @@
 ﻿using nbbpfe.FundamentalsManager.Loaders;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace nbbpfe.FundamentalsManager
 {
@@ -7,16 +8,21 @@ namespace nbbpfe.FundamentalsManager
     {
         public static void Initialize()
         {
+            GenericThrowSound = AssetsLoader.CreateSound("throwSound", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
+
             RoomsLoader.LoadRooms();
+            ItemsLoader.LoadItems();
         }
 
-        public static List<FloorData> floors = new List<FloorData>{ 
+        public static List<FloorData> floors = new List<FloorData>{
             new FloorData("F1"),
             new FloorData("F2"),
             new FloorData("F3"),
             new FloorData("F4"),
             new FloorData("END")
         };
+
+        public static SoundObject GenericThrowSound;
 
         public class FloorData(string floor = "None")
         {
@@ -40,6 +46,10 @@ namespace nbbpfe.FundamentalsManager
                 { RoomTextures.Class, new List<WeightedTexture2D>() },
                 { RoomTextures.Faculty, new List<WeightedTexture2D>() }
             };
+
+            public List<WeightedItemObject> items = [];
+            public List<WeightedItemObject> shopItems = [];
+            public List<ItemObject> forcedItems = [];
         }
     }
 
@@ -50,4 +60,5 @@ namespace nbbpfe.FundamentalsManager
         Faculty,
         Storage
     }
+
 }

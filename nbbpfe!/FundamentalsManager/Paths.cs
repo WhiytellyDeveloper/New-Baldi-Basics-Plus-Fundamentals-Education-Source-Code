@@ -12,6 +12,7 @@ namespace nbbpfe.FundamentalsManager
         {
             paths.Add(PathsEnum.Misc, "Misc");
             paths.Add(PathsEnum.Rooms, "Rooms");
+            paths.Add(PathsEnum.Items, "Items");
         }
 
         public static string GetPath(PathsEnum path, params string[] strings) {

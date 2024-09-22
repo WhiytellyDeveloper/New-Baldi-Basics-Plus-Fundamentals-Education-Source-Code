@@ -12,6 +12,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
 using System.Linq;
+using nbbpfe.CustomData;
 
 namespace nbbpfe.FundamentalsManager
 {
@@ -53,6 +54,10 @@ namespace nbbpfe.FundamentalsManager
                         groups[2].wallTexture = groups[2].wallTexture.AddRangeToArray(floorData.wallTextures[RoomTextures.Faculty].ToArray());
                         groups[2].floorTexture = groups[2].floorTexture.AddRangeToArray(floorData.floorTextures[RoomTextures.Faculty].ToArray());
                         groups[2].ceilingTexture = groups[2].ceilingTexture.AddRangeToArray(floorData.ceilingTextures[RoomTextures.Faculty].ToArray());
+
+                        ld.potentialItems = ld.potentialItems.AddRangeToArray(floorData.items.ToArray());
+                        ld.forcedItems.AddRange(floorData.forcedItems);
+                        ld.shopItems = ld.shopItems.AddRangeToArray(floorData.shopItems.ToArray());
                     }
                 }
             });
@@ -62,12 +67,12 @@ namespace nbbpfe.FundamentalsManager
             yield return 1;
             yield return "Lodaing...";
 
-            /*
-            RoomTextureData roomTextureData = new RoomTextureData();
-            string json = JsonConvert.SerializeObject(roomTextureData, Newtonsoft.Json.Formatting.Indented);
-            string path = Path.Combine(Application.streamingAssetsPath, "Textures.data");
+           /*
+            string json = JsonConvert.SerializeObject(new FileItemData(), Newtonsoft.Json.Formatting.Indented);
+            string path = Path.Combine(Application.streamingAssetsPath, "ItemData.data");
             File.WriteAllText(path, json);
-            */
+           */
+            
 
             Paths.Initialize();
             FundamentalLoaderManager.Initialize();

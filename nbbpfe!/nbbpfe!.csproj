@@ -3,11 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>nbbpfe</AssemblyName>
-    <Description>Baldi's Basics Plus</Description>
+    <Description>Baldi's Basics Plus Mod</Description>
     <Version>0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;Cheat</Configurations>
+    <RootNamespace>nbppfe</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
