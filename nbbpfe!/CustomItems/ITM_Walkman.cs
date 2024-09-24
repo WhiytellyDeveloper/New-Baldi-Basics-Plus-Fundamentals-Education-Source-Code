@@ -107,7 +107,6 @@ namespace nbppfe.CustomItems
                 yield return null;
             }
             Active();
-            float shakeInterval = 0.5f;
 
             while (true)
             {
@@ -123,12 +122,7 @@ namespace nbppfe.CustomItems
 
                     yield return null;
                 }
-
-                walkmanRenderer.transform.localPosition = originalPos;
             }
-
-            inAnimation = false;
-            yield break;
         }
 
         public void Active()
