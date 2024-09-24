@@ -11,6 +11,22 @@ namespace nbbpfe.Enums
         SweepWhistle,
         BullyPresent,
         Glue,
-        BoxPortal
+        BoxPortal, //Later...
+        Pretzel, //The Excavator Man
+        CanSoup, //Alex Director
+        Walkman,
+        WhiteZesty,
+        Shovel, //The Excavator Man
+        DuctTape, //The Excavator Man
+        Tea,
+        DietTea,
+        Cheese,
+        Horn, //Letspartythefunishere
+        HallPass,
+        WaterBucket, //Samuel
+        NoClipController,
+        FidgetSpinner,
+        Magnet,
+        GenericSoda
     }
 }

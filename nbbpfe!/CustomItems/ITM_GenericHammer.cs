@@ -1,5 +1,4 @@
-﻿
-using MTM101BaldAPI.Reflection;
+﻿using MTM101BaldAPI.Reflection;
 using UnityEngine;
 
 namespace nbppfe.CustomItems

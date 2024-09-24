@@ -1,5 +1,5 @@
 ﻿using MTM101BaldAPI.Reflection;
-using MTM101BaldAPI.Registers;
+using nbppfe.Extensions;
 using nbppfe.PrefabSystem;
 
 namespace nbppfe.CustomItems
@@ -7,7 +7,7 @@ namespace nbppfe.CustomItems
     public class ITM_CommonTeleporter : Item, IItemPrefab
     {
         public void Setup() =>      
-            teleportSound = (SoundObject)ItemMetaStorage.Instance.FindByEnum(Items.Teleporter).value.item.GetComponent<ITM_Teleporter>().ReflectionGetVariable("audTeleport");
+            teleportSound = (SoundObject)Items.Teleporter.ToItem().item.GetComponent<ITM_Teleporter>().ReflectionGetVariable("audTeleport");
         
  //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

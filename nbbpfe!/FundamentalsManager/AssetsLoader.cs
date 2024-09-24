@@ -51,12 +51,15 @@ namespace nbbpfe.FundamentalsManager
             return sprites;
         }
 
-        public static SoundObject CreateSound( string soundName, string folder, string subtitleKey, SoundType type, Color color, int vauleMultiplier, params SubtitleTimedKey[] stk)
+        public static SoundObject CreateSound(string soundName, string folder, string subtitleKey, SoundType type, Color color, int vauleMultiplier, params SubtitleTimedKey[] stk)
         {
             SoundObject sound = ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(BasePlugin.Instance, Path.Combine("Audio", folder, soundName + ".wav")), subtitleKey, type, color);
             sound.additionalKeys = stk;
             if (subtitleKey == "")
+            {
                 sound.subtitle = false;
+                sound.name = soundName;
+            }
 
             sound.volumeMultiplier = vauleMultiplier;
             assetMan.Add<SoundObject>(soundName, sound);

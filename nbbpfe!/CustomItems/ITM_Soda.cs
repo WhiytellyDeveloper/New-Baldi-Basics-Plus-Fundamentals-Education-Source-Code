@@ -5,6 +5,7 @@ using PixelInternalAPI.Classes;
 using UnityEngine;
 using System.Collections;
 using nbppfe.FundamentalSystems;
+using nbppfe.Extensions;
 
 namespace nbppfe.CustomItems
 {
@@ -16,6 +17,7 @@ namespace nbppfe.CustomItems
             spr.transform.SetParent(transform);
 
             entity = gameObject.CreateEntity(0.1f, 0.1f, spr.transform).SetEntityCollisionLayerMask(0);
+            gameObject.layer = LayerStorage.standardEntities;
             splashSound = AssetsLoader.CreateSound("Soda_open", Paths.GetPath(PathsEnum.Items, "Soda"), "", SoundType.Effect, Color.white, 1);
             trashSound = AssetsLoader.CreateSound("Soda_end", Paths.GetPath(PathsEnum.Items, "Soda"), "", SoundType.Effect, Color.white, 1);
         }
@@ -37,7 +39,7 @@ namespace nbppfe.CustomItems
         private void Update()
         {
             cooldown.UpdateCooldown(Singleton<BaseGameManager>.Instance.Ec.EnvironmentTimeScale);
-            entity.UpdateInternalMovement(pm.transform.forward * 30 * pm.ec.EnvironmentTimeScale);
+            entity.UpdateInternalMovement(pm.GetPlayerCamera().transform.forward * 30 * pm.ec.EnvironmentTimeScale);
         }
 
         private IEnumerator Fade(float speed, float duration)

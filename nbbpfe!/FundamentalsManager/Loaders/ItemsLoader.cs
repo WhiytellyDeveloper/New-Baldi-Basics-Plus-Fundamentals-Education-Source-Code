@@ -1,6 +1,5 @@
 ﻿using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI.ObjectCreation;
-using MTM101BaldAPI.Reflection;
 using MTM101BaldAPI.Registers;
 using nbbpfe.CustomData;
 using nbbpfe.Enums;
@@ -29,12 +28,50 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .AddKeyTypeItem();
 
             LoadItem<ITM_BaseBall>("Baseball", CustomItemsEnum.Baseball)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [50, 66, 54, 72])
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [30, 36, 24, 52])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [55, 47, 62, 70, 25]);
 
             LoadItem<ITM_Soda>("Soda", CustomItemsEnum.Soda)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 60, 50, 70, 55])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 20, 10, 50]);
+
+            LoadItem<ITM_CoffeAndSugar>("CoffeAndSugar", CustomItemsEnum.CoffeAndSugar)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [20, 30, 40, 55])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [30, 40, 50, 20])
+            .MakeItForcedItem(["F3", "F4"], [1, 2]);
+
+            LoadItem<ITM_SweepWhistle>("SweepWhistle", CustomItemsEnum.SweepWhistle)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 30, 22, 32, 18])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 55, 32, 30]);
+
+            LoadItem<ITM_BullyPresent>("BullyPresent", CustomItemsEnum.BullyPresent)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [35, 22, 40, 12, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [37, 30, 20, 40, 44]);
+
+            LoadItem<ITM_Glue>("Glue", CustomItemsEnum.Glue)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 20, 10, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 10, 30, 20, 40]);
+
+            LoadItem<ITM_Pretzel>("Pretzel", CustomItemsEnum.Pretzel)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 60, 55, 80])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [70, 67, 15, 95]);
+
+            //LoadItem<ITM_SoupInCan>("SoupCan", CustomItemsEnum.CanSoup)
+            //.MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [70, 80, 50, 2, 100])
+            //.MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 10, 80, 20, 70]);
+
+            LoadItem<ITM_NoClipController>("NoClipController", CustomItemsEnum.NoClipController)
+            .MakeItWeightedItem([ "F3", "F4", "END"], [15, 12, 30])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [20, 32, 5, 40]);
+
+            LoadItem<ITM_Walkman>("Walkman", CustomItemsEnum.Walkman)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 44, 37, 30, 45])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 20, 25, 30, 35]);
+
+            LoadItem<ITM_WhiteZesty>("WhiteZesty", CustomItemsEnum.WhiteZesty)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 60, 70, 65])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [54, 44, 64, 74, 24])
+            .MakeItForcedItem(["F1", "F2", "END"], [1, 2, 1]);
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item

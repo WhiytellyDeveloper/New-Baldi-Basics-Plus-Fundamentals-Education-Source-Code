@@ -1,4 +1,6 @@
-﻿using nbbpfe.FundamentalsManager.Loaders;
+﻿using MTM101BaldAPI.Reflection;
+using nbbpfe.FundamentalsManager.Loaders;
+using nbppfe.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +11,8 @@ namespace nbbpfe.FundamentalsManager
         public static void Initialize()
         {
             GenericThrowSound = AssetsLoader.CreateSound("throwSound", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
+            GenericDrinkingSound = AssetsLoader.CreateSound("drinkingSound1", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
+            GenericEatSound = (SoundObject)Items.ZestyBar.ToItem().item.GetComponent<ITM_ZestyBar>().ReflectionGetVariable("audEat");
 
             RoomsLoader.LoadRooms();
             ItemsLoader.LoadItems();
@@ -23,6 +27,8 @@ namespace nbbpfe.FundamentalsManager
         };
 
         public static SoundObject GenericThrowSound;
+        public static SoundObject GenericDrinkingSound;
+        public static SoundObject GenericEatSound;
 
         public class FloorData(string floor = "None")
         {

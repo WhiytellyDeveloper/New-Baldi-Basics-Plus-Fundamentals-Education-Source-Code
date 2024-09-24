@@ -1,12 +1,11 @@
 ﻿using MTM101BaldAPI;
 using MTM101BaldAPI.Reflection;
-using MTM101BaldAPI.Registers;
 using nbbpfe.Enums;
 using nbbpfe.FundamentalsManager;
+using nbppfe.Extensions;
 using nbppfe.PrefabSystem;
+using PixelInternalAPI.Classes;
 using PixelInternalAPI.Extensions;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace nbppfe.CustomItems
@@ -15,10 +14,11 @@ namespace nbppfe.CustomItems
     {
         public void Setup()
         {
-            var spriteBilboard = ObjectCreationExtensions.CreateSpriteBillboard(ItemMetaStorage.Instance.FindByEnum(EnumExtensions.GetFromExtendedName<Items>(CustomItemsEnum.Baseball.ToString())).value.itemSpriteLarge);
+            var spriteBilboard = ObjectCreationExtensions.CreateSpriteBillboard(CustomItemsEnum.Baseball.ToItem().itemSpriteLarge);
             spriteBilboard.transform.SetParent(transform);
 
             entity = gameObject.CreateEntity(0.5f, 0.5f, spriteBilboard.transform);
+            gameObject.layer = LayerStorage.standardEntities;
         }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ namespace nbppfe.CustomItems
             this.pm = pm;
             transform.position = pm.transform.position;
             entity.Initialize(pm.ec, transform.position);
-            direction = pm.transform.forward;
+            direction = pm.GetPlayerCamera().transform.forward;
 
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(FundamentalLoaderManager.GenericThrowSound);
 

@@ -1,4 +1,5 @@
 ﻿using MTM101BaldAPI;
+using MTM101BaldAPI.Reflection;
 using nbbpfe.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace nbppfe.BasicClasses.Extensions
         }
 
         public bool ItemFits(Items item) {
-            return EnumExtensions.GetFromExtendedName<Items>(CustomItemsEnum.GenericHammer.ToString()) == item;
+            return EnumExtensions.GetFromExtendedName<Items>(CustomItemsEnum.GenericHammer.ToString()) == item && !(bool)GetComponent<Window>().ReflectionGetVariable("broken");
         }
     }
 }
