@@ -25,7 +25,7 @@ namespace nbbpfe.Enums
         HallPass,
         WaterBucket, //Samuel
         NoClipController,
-        FidgetSpinner,
+        FidgetSpinner, //Maybe not...
         Magnet,
         GenericSoda
     }

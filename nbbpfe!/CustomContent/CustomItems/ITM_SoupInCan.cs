@@ -1,5 +1,4 @@
-﻿
-namespace nbppfe.CustomItems
+﻿namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_SoupInCan : Item
     {

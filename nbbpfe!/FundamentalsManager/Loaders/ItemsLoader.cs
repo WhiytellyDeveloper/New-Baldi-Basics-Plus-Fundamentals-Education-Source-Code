@@ -3,7 +3,7 @@ using MTM101BaldAPI.ObjectCreation;
 using MTM101BaldAPI.Registers;
 using nbbpfe.CustomData;
 using nbbpfe.Enums;
-using nbppfe.CustomItems;
+using nbppfe.CustomContent.CustomItems;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
             LoadItem<ITM_WhiteZesty>("WhiteZesty", CustomItemsEnum.WhiteZesty)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 60, 70, 65])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [54, 44, 64, 74, 24])
-            .MakeItForcedItem(["F1", "F2", "END"], [1, 2, 1]);
+            .MakeItForcedItem(["F1", "END"], [1, 1]);
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item

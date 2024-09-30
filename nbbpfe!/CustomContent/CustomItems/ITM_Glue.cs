@@ -11,7 +11,7 @@ using nbppfe.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Glue : Item, IItemPrefab
     {
@@ -33,7 +33,7 @@ namespace nbppfe.CustomItems
 
         }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {

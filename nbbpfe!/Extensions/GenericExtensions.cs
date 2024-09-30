@@ -31,5 +31,30 @@ namespace nbppfe.Extensions
         public static ItemObject ToItem(this CustomItemsEnum itemEnum) {
             return ItemMetaStorage.Instance.FindByEnum(ToItemEnum(itemEnum)).value;
         }
+
+        public static void ResizeCollider(this SpriteRenderer spriteRenderer, Collider colliderComponent)
+        {
+            Vector3 spriteSize = spriteRenderer.bounds.size;
+            if (colliderComponent is BoxCollider)
+            {
+                ((BoxCollider)colliderComponent).size = spriteSize;
+            }
+            else if (colliderComponent is CapsuleCollider)
+            {
+                CapsuleCollider capsuleCollider = (CapsuleCollider)colliderComponent;
+                float radius = Mathf.Max(spriteSize.x, spriteSize.y) / 2f;
+                float height = spriteSize.z;
+                capsuleCollider.radius = radius;
+                capsuleCollider.height = height;
+            }
+            else if (colliderComponent is SphereCollider)
+            {
+                float radius = Mathf.Max(spriteSize.x, Mathf.Max(spriteSize.y, spriteSize.z)) / 2f;
+                ((SphereCollider)colliderComponent).radius = radius;
+            }
+
+            else 
+                Debug.LogError("Collider type is not supported by this script!");   
+        }
     }
 }

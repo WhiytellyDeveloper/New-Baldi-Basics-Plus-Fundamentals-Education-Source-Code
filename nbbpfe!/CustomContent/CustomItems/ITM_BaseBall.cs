@@ -8,7 +8,7 @@ using PixelInternalAPI.Classes;
 using PixelInternalAPI.Extensions;
 using UnityEngine;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_BaseBall : Item, IItemPrefab
     {
@@ -21,7 +21,7 @@ namespace nbppfe.CustomItems
             gameObject.layer = LayerStorage.standardEntities;
         }
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
@@ -34,7 +34,7 @@ namespace nbppfe.CustomItems
 
             entity.OnEntityMoveInitialCollision += (hit) =>
                     Destroy(gameObject);
-            
+
             return true;
         }
 
@@ -53,7 +53,7 @@ namespace nbppfe.CustomItems
                 }
             }
         }
-        
+
 
         public Entity entity;
         public Vector3 direction;

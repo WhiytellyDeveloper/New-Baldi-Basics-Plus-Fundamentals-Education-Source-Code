@@ -1,11 +1,12 @@
 ﻿using nbbpfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_CoffeAndSugar : Item, IItemPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             drinkingSound = FundamentalLoaderManager.GenericDrinkingSound;
         }
 

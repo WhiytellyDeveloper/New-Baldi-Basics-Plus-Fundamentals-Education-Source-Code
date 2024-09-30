@@ -2,13 +2,13 @@
 using nbppfe.PrefabSystem;
 using UnityEngine;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_WhiteZesty : Item, IItemPrefab
     {
         public void Setup() =>
             eatSound = FundamentalLoaderManager.GenericEatSound;
-        
+
 
 
         public override bool Use(PlayerManager pm)

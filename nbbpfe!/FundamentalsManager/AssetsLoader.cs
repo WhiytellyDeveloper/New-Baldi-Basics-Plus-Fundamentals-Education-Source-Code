@@ -66,11 +66,11 @@ namespace nbbpfe.FundamentalsManager
             return sound;
         }
 
-        public static void SetHexaColor(this SoundObject sound, string hexa)
+        public static Color SetHexaColor(string hexa)
         {
             Color _color = Color.white;
             ColorUtility.TryParseHtmlString(hexa, out _color);
-            sound.color = _color;
+            return _color;
         }
 
         public static string LoadMidi(string midiName)

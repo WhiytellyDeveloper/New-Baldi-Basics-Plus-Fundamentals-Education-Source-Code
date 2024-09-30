@@ -7,7 +7,7 @@ using System.Collections;
 using nbppfe.FundamentalSystems;
 using nbppfe.Extensions;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Soda : Item, IItemPrefab
     {
@@ -22,7 +22,7 @@ namespace nbppfe.CustomItems
             trashSound = AssetsLoader.CreateSound("Soda_end", Paths.GetPath(PathsEnum.Items, "Soda"), "", SoundType.Effect, Color.white, 1);
         }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {

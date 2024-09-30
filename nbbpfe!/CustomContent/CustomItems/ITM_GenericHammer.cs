@@ -1,7 +1,7 @@
 ﻿using MTM101BaldAPI.Reflection;
 using UnityEngine;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_GenericHammer : Item
     {

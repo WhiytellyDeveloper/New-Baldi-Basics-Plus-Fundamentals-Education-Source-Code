@@ -11,7 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using nbbpfe.FundamentalsManager;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Walkman : Item, IItemPrefab
     {
@@ -34,7 +34,7 @@ namespace nbppfe.CustomItems
             inseretSound = (SoundObject)tape.ReflectionGetVariable("audInsert");
         }
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
@@ -160,7 +160,8 @@ namespace nbppfe.CustomItems
         IL_D1:
             if (!audMan.QueuedAudioIsPlaying)
             {
-                foreach (NavigationState_WanderFleeOverride navigationState_WanderFleeOverride2 in fleeStates) {
+                foreach (NavigationState_WanderFleeOverride navigationState_WanderFleeOverride2 in fleeStates)
+                {
                     navigationState_WanderFleeOverride2.End();
                 }
                 dijkstraMap.Deactivate();
@@ -173,7 +174,7 @@ namespace nbppfe.CustomItems
 
 
         public void Destroy() =>
-            Destroy(base.gameObject);
+            Destroy(gameObject);
 
         public Entity entity;
         protected Cooldown coolown = new Cooldown(27, 0);

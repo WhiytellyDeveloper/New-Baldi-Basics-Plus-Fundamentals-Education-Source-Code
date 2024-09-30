@@ -12,7 +12,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
 using System.Linq;
-using nbbpfe.CustomData;
+using nbppfe.CustomData;
 
 namespace nbbpfe.FundamentalsManager
 {
@@ -58,6 +58,10 @@ namespace nbbpfe.FundamentalsManager
                         ld.potentialItems = ld.potentialItems.AddRangeToArray(floorData.items.ToArray());
                         ld.forcedItems.AddRange(floorData.forcedItems);
                         ld.shopItems = ld.shopItems.AddRangeToArray(floorData.shopItems.ToArray());
+
+                        ld.potentialNPCs.AddRange(floorData.NPCs.ToArray());
+                        ld.forcedNpcs = ld.forcedNpcs.AddRangeToArray(floorData.forcedNPCs.ToArray());
+
                     }
                 }
             });
@@ -68,8 +72,8 @@ namespace nbbpfe.FundamentalsManager
             yield return "Lodaing...";
 
            /*
-            string json = JsonConvert.SerializeObject(new FileItemData(), Newtonsoft.Json.Formatting.Indented);
-            string path = Path.Combine(Application.streamingAssetsPath, "ItemData.data");
+            string json = JsonConvert.SerializeObject(new FileNPCData(), Newtonsoft.Json.Formatting.Indented);
+            string path = Path.Combine(Application.streamingAssetsPath, "NpcData.data");
             File.WriteAllText(path, json);
            */
             

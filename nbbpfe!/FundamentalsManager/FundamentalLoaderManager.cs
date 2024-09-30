@@ -1,6 +1,7 @@
 ﻿using MTM101BaldAPI.Reflection;
 using nbbpfe.FundamentalsManager.Loaders;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager.Loaders;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace nbbpfe.FundamentalsManager
 
             RoomsLoader.LoadRooms();
             ItemsLoader.LoadItems();
+            NPCLoader.SetupNPCs();
         }
 
         public static List<FloorData> floors = new List<FloorData>{
@@ -56,6 +58,9 @@ namespace nbbpfe.FundamentalsManager
             public List<WeightedItemObject> items = [];
             public List<WeightedItemObject> shopItems = [];
             public List<ItemObject> forcedItems = [];
+
+            public List<WeightedNPC> NPCs = [];
+            public List<NPC> forcedNPCs = [];
         }
     }
 

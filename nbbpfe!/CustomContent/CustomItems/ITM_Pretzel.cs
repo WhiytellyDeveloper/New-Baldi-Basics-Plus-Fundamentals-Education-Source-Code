@@ -10,7 +10,7 @@ using nbppfe.FundamentalSystems;
 using MTM101BaldAPI.Reflection;
 using PixelInternalAPI.Classes;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Pretzel : Item, IEntityTrigger, IItemPrefab, IClickable<int>
     {
@@ -24,10 +24,11 @@ namespace nbppfe.CustomItems
             stickySound = AssetsLoader.CreateSound("PretzelCatchSound", Paths.GetPath(PathsEnum.Items, "Pretzel"), "Sfx_CatchPretzel", SoundType.Effect, Color.white, 1);
         }
 
-        public void Clicked(int player) {
+        public void Clicked(int player)
+        {
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(FundamentalLoaderManager.GenericEatSound);
             pm.plm.AddStamina(100, true);
-            Destroy(base.gameObject); 
+            Destroy(gameObject);
         }
         public void ClickableSighted(int player) { }
         public void ClickableUnsighted(int player) { }
@@ -46,7 +47,7 @@ namespace nbppfe.CustomItems
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(FundamentalLoaderManager.GenericThrowSound);
 
             entity.OnEntityMoveInitialCollision += (hit) =>
-                Destroy(base.gameObject);
+                Destroy(gameObject);
 
             return true;
         }
@@ -80,7 +81,7 @@ namespace nbppfe.CustomItems
             else
             {
                 npc.behaviorStateMachine.ChangeState(new Principal_Pretzel(npc.GetComponent<Principal>(), npc.behaviorStateMachine.currentState, pm));
-                Destroy(base.gameObject);
+                Destroy(gameObject);
             }
         }
 
@@ -96,7 +97,7 @@ namespace nbppfe.CustomItems
         {
             if (npc.looker != null)
                 npc.looker.enabled = true;
-            Destroy(base.gameObject);
+            Destroy(gameObject);
         }
 
 

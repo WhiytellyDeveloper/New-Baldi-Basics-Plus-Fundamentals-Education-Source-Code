@@ -3,21 +3,21 @@ using nbppfe.Extensions;
 using nbppfe.PrefabSystem;
 using UnityEngine;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_SweepWhistle : Item, IItemPrefab
     {
-        public void Setup() =>   
+        public void Setup() =>
             whistleSound = (SoundObject)Items.PrincipalWhistle.ToItem().item.GetComponent<ITM_PrincipalWhistle>().ReflectionGetVariable("audWhistle");
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
             this.pm = pm;
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(whistleSound);
             WhistleReact(pm.transform.position);
-            Destroy(base.gameObject);
+            Destroy(gameObject);
             return true;
         }
 
@@ -52,9 +52,9 @@ namespace nbppfe.CustomItems
             gottaSweep.StartSweeping();
         }
 
-        public override void Update() =>      
-            base.ChangeNavigationState(new NavigationState_TargetPosition(npc, 63, destination));
-        
+        public override void Update() =>
+            ChangeNavigationState(new NavigationState_TargetPosition(npc, 63, destination));
+
 
         public override void DestinationEmpty()
         {

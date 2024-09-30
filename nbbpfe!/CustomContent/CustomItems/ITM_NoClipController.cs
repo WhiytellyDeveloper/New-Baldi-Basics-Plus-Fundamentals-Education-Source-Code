@@ -4,7 +4,7 @@ using nbppfe.PrefabSystem;
 using System.Linq;
 using UnityEngine;
 
-namespace nbppfe.CustomItems
+namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_NoClipController : Item, IItemPrefab
     {
@@ -15,7 +15,7 @@ namespace nbppfe.CustomItems
             error = Resources.FindObjectsOfTypeAll<SoundObject>().Where(x => x.name == "Activity_Incorrect").First();
         }
 
-//----------------------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
@@ -24,7 +24,7 @@ namespace nbppfe.CustomItems
             if (controllers.Length != 1)
             {
                 Singleton<CoreGameManager>.Instance.audMan.PlaySingle(error);
-                Destroy(base.gameObject);
+                Destroy(gameObject);
                 return false;
             }
 
@@ -48,7 +48,7 @@ namespace nbppfe.CustomItems
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(end);
             pm.plm.Entity.Teleport(startPoint);
             pm.gameObject.layer = LayerMask.NameToLayer(layerName);
-            Destroy(base.gameObject);
+            Destroy(gameObject);
         }
 
         public Vector3 startPoint;
