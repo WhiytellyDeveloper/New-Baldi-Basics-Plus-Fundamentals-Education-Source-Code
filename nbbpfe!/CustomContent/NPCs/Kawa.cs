@@ -39,10 +39,7 @@ namespace nbppfe.CustomContent.NPCs
         {
             base.VirtualUpdate();
 
-            if (!useShield)
-                spriteRenderer[0].sprite = idleSequence[index];
-            if (useShield)
-                spriteRenderer[0].sprite = shieldSequence[index];
+            spriteRenderer[0].sprite = useShield ? shieldSequence[index] : idleSequence[index];
 
             cooldown.UpdateCooldown(ec.NpcTimeScale);
         }
@@ -77,7 +74,7 @@ namespace nbppfe.CustomContent.NPCs
             {
                 if (!other.GetComponent<PlayerManager>().tagged)
                 {
-                    other.GetComponent<PlayerManager>().plm.Entity.AddForce(new Force((other.GetComponent<PlayerManager>().plm.Entity.transform.position - transform.position).normalized, 42, -42));
+                    other.GetComponent<PlayerManager>().plm.Entity.AddForce(new Force((other.GetComponent<PlayerManager>().plm.Entity.transform.position - transform.position).normalized, 62, -62));
                     audMan.PlaySingle(pushSound);
                 }
             }

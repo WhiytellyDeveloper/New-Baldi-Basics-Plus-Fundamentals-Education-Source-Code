@@ -2,7 +2,8 @@
 {
     public enum CustomNPCsEnum
     {
-        Kawa
+        Kawa,
+        CardboardCheese
     }
 }
 

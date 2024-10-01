@@ -17,8 +17,8 @@ namespace nbppfe.Patches
     internal static class DoorPatch
     {
         [HarmonyPostfix]
-        internal static void AddExtension(Window __instance) =>
-            __instance.gameObject.GetOrAddComponent<WindowExtension>();
+        internal static void AddExtension(StandardDoor __instance) =>
+            __instance.gameObject.GetOrAddComponent<StandardDoor>();
 
     }
 }

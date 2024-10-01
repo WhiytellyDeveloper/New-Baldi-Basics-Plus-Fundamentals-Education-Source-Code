@@ -26,10 +26,25 @@ namespace nbppfe.FundamentalsManager.Loaders
             .SetMinMaxAudioDistance(50, 100)
             .AddSpawnableRoomCategories([RoomCategory.Faculty, RoomCategory.Special])
             .SetupPoster("Kawa")
-            .SetupSprites("Kawa", true, true)
+            .SetupSprites("Kawa", true)
             .SetupSounds("Kawa", "#C9D3EF", true)
             .IgnoreBelts()
             .Build(-1.046f, AssetsLoader.SetHexaColor("#C9D3EF"), "Kawa_1")
+            .MakeItWeightedNPC(["F1", "F2", "END"], [46, 30, 70]);
+
+            NPC cardboardCheese = new NPCBuilder<CardboardCheese>(BasePlugin.Instance.Info)
+            .SetName(NPCLoaderExtenssion.LoadFile("CardboardCheese").name)
+            .SetEnum(CustomNPCsEnum.CardboardCheese.ToString())
+            .SetMinMaxAudioDistance(150, 300)
+            .AddSpawnableRoomCategories(RoomCategory.Hall)
+            .AddLooker()
+            .SetMaxSightDistance(1500)
+            .SetupPoster("CardboardCheese")
+            .SetupSprites("CardboardCheese", false, "", true) //NormalSprites
+            .SetupSprites("CardboardCheese", true, "Slot") //Spritesheet
+            .SetupSounds("CardboardCheese", "#D99245", true)
+            .SetStationary()
+            .Build(-0.733f, AssetsLoader.SetHexaColor("#D99245"), "CartboardCheeseV2")
             .MakeItForcedNPC(["F1", "END"]);
         }
     }
@@ -61,7 +76,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             return builder;
         }
 
-        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, bool spriteSheet, bool debug = false) where T : NPC
+        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, bool spriteSheet, string spriteSheetPostfix = "", bool debug = false) where T : NPC
         {
             FileNPCData data = LoadFile(npcName);
             string[] sprites = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.png", SearchOption.AllDirectories);
@@ -104,9 +119,9 @@ namespace nbppfe.FundamentalsManager.Loaders
                                     for (int i = 0; i < newSprites.Length; i++)
                                     {
                                         if (debug)
-                                            Debug.Log($"{npcName}_{i}");
-                                        newSprites[i].name = $"{npcName}_{i}";
-                                        AssetsLoader.assetMan.Add($"{npcName}_{i}", newSprites[i]);
+                                            Debug.Log($"{npcName}_{spriteSheetPostfix}_{i}");
+                                        newSprites[i].name = $"{npcName}_{spriteSheetPostfix}_{i}";
+                                        AssetsLoader.assetMan.Add($"{npcName}_{spriteSheetPostfix}_{i}", newSprites[i]);
 
                                         if (debug)
                                         {
@@ -116,6 +131,19 @@ namespace nbppfe.FundamentalsManager.Loaders
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (KeyValuePair<string, int> sps in data.sprites)
+                    {
+                        if (sps.Key == Path.GetFileNameWithoutExtension(sprite))
+                        {
+                            Sprite newSprite = AssetsLoader.CreateSprite(Path.GetFileNameWithoutExtension(sprite), Paths.GetPath(PathsEnum.NPCs, npcName), sps.Value);
+                            if (debug)
+                                Debug.Log($"{Path.GetFileNameWithoutExtension(sprite)}");
+                            AssetsLoader.assetMan.Add($"{Path.GetFileNameWithoutExtension(sprite)}", newSprite);
                         }
                     }
                 }

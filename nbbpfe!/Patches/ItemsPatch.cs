@@ -2,6 +2,9 @@
 using MTM101BaldAPI;
 using MTM101BaldAPI.Reflection;
 using nbbpfe.Enums;
+using nbppfe.CustomContent.NPCs.FunctionalsManagers;
+using PixelInternalAPI.Extensions;
+using System.Reflection;
 using UnityEngine;
 
 namespace nbppfe.Patches
@@ -33,4 +36,23 @@ namespace nbppfe.Patches
 
         }
     }
+
+    [HarmonyPatch(typeof(ItemManager))]
+    public class ItemManagerPatch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ItemManager.UseItem))]
+        public static bool UseItem_Prefix()
+        {
+            var player = Singleton<CoreGameManager>.Instance.GetPlayer(0);
+            if (player.itm.IsSlotLocked(player.itm.selectedItem))
+            {
+                if (Singleton<CardboardCheeseFunctionalManager>.Instance != null)
+                    Singleton<CardboardCheeseFunctionalManager>.Instance.tryUnlock(player.itm.selectedItem, player.playerNumber);          
+                return false;
+            }
+            return true;
+        }
+    }
+
 }
