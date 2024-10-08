@@ -21,17 +21,13 @@ namespace nbppfe.FundamentalsManager.Loaders
         public static void SetupNPCs()
         {
             NPC kawa = new NPCBuilder<Kawa>(BasePlugin.Instance.Info)
-            .SetName(NPCLoaderExtenssion.LoadFile("Kawa").name)
-            .SetEnum(CustomNPCsEnum.Kawa.ToString())
+            .SetupAll("Kawa", CustomNPCsEnum.Kawa, "#C9D3EF", "", false, [RoomCategory.Faculty, RoomCategory.Special])
             .SetMinMaxAudioDistance(50, 100)
-            .AddSpawnableRoomCategories([RoomCategory.Faculty, RoomCategory.Special])
-            .SetupPoster("Kawa")
-            .SetupSprites("Kawa", true)
-            .SetupSounds("Kawa", "#C9D3EF", true)
             .IgnoreBelts()
-            .Build(-1.046f, AssetsLoader.SetHexaColor("#C9D3EF"), "Kawa_1")
+            .Build(-1.046f, AssetsLoader.SetHexaColor("#C9D3EF"), "Kawa_0")
             .MakeItWeightedNPC(["F1", "F2", "END"], [46, 30, 70]);
 
+            /* Later...
             NPC cardboardCheese = new NPCBuilder<CardboardCheese>(BasePlugin.Instance.Info)
             .SetName(NPCLoaderExtenssion.LoadFile("CardboardCheese").name)
             .SetEnum(CustomNPCsEnum.CardboardCheese.ToString())
@@ -41,11 +37,37 @@ namespace nbppfe.FundamentalsManager.Loaders
             .SetMaxSightDistance(1500)
             .SetupPoster("CardboardCheese")
             .SetupSprites("CardboardCheese", false, "", true) //NormalSprites
-            .SetupSprites("CardboardCheese", true, "Slot") //Spritesheet
+            .SetupSprites("CardboardCheese", true, "_Slot") //Spritesheet
             .SetupSounds("CardboardCheese", "#D99245", true)
             .SetStationary()
             .Build(-0.733f, AssetsLoader.SetHexaColor("#D99245"), "CartboardCheeseV2")
             .MakeItForcedNPC(["F1", "END"]);
+            */
+
+            /* Later... 2 lol
+            NPC shadowFollower = new NPCBuilder<Follower>(BasePlugin.Instance.Info)
+            .SetName(NPCLoaderExtenssion.LoadFile("Follower").name)
+            .SetEnum(CustomNPCsEnum.ShadowFollower.ToString())
+            .AddLooker().SetMaxSightDistance(100)
+            .SetMinMaxAudioDistance(75, 150)
+            .AddSpawnableRoomCategories([RoomCategory.Hall])
+            .SetupPoster("Follower")
+            .SetupSprites("Follower", false)
+            .SetupSounds("Follower", "#31323F", false)
+            .IgnoreBelts()
+            .Build(0f, AssetsLoader.SetHexaColor("#31323F"), "Follower")
+            .MakeItForcedNPC(["F1", "END"]);
+            */
+
+
+            /* Later.. 3 
+            NPC digitalArtistic = new NPCBuilder<DigitalArtist>(BasePlugin.Instance.Info)
+            .SetupAll("DigitalArtistic", CustomNPCsEnum.DigitalArtist, "#1B131B", "", true, [RoomCategory.Hall])
+            .AddLooker().SetMaxSightDistance(135)
+            .SetMinMaxAudioDistance(100, 145)
+            .Build(-1.21f, AssetsLoader.SetHexaColor("#1B131B"), "DigitalArtistic_0")
+            .MakeItForcedNPC(["F1", "END"]);
+            */
         }
     }
 
@@ -119,9 +141,9 @@ namespace nbppfe.FundamentalsManager.Loaders
                                     for (int i = 0; i < newSprites.Length; i++)
                                     {
                                         if (debug)
-                                            Debug.Log($"{npcName}_{spriteSheetPostfix}_{i}");
-                                        newSprites[i].name = $"{npcName}_{spriteSheetPostfix}_{i}";
-                                        AssetsLoader.assetMan.Add($"{npcName}_{spriteSheetPostfix}_{i}", newSprites[i]);
+                                            Debug.Log($"{npcName}{spriteSheetPostfix}_{i}");
+                                        newSprites[i].name = $"{npcName}{spriteSheetPostfix}_{i}";
+                                        AssetsLoader.assetMan.Add($"{npcName}{spriteSheetPostfix}_{i}", newSprites[i]);
 
                                         if (debug)
                                         {
@@ -183,6 +205,16 @@ namespace nbppfe.FundamentalsManager.Loaders
             return builder;
         }
 
+        public static NPCBuilder<T> SetupAll<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaCode, string spriteSheetPrefix = "", bool debug = false, params RoomCategory[] categorys) where T : NPC
+        {
+            builder.SetName(NPCLoaderExtenssion.LoadFile(npcName).name);
+            builder.SetupPoster(npcName);
+            builder.AddSpawnableRoomCategories(categorys);
+            builder.SetupSprites(npcName, false, "", debug);
+            builder.SetupSprites(npcName, true, spriteSheetPrefix, debug);
+            builder.SetupSounds(npcName, hexaCode, debug);
+            return builder;
+        }
 
         public static NPC Build<T>(this NPCBuilder<T> builder, float height, Color audManColor, string startSprite) where T : NPC
         {

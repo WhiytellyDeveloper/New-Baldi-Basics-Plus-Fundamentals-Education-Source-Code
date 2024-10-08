@@ -11,6 +11,9 @@ namespace nbbpfe.FundamentalsManager
     {
         public static Texture2D CreateTexture(string textureName, string folder)
         {
+            if (assetMan.ContainsKey(textureName))
+                return assetMan.Get<Texture2D>(textureName);
+
             Texture2D texture = AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine("Textures", folder, textureName + ".png"));
             assetMan.Add<Texture2D>(textureName, texture);
             return texture;

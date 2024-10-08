@@ -14,6 +14,8 @@ namespace nbbpfe.FundamentalsManager
             paths.Add(PathsEnum.Rooms, "Rooms");
             paths.Add(PathsEnum.Items, "Items");
             paths.Add(PathsEnum.NPCs, "NPCs");
+            paths.Add(PathsEnum.PreMadeRooms, "PreMade-Floors");
+            paths.Add(PathsEnum.Posters, "Posters");
         }
 
         public static string GetPath(PathsEnum path, params string[] strings) {
@@ -29,6 +31,8 @@ namespace nbbpfe.FundamentalsManager
         Items,
         NPCs,
         Events,
-        Structures
+        Structures,
+        PreMadeRooms,
+        Posters
     }
 }

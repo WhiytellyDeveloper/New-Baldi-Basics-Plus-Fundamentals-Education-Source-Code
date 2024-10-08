@@ -36,11 +36,13 @@ namespace nbbpfe.FundamentalsManager.Loaders
 
                     WeightedTexture2D weightedTexture = new WeightedTexture2D
                     {
-                        selection = AssetLoader.TextureFromFile(Paths.GetPath(PathsEnum.Rooms, new[] { roomPath, file })),
+                        selection = AssetsLoader.CreateTexture(fileName, Paths.GetPath(PathsEnum.Rooms, new[] { roomPath })),
                         weight = wallSelections.Contains(fileName) ? data.wallTextures.FirstOrDefault(w => w.selection == fileName)?.weight ?? 0 :
                                 floorSelections.Contains(fileName) ? data.floorTextures.FirstOrDefault(f => f.selection == fileName)?.weight ?? 0 :
                                 ceilingSelections.Contains(fileName) ? data.ceilingTextures.FirstOrDefault(c => c.selection == fileName)?.weight ?? 0 : 0
                     };
+
+ 
 
                     if (wallSelections.Contains(fileName))
                         floor.wallTextures[roomTextures].Add(weightedTexture);

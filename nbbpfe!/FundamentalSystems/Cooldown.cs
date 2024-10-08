@@ -36,10 +36,9 @@ namespace nbppfe.FundamentalSystems
                 Pause(true);
 
             cooldown = startTime;
-            if (!startIn0)
-                startCooldown = startTime;
-            else
-                cooldown = 0;
+            startCooldown = startTime;
+            if (startIn0)
+                cooldown = 0.1f;
             endCooldown = endTime;
             endAction = action;
             restartAction = restartAct;

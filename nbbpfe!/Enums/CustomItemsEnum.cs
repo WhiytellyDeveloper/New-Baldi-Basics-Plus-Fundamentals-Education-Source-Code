@@ -27,6 +27,8 @@ namespace nbbpfe.Enums
         NoClipController,
         FidgetSpinner, //Maybe not...
         Magnet,
-        GenericSoda
+        GenericSoda,
+        Present,
+        Cookie
     }
 }

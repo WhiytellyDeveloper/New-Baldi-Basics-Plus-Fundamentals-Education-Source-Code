@@ -1,6 +1,7 @@
 ﻿using MTM101BaldAPI.Reflection;
 using nbppfe.Extensions;
 using nbppfe.PrefabSystem;
+using System.Linq;
 using UnityEngine;
 
 namespace nbppfe.CustomContent.CustomItems
@@ -8,7 +9,7 @@ namespace nbppfe.CustomContent.CustomItems
     public class ITM_SweepWhistle : Item, IItemPrefab
     {
         public void Setup() =>
-            whistleSound = (SoundObject)Items.PrincipalWhistle.ToItem().item.GetComponent<ITM_PrincipalWhistle>().ReflectionGetVariable("audWhistle");
+            whistleSound = Resources.FindObjectsOfTypeAll<SoundObject>().Where(x => x.name == "PriWhistle").First();
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

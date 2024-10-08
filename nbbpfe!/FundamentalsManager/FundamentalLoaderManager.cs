@@ -18,6 +18,7 @@ namespace nbbpfe.FundamentalsManager
             RoomsLoader.LoadRooms();
             ItemsLoader.LoadItems();
             NPCLoader.SetupNPCs();
+            SceneLoader.Load();
         }
 
         public static List<FloorData> floors = new List<FloorData>{

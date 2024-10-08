@@ -1,10 +1,8 @@
 ﻿using BepInEx;
 using HarmonyLib;
 using MTM101BaldAPI;
-using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI.Registers;
 using MTM101BaldAPI.SaveSystem;
-using nbbpfe.FundamentalsManager.Loaders;
 using System.Collections;
 using System.IO;
 using System.Xml;
@@ -12,7 +10,12 @@ using UnityEngine;
 using Newtonsoft.Json;
 using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
 using System.Linq;
-using nbppfe.CustomData;
+using PlusLevelLoader;
+using System;
+using PlusLevelFormat;
+using nbppfe.BasicClasses;
+using MTM101BaldAPI.Reflection;
+using PixelInternalAPI.Extensions;
 
 namespace nbbpfe.FundamentalsManager
 {
@@ -28,6 +31,7 @@ namespace nbbpfe.FundamentalsManager
             Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             Instance = this;
             harmony.PatchAllConditionals();
+            Debug.Log("Thx for playing ;)");
 
             LoadingEvents.RegisterOnAssetsLoaded(Info, PreLoad(), false);
             ModdedSaveGame.AddSaveHandler(Info);
@@ -87,6 +91,6 @@ namespace nbbpfe.FundamentalsManager
     {
         public const string PLUGIN_GUID = "whiytellydeveloper.plugin.mod.newbaldibasicspluseducationalfundamentals";
         public const string PLUGIN_NAME = "New Baldi's Basics Plus Educational Fundamentals";
-        public const string PLUGIN_VERSION = "1.0";
+        public const string PLUGIN_VERSION = "0.2";
     }
 }

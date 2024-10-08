@@ -15,6 +15,7 @@ namespace nbppfe.CustomContent.CustomItems
         {
             pm.plm.stamina = Random.Range(1, 250);
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(eatSound);
+            Destroy(gameObject);
             return true;
         }
 

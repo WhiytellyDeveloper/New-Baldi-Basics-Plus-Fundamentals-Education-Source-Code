@@ -72,6 +72,23 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 60, 70, 65])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [54, 44, 64, 74, 24])
             .MakeItForcedItem(["F1", "END"], [1, 1]);
+
+            LoadItem<ITM_Present>("Present", CustomItemsEnum.Present)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 80, 55, 19, 70])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 70, 14, 100])
+            .MakeItForcedItem(["F2", "F3", "END"], [1, 1, 1]);
+
+            LoadItem<ITM_Cheese>("Cheese", CustomItemsEnum.Cheese)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 10, 15, 20, 25])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 30, 35, 40]);
+
+            LoadItem<ITM_Cookie>("Cookie", CustomItemsEnum.Cookie)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [80, 70, 95, 40, 100])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 45, 20, 50]);
+
+            LoadItem<ITM_Magnet>("Magnet", CustomItemsEnum.Magnet)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 75, 40, 30, 80])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 20, 65, 50, 75]);
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item
@@ -87,9 +104,11 @@ namespace nbbpfe.FundamentalsManager.Loaders
             Dictionary<string, Sprite> spritesDic = [];
             foreach (string file in sprites)
             {
-                if (file.Contains(item.postfixIconSmall))
+                if (file.Contains(item.postfixIconSmall) && !spritesDic.ContainsKey("small"))
+                {
                     spritesDic.Add("small", AssetsLoader.CreateSprite(Path.GetFileNameWithoutExtension(file), Paths.GetPath(PathsEnum.Items, path), 1));
-                else if (file.Contains(item.postfixIconLarge))
+                }
+                else if (file.Contains(item.postfixIconLarge) && !spritesDic.ContainsKey("large"))
                     spritesDic.Add("large", AssetsLoader.CreateSprite(Path.GetFileNameWithoutExtension(file), Paths.GetPath(PathsEnum.Items, path), 50));
             }
 

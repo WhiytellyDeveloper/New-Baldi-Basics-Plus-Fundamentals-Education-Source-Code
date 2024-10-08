@@ -3,7 +3,6 @@ using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using System.Collections;
 using UnityEngine;
-using static UnityEngine.UIElements.UIR.Implementation.UIRStylePainter;
 
 namespace nbppfe.CustomContent.NPCs
 {
@@ -11,12 +10,11 @@ namespace nbppfe.CustomContent.NPCs
     {
         public void Setup()
         {
-            idleSequence[0] = AssetsLoader.Get<Sprite>("Kawa_0");
-            idleSequence[1] = AssetsLoader.Get<Sprite>("Kawa_1");
-            idleSequence[2] = AssetsLoader.Get<Sprite>("Kawa_2");
-            shieldSequence[0] = AssetsLoader.Get<Sprite>("Kawa_3");
-            shieldSequence[1] = AssetsLoader.Get<Sprite>("Kawa_4");
-            shieldSequence[2] = AssetsLoader.Get<Sprite>("Kawa_5");
+            for (int i = 0; i < 3; i++)
+            {
+                idleSequence[i] = AssetsLoader.Get<Sprite>($"Kawa_{i}");
+                shieldSequence[i] = AssetsLoader.Get<Sprite>($"Kawa_{i + 3}");
+            }
 
             audMan = GetComponent<AudioManager>();
             pushSound = AssetsLoader.Get<SoundObject>("Kawa_Nope");
@@ -40,7 +38,6 @@ namespace nbppfe.CustomContent.NPCs
             base.VirtualUpdate();
 
             spriteRenderer[0].sprite = useShield ? shieldSequence[index] : idleSequence[index];
-
             cooldown.UpdateCooldown(ec.NpcTimeScale);
         }
 
@@ -66,18 +63,10 @@ namespace nbppfe.CustomContent.NPCs
             cooldown.Restart();
         }
 
-        protected override void VirtualOnTriggerEnter(Collider other)
+        public void Push(Entity entity)
         {
-            base.VirtualOnTriggerEnter(other);
-
-            if (other.CompareTag("Player") && useShield)
-            {
-                if (!other.GetComponent<PlayerManager>().tagged)
-                {
-                    other.GetComponent<PlayerManager>().plm.Entity.AddForce(new Force((other.GetComponent<PlayerManager>().plm.Entity.transform.position - transform.position).normalized, 62, -62));
-                    audMan.PlaySingle(pushSound);
-                }
-            }
+            audMan.PlaySingle(pushSound);
+            entity.AddForce(new Force((entity.transform.position - transform.position).normalized, 62, -62));
         }
 
         public Cooldown cooldown;
@@ -104,6 +93,18 @@ namespace nbppfe.CustomContent.NPCs
         {
             base.Initialize();
             ChangeNavigationState(new NavigationState_WanderRandom(kw, 0));
+        }
+
+        public override void OnStateTriggerEnter(Collider other)
+        {
+            base.OnStateTriggerEnter(other);
+
+            if (other.CompareTag("Player") && kw.useShield)
+            {
+                PlayerManager pm = other.GetComponent<PlayerManager>();
+                if (!pm.tagged)
+                    kw.Push(pm.plm.Entity);
+            }
         }
     }
 }
