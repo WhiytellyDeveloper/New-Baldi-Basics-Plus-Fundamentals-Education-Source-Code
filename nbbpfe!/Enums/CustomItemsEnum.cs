@@ -7,6 +7,7 @@ namespace nbbpfe.Enums
         GenericHammer,
         Baseball,
         Soda,
+        Coffe,
         CoffeAndSugar,
         SweepWhistle,
         BullyPresent,
@@ -29,6 +30,10 @@ namespace nbbpfe.Enums
         Magnet,
         GenericSoda,
         Present,
-        Cookie
+        Cookie,
+        HomeworkTierA,
+        HomeworkTierB,
+        HomeworkTierC,
+        Box
     }
 }

@@ -16,6 +16,8 @@ using PlusLevelFormat;
 using nbppfe.BasicClasses;
 using MTM101BaldAPI.Reflection;
 using PixelInternalAPI.Extensions;
+using nbppfe.BasicClasses.Functions;
+using System.Collections.Generic;
 
 namespace nbbpfe.FundamentalsManager
 {
@@ -33,11 +35,136 @@ namespace nbbpfe.FundamentalsManager
             harmony.PatchAllConditionals();
             Debug.Log("Thx for playing ;)");
 
-            LoadingEvents.RegisterOnAssetsLoaded(Info, PreLoad(), false);
+            LoadingEvents.RegisterOnAssetsLoaded(Info, PreLoading(), false);
+            LoadingEvents.RegisterOnAssetsLoaded(Info, PostLoading, true);
             ModdedSaveGame.AddSaveHandler(Info);
 
             GeneratorManagement.Register(this, GenerationModType.Base, (floorName, floorNum, ld) =>
             {
+                var f1 = Resources.FindObjectsOfTypeAll<LevelObject>().Where(x => x.name == "Main1").First();
+                switch (floorName)
+                {
+                    case "F1":
+                        ld.roomGroup.First(x => x.name == "Class").maxRooms = 5;
+                        ld.roomGroup.First(x => x.name == "Class").minRooms = 5;
+                        ld.roomGroup.First(x => x.name == "Faculty").minRooms += 1;
+                        ld.roomGroup.First(x => x.name == "Faculty").maxRooms += 3;
+                        ld.maxEvents += 1;
+                        ld.minSpecialBuilders += 1;
+                        ld.maxSpecialBuilders += 2;
+                        ld.additionalNPCs += 3;
+                        List<WeightedNPC> npcsToRemove = new List<WeightedNPC>();
+
+                        foreach (WeightedNPC npc in ld.potentialNPCs)
+                        {
+                            if (npc.selection.Character == Character.Sweep)
+                                npcsToRemove.Add(npc);
+                        }
+
+                        foreach (WeightedNPC npc in npcsToRemove)
+                            ld.potentialNPCs.Remove(npc);
+
+                        ld.forcedNpcs = ld.forcedNpcs.AddItem(NPCMetaStorage.Instance.Get(Character.Sweep).value).ToArray();
+
+                        break;
+                    case "F2":
+                        ld.maxExtraRooms += 1;
+                        ld.roomGroup.First(x => x.name == "Faculty").minRooms += 2;
+                        ld.roomGroup.First(x => x.name == "Faculty").maxRooms += 5;
+                        ld.minEvents += 1;
+                        ld.maxEvents += 2;
+                        ld.minSpecialBuilders += 2;
+                        ld.maxSpecialBuilders += 3;
+                        ld.additionalNPCs += 5;
+
+                        List<WeightedNPC> _npcsToRemove = new List<WeightedNPC>();
+
+                        foreach (WeightedNPC npc in ld.potentialNPCs)
+                        {
+                            if (npc.selection.Character == Character.Sweep || npc.selection.Character == Character.DrReflex)
+                                _npcsToRemove.Add(npc);
+                        }
+
+                        foreach (WeightedNPC npc in _npcsToRemove)
+                            ld.potentialNPCs.Remove(npc);
+
+                        ld.forcedNpcs = ld.forcedNpcs.AddItem(NPCMetaStorage.Instance.Get(Character.DrReflex).value).ToArray();
+
+                        ld.roomGroup.First(x => x.name == "Class").stickToHallChance = 0.8f;
+                        foreach (WeightedRoomAsset classRoom in f1.roomGroup.First(x => x.name == "Class").potentialRooms)
+                        {
+                            ld.roomGroup.First(x => x.name == "Class").potentialRooms = HarmonyLib.CollectionExtensions.AddItem<WeightedRoomAsset>(ld.roomGroup.First(x => x.name == "Class").potentialRooms, new WeightedRoomAsset
+                            {
+                                selection = classRoom.selection,
+                                weight = classRoom.weight / 2
+                            }).ToArray();
+                        }
+                        break;
+                    case "F3":
+                        ld.minExtraRooms += 1;
+                        ld.maxExtraRooms += 2;
+                        ld.roomGroup.First(x => x.name == "Faculty").minRooms += 1;
+                        ld.roomGroup.First(x => x.name == "Faculty").maxRooms += 3;
+                        ld.facultyStickToHallChance += 0.75f;
+                        ld.minEvents += 3;
+                        ld.maxEvents += 4;
+                        ld.minSpecialBuilders += 4;
+                        ld.maxSpecialBuilders += 5;
+                        ld.additionalNPCs += 9;
+
+                        List<WeightedNPC> __npcsToRemove = new List<WeightedNPC>();
+
+                        foreach (WeightedNPC npc in ld.potentialNPCs)
+                        {
+                            if (npc.selection.Character == Character.Sweep || npc.selection.Character == Character.DrReflex)
+                                __npcsToRemove.Add(npc);
+                        }
+
+                        foreach (WeightedNPC npc in __npcsToRemove)
+                            ld.potentialNPCs.Remove(npc);
+
+                        ld.roomGroup.First(x => x.name == "Class").stickToHallChance = 0.8f;
+                        foreach (WeightedRoomAsset classRoom in f1.roomGroup.First(x => x.name == "Class").potentialRooms)
+                        {
+                            ld.roomGroup.First(x => x.name == "Class").potentialRooms = HarmonyLib.CollectionExtensions.AddItem<WeightedRoomAsset>(ld.roomGroup.First(x => x.name == "Class").potentialRooms, new WeightedRoomAsset
+                            {
+                                selection = classRoom.selection,
+                                weight = classRoom.weight / 2
+                            }).ToArray();
+                        }
+
+                        ld.exitCount = 3;
+                        ld.roomGroup.First(x => x.name == "Class").stickToHallChance = 0.5f;
+                        foreach (WeightedRoomAsset classRoom in f1.roomGroup.First(x => x.name == "Class").potentialRooms)
+                        {
+                            ld.roomGroup.First(x => x.name == "Class").potentialRooms = HarmonyLib.CollectionExtensions.AddItem<WeightedRoomAsset>(ld.roomGroup.First(x => x.name == "Class").potentialRooms, new WeightedRoomAsset
+                            {
+                                selection = classRoom.selection,
+                                weight = classRoom.weight / 3
+                            }).ToArray();
+                        }
+                        break;
+                    case "END":
+                        ld.maxExtraRooms += 1;
+                        ld.roomGroup.First(x => x.name == "Faculty").minRooms += 3;
+                        ld.roomGroup.First(x => x.name == "Faculty").maxRooms += 5;
+                        ld.minEvents += 2;
+                        ld.maxEvents += 5;
+                        ld.minSpecialBuilders += 2;
+                        ld.maxSpecialBuilders += 5;
+                        ld.additionalNPCs += 5;
+                        ld.roomGroup.First(x => x.name == "Class").stickToHallChance = 0.6f;
+                        foreach (WeightedRoomAsset classRoom in f1.roomGroup.First(x => x.name == "Class").potentialRooms)
+                        {
+                            ld.roomGroup.First(x => x.name == "Class").potentialRooms = HarmonyLib.CollectionExtensions.AddItem<WeightedRoomAsset>(ld.roomGroup.First(x => x.name == "Class").potentialRooms, new WeightedRoomAsset
+                            {
+                                selection = classRoom.selection,
+                                weight = classRoom.weight / 2
+                            }).ToArray();
+                        }
+                        break;
+                }
+
                 RoomGroup[] groups = [ld.roomGroup.Where(x => x.name.Contains("Class")).First(), ld.roomGroup.Where(x => x.name.Contains("Faculty")).First(), ld.roomGroup.Where(x => x.name.Contains("Office")).First()];
                 foreach (FloorData floorData in FundamentalLoaderManager.floors)
                 {
@@ -70,7 +197,9 @@ namespace nbbpfe.FundamentalsManager
                 }
             });
         }
-        private IEnumerator PreLoad()
+
+
+        private IEnumerator PreLoading()
         {
             yield return 1;
             yield return "Lodaing...";
@@ -84,6 +213,13 @@ namespace nbbpfe.FundamentalsManager
 
             Paths.Initialize();
             FundamentalLoaderManager.Initialize();
+        }
+
+        public void PostLoading()
+        {
+            foreach(RoomAsset rooms in Resources.FindObjectsOfTypeAll<RoomAsset>().Where(x => x.name.Contains("Class"))) {
+                rooms.AddRoomFunctionToContainer<MathMachineClassFunction>();
+            }
         }
     }
 

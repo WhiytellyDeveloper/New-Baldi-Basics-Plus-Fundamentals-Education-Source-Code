@@ -1,11 +1,14 @@
-﻿using MTM101BaldAPI.AssetTools;
+﻿using HarmonyLib;
+using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI.ObjectCreation;
+using MTM101BaldAPI.Reflection;
 using MTM101BaldAPI.Registers;
 using nbbpfe.CustomData;
 using nbbpfe.Enums;
 using nbppfe.CustomContent.CustomItems;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI;
+using PixelInternalAPI.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,7 +41,8 @@ namespace nbbpfe.FundamentalsManager.Loaders
             LoadItem<ITM_CoffeAndSugar>("CoffeAndSugar", CustomItemsEnum.CoffeAndSugar)
             .MakeItWeightedItem(["F2", "F3", "F4", "END"], [20, 30, 40, 55])
             .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [30, 40, 50, 20])
-            .MakeItForcedItem(["F3", "F4"], [1, 2]);
+            .MakeItForcedItem(["F3", "F4"], [1, 2])
+            .MakeItFieldTripItem(70);
 
             LoadItem<ITM_SweepWhistle>("SweepWhistle", CustomItemsEnum.SweepWhistle)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 30, 22, 32, 18])
@@ -50,37 +54,47 @@ namespace nbbpfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_Glue>("Glue", CustomItemsEnum.Glue)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 20, 10, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 10, 30, 20, 40]);
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 10, 30, 20, 40])
+            .MakeItPartyItem(75)
+            .MakeItFieldTripItem(50);
 
             LoadItem<ITM_Pretzel>("Pretzel", CustomItemsEnum.Pretzel)
             .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 60, 55, 80])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [70, 67, 15, 95]);
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [70, 67, 15, 95])
+            .MakeItFieldTripItem(58);
 
             //LoadItem<ITM_SoupInCan>("SoupCan", CustomItemsEnum.CanSoup)
             //.MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [70, 80, 50, 2, 100])
             //.MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 10, 80, 20, 70]);
 
             LoadItem<ITM_NoClipController>("NoClipController", CustomItemsEnum.NoClipController)
-            .MakeItWeightedItem([ "F3", "F4", "END"], [15, 12, 30])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [20, 32, 5, 40]);
+            .MakeItWeightedItem(["F3", "F4", "END"], [15, 12, 30])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [20, 32, 5, 40])
+            .MakeItPartyItem(175)
+            .MakeItMysteryItem(50)
+            .MakeItGuaranteedFieldTripItem();
 
             LoadItem<ITM_Walkman>("Walkman", CustomItemsEnum.Walkman)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 44, 37, 30, 45])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 20, 25, 30, 35]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 54, 47, 40, 52])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 20, 25, 30, 35])
+            .MakeItFieldTripItem(70);
 
             LoadItem<ITM_WhiteZesty>("WhiteZesty", CustomItemsEnum.WhiteZesty)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 60, 70, 65])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [54, 44, 64, 74, 24])
-            .MakeItForcedItem(["F1", "END"], [1, 1]);
+            .MakeItForcedItem(["F1", "F2", "END"], [1, 2, 1])
+            .MakeItFieldTripItem(100);
 
             LoadItem<ITM_Present>("Present", CustomItemsEnum.Present)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 80, 55, 19, 70])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 70, 14, 100])
-            .MakeItForcedItem(["F2", "F3", "END"], [1, 1, 1]);
+            .MakeItForcedItem(["F2", "F3", "END"], [1, 1, 1])
+            .MakeItFieldTripItem(66);
 
             LoadItem<ITM_Cheese>("Cheese", CustomItemsEnum.Cheese)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 10, 15, 20, 25])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 30, 35, 40]);
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 30, 35, 40])
+            .MakeItFieldTripItem(35);
 
             LoadItem<ITM_Cookie>("Cookie", CustomItemsEnum.Cookie)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [80, 70, 95, 40, 100])
@@ -88,7 +102,33 @@ namespace nbbpfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_Magnet>("Magnet", CustomItemsEnum.Magnet)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 75, 40, 30, 80])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 20, 65, 50, 75]);
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 20, 65, 50, 75])
+            .MakeItPartyItem(162)
+            .MakeItFieldTripItem(85);
+
+            LoadItem<ITM_Homework>("HomeworkTierA", CustomItemsEnum.HomeworkTierA)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [40, 80, 60, 70])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [35, 40, 48, 50])
+            .MakeItPartyItem(80)
+            .MakeItFieldTripItem(85);
+
+            LoadItem<ITM_BoxPortal>("BoxPortal", CustomItemsEnum.BoxPortal)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [35, 45, 53, 44])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 50, 60, 52])
+            .MakeItPartyItem(130)
+            .MakeItFieldTripItem(60);
+  
+             LoadItem<ITM_Coffe>("Coffe", CustomItemsEnum.Coffe)
+            .MakeItWeightedItem(["F3", "F4", "END"], [15, 22, 40])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [25, 75, 30, 42])
+            .MakeItMysteryItem(95)
+            .MakeItPartyItem(185)
+            .MakeItGuaranteedFieldTripItem();
+
+            LoadItem<ITM_Box>("Box", CustomItemsEnum.Box)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 75, 30, 43, 62])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 62, 22, 70, 62])
+            .MakeItFieldTripItem(55);
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item
@@ -178,6 +218,36 @@ namespace nbbpfe.FundamentalsManager.Loaders
                     quantity++;
                 }
             }
+            return item;
+        }
+
+        public static ItemObject MakeItMysteryItem(this ItemObject item, int weight)
+        {
+            var array = (WeightedItemObject[])Resources.FindObjectsOfTypeAll<MysteryRoom>().First().ReflectionGetVariable("items");
+            WeightedItemObject[] newArray = array.AddRangeToArray([new WeightedItemObject { selection = item, weight = weight }]);
+            Resources.FindObjectsOfTypeAll<MysteryRoom>().First().ReflectionSetVariable("items", newArray);
+            return item;
+        }
+        public static ItemObject MakeItPartyItem(this ItemObject item, int weight)
+        {
+            var array = (WeightedItemObject[])Resources.FindObjectsOfTypeAll<PartyEvent>().First().ReflectionGetVariable("potentialItems");
+            WeightedItemObject[] newArray = array.AddRangeToArray([new WeightedItemObject { selection = item, weight = weight }]);
+            Resources.FindObjectsOfTypeAll<PartyEvent>().First().ReflectionSetVariable("potentialItems", newArray);
+            return item;
+        }
+
+        public static ItemObject MakeItFieldTripItem(this ItemObject item, int weight)
+        {
+            var array = (WeightedItemObject[])Resources.FindObjectsOfTypeAll<FieldTripBaseRoomFunction>().First().ReflectionGetVariable("potentialItems");
+            WeightedItemObject[] newArray = array.AddRangeToArray([new WeightedItemObject { selection = item, weight = weight }]);
+            Resources.FindObjectsOfTypeAll<FieldTripBaseRoomFunction>().First().ReflectionSetVariable("potentialItems", newArray);
+            return item;
+        }
+
+        public static ItemObject MakeItGuaranteedFieldTripItem(this ItemObject item)
+        {
+            List<ItemObject> newArray = (List<ItemObject>)Resources.FindObjectsOfTypeAll<FieldTripBaseRoomFunction>().First().ReflectionGetVariable("guaranteedItems");
+            newArray.Add(item); ;
             return item;
         }
     }
