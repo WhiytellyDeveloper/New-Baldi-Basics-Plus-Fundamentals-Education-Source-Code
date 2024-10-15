@@ -10,6 +10,7 @@ using MTM101BaldAPI.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using nbppfe.BasicClasses.Functions;
+using nbppfe.BasicClasses.CustomObjects;
 
 namespace nbppfe.FundamentalsManager.Loaders
 {
@@ -21,7 +22,7 @@ namespace nbppfe.FundamentalsManager.Loaders
         {
             try
             {
-                using (BinaryReader reader = new(File.OpenRead(Paths.GetPath(PathsEnum.PreMadeRooms, "PitLobby/PitLobby.cbld"))))
+                using (BinaryReader reader = new(File.OpenRead(Paths.GetPath(PathsEnum.PreMadeFloors, "PitLobby/PitLobby.cbld"))))
                 {
                     //CreateTipNotebook(0, "CharcterBook");
 
@@ -59,7 +60,7 @@ namespace nbppfe.FundamentalsManager.Loaders
                     lobbyScene.levelAsset.rooms[3].ceilTex = AssetsLoader.Get<Texture2D>("F2!F3!F4!END!FancyCeiling");
                     var list2 = (List<RoomFunction>)lobbyScene.levelAsset.rooms[3].roomFunctionContainer.ReflectionGetVariable("functions");
 
-                    if (list.Count > 1)
+                    if (list.Count > 2)
                         list2.RemoveAt(2);
 
                     lobbyScene.levelAsset.rooms[4].wallTex = AssetsLoader.Get<Texture2D>("F1!F2!END!OfficeBrickWillyWhite");
@@ -94,7 +95,7 @@ namespace nbppfe.FundamentalsManager.Loaders
         {
             var book = Resources.FindObjectsOfTypeAll<Notebook>().First();
             book.name = $"TipBook_{id}";
-            book.GetComponentInChildren<SpriteRenderer>().sprite = AssetsLoader.CreateSprite(book.name, Paths.GetPath(PathsEnum.PreMadeRooms, "PitLobby"), 100);
+            book.GetComponentInChildren<SpriteRenderer>().sprite = AssetsLoader.CreateSprite(book.name, Paths.GetPath(PathsEnum.PreMadeFloors, "PitLobby"), 100);
             GameObject.Destroy(book.GetComponent<Notebook>());
             var tipBook = book.gameObject.AddComponent<TipBook>();
             tipBook.gameObject.ConvertToPrefab(true);

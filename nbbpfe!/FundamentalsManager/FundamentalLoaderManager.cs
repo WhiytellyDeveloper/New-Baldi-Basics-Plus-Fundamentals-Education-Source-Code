@@ -15,8 +15,9 @@ namespace nbbpfe.FundamentalsManager
             GenericDrinkingSound = AssetsLoader.CreateSound("drinkingSound1", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
             GenericEatSound = (SoundObject)Items.ZestyBar.ToItem().item.GetComponent<ITM_ZestyBar>().ReflectionGetVariable("audEat");
 
-            RoomsLoader.LoadRooms();
             ItemsLoader.LoadItems();
+            CustomObjectsLoader.Load();
+            RoomsLoader.LoadRooms();
             NPCLoader.SetupNPCs();
             SceneLoader.Load();
         }

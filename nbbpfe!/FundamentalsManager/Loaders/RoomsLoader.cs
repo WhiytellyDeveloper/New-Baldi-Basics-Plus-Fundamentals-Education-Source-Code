@@ -7,6 +7,13 @@ using System.Linq;
 using nbbpfe.FundamentalsManager;
 using UnityEngine;
 using Newtonsoft.Json;
+using EditorCustomRooms;
+using MTM101BaldAPI;
+using PixelInternalAPI.Extensions;
+using nbppfe.BasicClasses.Functions;
+using PlusLevelLoader;
+using nbppfe.Enums;
+using nbppfe.Extensions;
 
 namespace nbbpfe.FundamentalsManager.Loaders
 {
@@ -17,6 +24,24 @@ namespace nbbpfe.FundamentalsManager.Loaders
             LoadTextures(RoomTextures.Hall, "Hall");
             LoadTextures(RoomTextures.Class, "Class");
             LoadTextures(RoomTextures.Faculty, "Faculty");
+
+            var faculty = Resources.FindObjectsOfTypeAll<RoomAsset>().Where(x => x.name.Contains("Faculty")).First();
+            var container = faculty.roomFunctionContainer.DuplicatePrefab();
+            var function = container.gameObject.AddComponent<CopyCastTexturesFunction>();
+            function.category = RoomCategory.Faculty;
+            container.AddFunction(function);
+            var faculyts = CreateRooms("EmellyGutterFacutly", faculty.maxItemValue, faculty.offLimits, container, false, false, (Texture2D)faculty.mapMaterial.GetTexture("_MapBackground"), false);
+
+            PlusLevelLoaderPlugin.Instance.roomSettings.Add("CheapStore", new RoomSettings(
+                 CustomRoomsEnum.Storage.ToRoomEnum(),
+                 RoomType.Room,
+                 Color.black,
+                 Resources.FindObjectsOfTypeAll<StandardDoorMats>().Last()
+             ));
+
+            PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapWall", AssetsLoader.CreateTexture("CheapStoreWall", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
+            PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapFloor", AssetsLoader.CreateTexture("CheapStoreFloor", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
+            PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapCeiling", AssetsLoader.CreateTexture("CheapStoreCeiling", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
         }
 
         public static void LoadTextures(RoomTextures roomTextures, string roomPath)
@@ -55,7 +80,46 @@ namespace nbbpfe.FundamentalsManager.Loaders
             Debug.Log($"Finished loading {roomPath} textures.");
         }
 
+        private static Dictionary<string, RoomAsset> CreateRooms(string path, int maxValue, bool isOffLimits = false, RoomFunctionContainer cont = null, bool isAHallway = false, bool secretRoom = false, Texture2D mapBg = null, bool keepTextures = true, Texture2D[] roomsTextures = null, WeightedPosterObject[] posters = null, float posterChance = 0, bool squaredShape = false)
+        {
+            Dictionary<string, RoomAsset> assets = [];
+            RoomFunctionContainer container = cont;
 
+            foreach (var file in Directory.GetFiles(Paths.GetPath(PathsEnum.Rooms, path), "*.cbld"))
+            {
+                if (File.ReadAllBytes(file).Length == 0) continue;
+                    
+      
+                    UnityEngine.Debug.LogWarning(file);
+                    var asset = RoomFactory.CreateAssetsFromPath(file, maxValue, isOffLimits, container, isAHallway, secretRoom, mapBg, keepTextures, squaredShape);
+                    foreach (var room in asset)
+                    {
+                        if (roomsTextures != null)
+                        {
+                            room.wallTex = roomsTextures[0];
+                            room.florTex = roomsTextures[1];
+                            room.ceilTex = roomsTextures[2];
+                        }
+                        if (posters != null)
+                            room.posters = posters.ToList();
+
+                        room.posterChance = posterChance;
+
+                        string roomName = Path.GetFileNameWithoutExtension(file);
+                        UnityEngine.Debug.LogWarning(roomName);
+                        if (!assets.ContainsKey(roomName))
+                        {
+                            assets.Add(roomName, room);
+                            AssetsLoader.assetMan.Add<RoomAsset>(roomName, room);
+                        }
+
+                    }
+                
+   
+            }
+
+            return assets;
+        }
     }
 
     [Serializable]

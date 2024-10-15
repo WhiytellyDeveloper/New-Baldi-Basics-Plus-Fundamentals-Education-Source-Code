@@ -55,4 +55,25 @@ namespace nbppfe.Patches
         }
     }
 
+    [HarmonyPatch(typeof(Pickup))]
+    public class PickupPatch
+    {
+        public static Pickup lastPíckupClicked;
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(Pickup.Clicked))]
+        public static void Clicked_Prefix(Pickup __instance) =>
+            lastPíckupClicked = __instance;
+        
+    }
+
+    //I just copied this from the pixelGuy in the animation mod, out of pure laziness in programming it :/
+    [HarmonyPatch(typeof(ItemManager), "RemoveItem")]
+    public class LastRemovedItemPatch
+    {
+        [HarmonyPrefix]
+        public static void Prefix(ItemManager __instance, int val) =>
+            lastRemovedItem = __instance.items[val];
+
+        public static ItemObject lastRemovedItem;
+    }
 }

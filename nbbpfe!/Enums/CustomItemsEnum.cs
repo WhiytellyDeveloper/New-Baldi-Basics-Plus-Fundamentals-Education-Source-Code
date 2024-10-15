@@ -34,6 +34,10 @@ namespace nbbpfe.Enums
         HomeworkTierA,
         HomeworkTierB,
         HomeworkTierC,
-        Box
+        Box,
+        SupernaturalPudding,
+        PurpleVisonPad, //NPCs
+        RedVisionPad, //Elevators
+        OrangeVisionPad //Notebooks and Items
     }
 }

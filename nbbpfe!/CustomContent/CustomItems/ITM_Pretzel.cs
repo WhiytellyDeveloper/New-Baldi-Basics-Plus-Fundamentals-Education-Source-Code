@@ -62,26 +62,29 @@ namespace nbppfe.CustomContent.CustomItems
             active = true;
             npc = other.GetComponent<NPC>();
 
-            if (!npc.looker.enabled)
+            if (!npc)
             {
-                if (npc.Character == Character.Bully) return;
-                return;
-            }
+                if (!npc.looker.enabled)
+                {
+                    if (npc.Character == Character.Bully) return;
+                    return;
+                }
 
-            if (npc.Character != Character.Principal)
-            {
-                npc.GetComponent<AudioManager>()?.PlaySingle(stickySound);
-                npc.PlayerLost(pm);
-                if (npc.looker != null) { npc.looker.enabled = false; }
-                spriteRenderer.enabled = false;
+                if (npc.Character != Character.Principal)
+                {
+                    npc.GetComponent<AudioManager>()?.PlaySingle(stickySound);
+                    npc.PlayerLost(pm);
+                    if (npc.looker != null) { npc.looker.enabled = false; }
+                    spriteRenderer.enabled = false;
 
-                if (npc.Character == Character.Playtime && npc.GetComponent<Playtime>().Navigator.maxSpeed == 0)
-                    npc.GetComponent<Playtime>().EndJumprope(true);
-            }
-            else
-            {
-                npc.behaviorStateMachine.ChangeState(new Principal_Pretzel(npc.GetComponent<Principal>(), npc.behaviorStateMachine.currentState, pm));
-                Destroy(gameObject);
+                    if (npc.Character == Character.Playtime && npc.GetComponent<Playtime>().Navigator.maxSpeed == 0)
+                        npc.GetComponent<Playtime>().EndJumprope(true);
+                }
+                else
+                {
+                    npc.behaviorStateMachine.ChangeState(new Principal_Pretzel(npc.GetComponent<Principal>(), npc.behaviorStateMachine.currentState, pm));
+                    Destroy(gameObject);
+                }
             }
         }
 

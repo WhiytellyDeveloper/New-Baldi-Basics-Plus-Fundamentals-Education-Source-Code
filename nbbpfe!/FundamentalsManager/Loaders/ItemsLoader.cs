@@ -129,6 +129,42 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 75, 30, 43, 62])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 62, 22, 70, 62])
             .MakeItFieldTripItem(55);
+
+            LoadItem<ITM_SupernaturalPudding>("Pudding", CustomItemsEnum.SupernaturalPudding)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 40, 20, 12, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [24, 50, 45, 30, 64])
+            .MakeItPartyItem(75)
+            .MakeItFieldTripItem(80);
+
+            LoadItem<ITM_ColoredVisionPad>("PurpleVisionPad", CustomItemsEnum.PurpleVisonPad)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 40, 32, 40, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [22, 35, 52, 48, 50])
+            .MakeItFieldTripItem(48)
+            .item.GetComponent<ITM_ColoredVisionPad>().itemEnum = CustomItemsEnum.PurpleVisonPad;
+
+            LoadItem<ITM_ColoredVisionPad>("OrangeVisionPad", CustomItemsEnum.OrangeVisionPad)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [27, 42, 34, 44, 35])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [24, 43, 56, 52, 60])
+            .MakeItFieldTripItem(49)
+            .item.GetComponent<ITM_ColoredVisionPad>().itemEnum = CustomItemsEnum.OrangeVisionPad;
+
+            LoadItem<ITM_DuctTape>("DuctTape", CustomItemsEnum.DuctTape)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [34, 45, 30, 44])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [18, 30, 19, 31])
+            .MakeItPartyItem(24)
+            .MakeItFieldTripItem(100);
+
+            LoadItem<ITM_Shovel>("Shovel", CustomItemsEnum.Shovel)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 50, 55, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15, 20, 25, 30])
+            .MakeItFieldTripItem(45);
+
+            /*
+            LoadItem<ITM_WaterBucket>("WaterBucket", CustomItemsEnum.WaterBucket)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45754670, 45, 50, 55, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15465475, 20, 25, 30])
+            .MakeItFieldTripItem(45);
+            */
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item

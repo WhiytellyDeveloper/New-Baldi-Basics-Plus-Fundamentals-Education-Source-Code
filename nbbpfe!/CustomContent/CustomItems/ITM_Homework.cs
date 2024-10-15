@@ -14,6 +14,7 @@ namespace nbppfe.CustomContent.CustomItems
         {
             var canvasPrefab = ObjectCreationExtensions.CreateCanvas();
             canvasPrefab.transform.SetParent(transform);
+            canvasPrefab.worldCamera = Camera.main;
             image = ObjectCreationExtensions.CreateImage(canvasPrefab, false);
             image.sprite = AssetsLoader.CreateSprite("HomeworkRenderer_A", Paths.GetPath(PathsEnum.Items, "HomeworkTierA"), 1);
             image.transform.localPosition = new Vector3(-350, 260);

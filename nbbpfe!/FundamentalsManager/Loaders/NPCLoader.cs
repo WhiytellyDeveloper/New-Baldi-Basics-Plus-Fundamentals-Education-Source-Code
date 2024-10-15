@@ -12,12 +12,16 @@ using PixelInternalAPI.Extensions;
 using Newtonsoft.Json;
 using nbppfe.PrefabSystem;
 using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
+using nbbpfe.FundamentalsManager.Loaders;
 using MTM101BaldAPI;
 
 namespace nbppfe.FundamentalsManager.Loaders
 {
     public static partial class NPCLoader
     {
+        public static Dictionary<CustomNPCsEnum, Sprite[]> spritesFormSpritesheet = [];
+        public static Dictionary<CustomNPCsEnum, SoundObject[]> soundsObjects = [];
+
         public static void SetupNPCs()
         {
             NPC kawa = new NPCBuilder<Kawa>(BasePlugin.Instance.Info)
@@ -68,6 +72,14 @@ namespace nbppfe.FundamentalsManager.Loaders
             .Build(-1.21f, AssetsLoader.SetHexaColor("#1B131B"), "DigitalArtistic_0")
             .MakeItForcedNPC(["F1", "END"]);
             */
+
+            NPC emmilyGutter = new NPCBuilder<EmillyGutter>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Faculty])
+            .AddLooker().SetMaxSightDistance(80)
+            .AddPotentialRoomAsset(AssetsLoader.Get<RoomAsset>("EmellyGutterFacutlyRoom1"), 100)
+            .SetMinMaxAudioDistance(45, 100)
+            .Build(-1.705f, AssetsLoader.SetHexaColor("#A36508"), "EmillyGutter_0")
+            .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [75, 45, 20, 54]);
         }
     }
 
@@ -94,11 +106,10 @@ namespace nbppfe.FundamentalsManager.Loaders
             }
 
             builder.SetPoster(posterTexture, data.pri_namekey, data.pri_descriptionkey);
-            builder.SetMetaName(data.pri_namekey);
             return builder;
         }
 
-        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, bool spriteSheet, string spriteSheetPostfix = "", bool debug = false) where T : NPC
+        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, bool spriteSheet, string spriteSheetPostfix = "", bool debug = false) where T : NPC
         {
             FileNPCData data = LoadFile(npcName);
             string[] sprites = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.png", SearchOption.AllDirectories);
@@ -144,13 +155,13 @@ namespace nbppfe.FundamentalsManager.Loaders
                                             Debug.Log($"{npcName}{spriteSheetPostfix}_{i}");
                                         newSprites[i].name = $"{npcName}{spriteSheetPostfix}_{i}";
                                         AssetsLoader.assetMan.Add($"{npcName}{spriteSheetPostfix}_{i}", newSprites[i]);
-
                                         if (debug)
                                         {
                                             string spritePath = Path.Combine(debugFolderPath, $"{newSprites[i].name}.png");
                                             SaveSpriteAsPng(newSprites[i], spritePath);
                                         }
                                     }
+                                    NPCLoader.spritesFormSpritesheet.Add(npcEnum, newSprites);
                                 }
                             }
                         }
@@ -174,12 +185,13 @@ namespace nbppfe.FundamentalsManager.Loaders
             return builder;
         }
 
-        public static NPCBuilder<T> SetupSounds<T>(this NPCBuilder<T> builder, string npcName, string hexaSound, bool debug = false) where T : NPC
+        public static NPCBuilder<T> SetupSounds<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaSound, bool debug = false) where T : NPC
         {
             FileNPCData data = LoadFile(npcName);
-            string[] sounds = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.wav", SearchOption.AllDirectories);
+            string[] soundsFiles = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.wav", SearchOption.AllDirectories);
+            List<SoundObject> sounds = [];
 
-            foreach (string sound in sounds)
+            foreach (string sound in soundsFiles)
             {
                 string soundName = Path.GetFileNameWithoutExtension(sound);
                 if (data.audioClips.TryGetValue(soundName, out string soundTypeIdentifier))
@@ -197,22 +209,24 @@ namespace nbppfe.FundamentalsManager.Loaders
                         Debug.Log($"Sound: {soundName}, Type: {type}");
 
                     SoundObject soundObj = AssetsLoader.CreateSound(soundName, Paths.GetPath(PathsEnum.NPCs, npcName), soundTypeIdentifier, type, AssetsLoader.SetHexaColor(hexaSound), 1);
-
+                    sounds.Add(soundObj);
                     AssetsLoader.assetMan.Add<SoundObject>(soundName, soundObj);
                 }
             }
-
+            NPCLoader.soundsObjects.Add(npcEnum, sounds.ToArray());
             return builder;
         }
 
         public static NPCBuilder<T> SetupAll<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaCode, string spriteSheetPrefix = "", bool debug = false, params RoomCategory[] categorys) where T : NPC
         {
+            builder.SetMetaName(NPCLoaderExtenssion.LoadFile(npcName).pri_namekey);
             builder.SetName(NPCLoaderExtenssion.LoadFile(npcName).name);
+            builder.SetEnum(npcEnum.ToString());
             builder.SetupPoster(npcName);
             builder.AddSpawnableRoomCategories(categorys);
-            builder.SetupSprites(npcName, false, "", debug);
-            builder.SetupSprites(npcName, true, spriteSheetPrefix, debug);
-            builder.SetupSounds(npcName, hexaCode, debug);
+            builder.SetupSprites(npcName, npcEnum, false, "", debug);
+            builder.SetupSprites(npcName, npcEnum, true, spriteSheetPrefix, debug);
+            builder.SetupSounds(npcName, npcEnum, hexaCode, debug);
             return builder;
         }
 

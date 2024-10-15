@@ -1,7 +1,11 @@
 ﻿using MTM101BaldAPI;
+using MTM101BaldAPI.Components;
 using MTM101BaldAPI.Registers;
 using nbbpfe.Enums;
 using nbbpfe.FundamentalsManager;
+using nbppfe.Enums;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace nbppfe.Extensions
@@ -31,6 +35,24 @@ namespace nbppfe.Extensions
 
         public static ItemObject ToItem(this CustomItemsEnum itemEnum) {
             return ItemMetaStorage.Instance.FindByEnumFromMod(ToItemEnum(itemEnum), BasePlugin.Instance.Info).value;
+        }
+
+        public static RoomCategory ToRoomEnum(this CustomRoomsEnum roomEnum) {
+            RoomCategory category = RoomCategory.Null;
+
+            if (!enums.Contains(roomEnum.ToString()))
+                EnumExtensions.ExtendEnum<RoomCategory>(roomEnum.ToString());
+
+            category = EnumExtensions.GetFromExtendedName<RoomCategory>(roomEnum.ToString());
+            return category;
+        }
+
+        public static RoomAssetMeta ToRoom(this RoomCategory roomEnum) {
+            return RoomAssetMetaStorage.Instance.Get(roomEnum);
+        }
+
+        public static RoomAssetMeta ToRoom(this CustomRoomsEnum roomEnum) {
+            return RoomAssetMetaStorage.Instance.Get(ToRoomEnum(roomEnum));
         }
 
         public static void ResizeCollider(this SpriteRenderer spriteRenderer, Collider colliderComponent)
@@ -65,6 +87,13 @@ namespace nbppfe.Extensions
             return radius;
         }
 
+        public static float GetSpriteSize(this Sprite sprite)
+        {
+            Vector3 spriteSize = sprite.bounds.size;
+            float radius = Mathf.Max(spriteSize.x, Mathf.Max(spriteSize.y, spriteSize.z)) / 2f;
+            return radius;
+        }
+
         public static void SetSpeed(this Navigator navigator, int speed, int maxSpeed)
         {
             navigator.SetSpeed(speed);
@@ -92,5 +121,14 @@ namespace nbppfe.Extensions
             foreach (var field in fields)
                 field.SetValue(novoObjeto, field.GetValue(original));
         }
+
+        public static CustomSpriteAnimator AddAnimatorToSprite<T>(this SpriteRenderer renderer) where T : CustomSpriteAnimator
+        {
+            var animator = renderer.gameObject.AddComponent<T>();
+            animator.spriteRenderer = renderer;
+            return animator;
+        }
+
+        private static List<string> enums = [];
     }
 }

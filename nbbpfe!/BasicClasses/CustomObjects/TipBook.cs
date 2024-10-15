@@ -3,7 +3,7 @@ using PixelInternalAPI.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace nbppfe.BasicClasses
+namespace nbppfe.BasicClasses.CustomObjects
 {
     public class TipBook : MonoBehaviour, IClickable<int>
     {
@@ -11,7 +11,8 @@ namespace nbppfe.BasicClasses
         {
         }
 
-        public void Clicked(int player) {
+        public void Clicked(int player)
+        {
         }
         public void ClickableSighted(int player) { }
         public void ClickableUnsighted(int player) { }
