@@ -7,6 +7,7 @@ using PixelInternalAPI.Extensions;
 using UnityEngine;
 using System.Collections;
 using PixelInternalAPI.Classes;
+using System.Linq;
 
 namespace nbppfe.CustomContent.CustomItems
 {
@@ -18,9 +19,8 @@ namespace nbppfe.CustomContent.CustomItems
             floatingSpr.flipY = true;
             floatingSpr.transform.SetParent(transform);
 
-            var waterGrounded = gameObject.AddComponent<SlipArea>();
-            waterGrounded.audMan = waterGrounded.gameObject.CreatePropagatedAudioManager(22, 75);
-           // glueGrounded.onEnterSound = AssetsLoader.CreateSound("StickyGlue", Paths.GetPath(PathsEnum.Items, "Glue"), "Sfx_StickyGlue", SoundType.Effect, Color.white, 1);
+            var waterGrounded = gameObject.AddComponent<ForceArea>();
+            waterGrounded.audMan = waterGrounded.gameObject.CreatePropagatedAudioManager(45, 105);
             groundedSpr = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("water", Paths.GetPath(PathsEnum.Items, "WaterBucket"), 15), false).AddSpriteHolder(-5 + 0.01f);
             groundedSpr.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
             groundedSpr.transform.SetParent(waterGrounded.transform);
@@ -36,7 +36,9 @@ namespace nbppfe.CustomContent.CustomItems
             transform.position = pm.transform.position;
             transform.forward = pm.GetPlayerCamera().transform.forward;
             entity.Initialize(pm.ec, transform.position);
-            GetComponent<SlipArea>().enabled = false;
+            GetComponent<ForceArea>().audMan = gameObject.GetComponent<AudioManager>();
+            GetComponent<ForceArea>().onEnterSound = Resources.FindObjectsOfTypeAll<SoundObject>().Where(x => x.name.Contains("Nana_Slip")).LastOrDefault();
+            GetComponent<ForceArea>().enabled = false;
             groundedSpr.enabled = false;
             StartCoroutine(Fall());
             return true;
@@ -60,8 +62,8 @@ namespace nbppfe.CustomContent.CustomItems
             }
             moving = false;
             entity.Teleport(pm.ec.CellFromPosition(transform.position).FloorWorldPosition);
-            GetComponent<SlipArea>().enabled = true;
-            GetComponent<SlipArea>().force = new Force(transform.forward, 10f, 25f, 5f);
+            GetComponent<ForceArea>().enabled = true;
+            GetComponent<ForceArea>().preEnter = OnEnter;
             groundedSpr.enabled = true;
             floatingSpr.enabled = false;
             yield break;
@@ -75,6 +77,9 @@ namespace nbppfe.CustomContent.CustomItems
                 entity.SetFrozen(true);
         }
 
+        public void OnEnter() =>
+            GetComponent<ForceArea>().force = new Force(GetComponent<ForceArea>().col.transform.forward, 75f, -42f);
+        
 
         public SpriteRenderer groundedSpr;
         public SpriteRenderer floatingSpr;

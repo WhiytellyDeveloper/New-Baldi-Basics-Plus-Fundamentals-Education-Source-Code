@@ -7,6 +7,7 @@ namespace nbbpfe.Enums
         GenericHammer,
         Baseball,
         Soda,
+        DietSoda,
         Coffe,
         CoffeAndSugar,
         SweepWhistle,
@@ -38,6 +39,7 @@ namespace nbbpfe.Enums
         SupernaturalPudding,
         PurpleVisonPad, //NPCs
         RedVisionPad, //Elevators
-        OrangeVisionPad //Notebooks and Items
+        OrangeVisionPad, //Notebooks and Items
+        Umbrella
     }
 }

@@ -6,6 +6,7 @@ using MTM101BaldAPI.Registers;
 using nbbpfe.CustomData;
 using nbbpfe.Enums;
 using nbppfe.CustomContent.CustomItems;
+using nbppfe.CustomContent.CustomItems.ItemTypes;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI;
 using PixelInternalAPI.Extensions;
@@ -35,8 +36,12 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [55, 47, 62, 70, 25]);
 
             LoadItem<ITM_Soda>("Soda", CustomItemsEnum.Soda)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 60, 50, 70, 55])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 50, 40, 30, 35])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 20, 10, 50]);
+
+            LoadItem<ITM_Soda>("DietSoda", CustomItemsEnum.DietSoda, true)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [53, 30, 50, 60, 70])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 15, 10, 5, 25]);
 
             LoadItem<ITM_CoffeAndSugar>("CoffeAndSugar", CustomItemsEnum.CoffeAndSugar)
             .MakeItWeightedItem(["F2", "F3", "F4", "END"], [20, 30, 40, 55])
@@ -101,8 +106,8 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 45, 20, 50]);
 
             LoadItem<ITM_Magnet>("Magnet", CustomItemsEnum.Magnet)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 75, 40, 30, 80])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 20, 65, 50, 75])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 32, 30, 80])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [76, 20, 65, 50, 75])
             .MakeItPartyItem(162)
             .MakeItFieldTripItem(85);
 
@@ -113,7 +118,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItFieldTripItem(85);
 
             LoadItem<ITM_BoxPortal>("BoxPortal", CustomItemsEnum.BoxPortal)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [35, 45, 53, 44])
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 55, 62, 54])
             .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 50, 60, 52])
             .MakeItPartyItem(130)
             .MakeItFieldTripItem(60);
@@ -127,7 +132,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_Box>("Box", CustomItemsEnum.Box)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 75, 30, 43, 62])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 62, 22, 70, 62])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 52, 22, 57, 62])
             .MakeItFieldTripItem(55);
 
             LoadItem<ITM_SupernaturalPudding>("Pudding", CustomItemsEnum.SupernaturalPudding)
@@ -158,16 +163,19 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 50, 55, 60])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15, 20, 25, 30])
             .MakeItFieldTripItem(45);
-
-            /*
+       
             LoadItem<ITM_WaterBucket>("WaterBucket", CustomItemsEnum.WaterBucket)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45754670, 45, 50, 55, 60])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15465475, 20, 25, 30])
-            .MakeItFieldTripItem(45);
-            */
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 60, 53, 25, 42])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 52, 48, 32, 70])
+            .MakeItFieldTripItem(65);
+
+            LoadItem<ITM_Umbrella>("Umbrella", CustomItemsEnum.Umbrella)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 70, 30, 40, 34])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 75, 35, 45, 55])
+            .MakeItFieldTripItem(46);
         }
 
-        public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum) where T : Item
+        public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum, bool diet = false) where T : Item
         {
             string json = File.ReadAllText(Paths.GetPath(PathsEnum.Items, [path, "ItemData.data"]));
             FileItemData item = JsonUtility.FromJson<FileItemData>(json);
@@ -203,6 +211,8 @@ namespace nbbpfe.FundamentalsManager.Loaders
             itemBuilder.SetShopPrice(item.price);
             itemBuilder.SetGeneratorCost(item.cost);
             ItemObject itemObj = itemBuilder.SetItemComponent<T>().Build();
+
+            if (itemObj.item.GetComponent<DietItemVariation>() != null) itemObj.item.GetComponent<DietItemVariation>().diet = diet;
 
             if (itemObj.item.GetComponent<IItemPrefab>() != null) itemObj.item.GetComponent<IItemPrefab>().Setup();
 

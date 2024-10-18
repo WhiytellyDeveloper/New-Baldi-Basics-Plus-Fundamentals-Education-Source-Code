@@ -6,10 +6,11 @@ using UnityEngine;
 using System.Collections;
 using nbppfe.FundamentalSystems;
 using nbppfe.Extensions;
+using nbppfe.CustomContent.CustomItems.ItemTypes;
 
 namespace nbppfe.CustomContent.CustomItems
 {
-    public class ITM_Soda : Item, IItemPrefab
+    public class ITM_Soda : DietItemVariation, IItemPrefab
     {
         public void Setup()
         {
@@ -20,6 +21,13 @@ namespace nbppfe.CustomContent.CustomItems
             gameObject.layer = LayerStorage.standardEntities;
             splashSound = AssetsLoader.CreateSound("Soda_open", Paths.GetPath(PathsEnum.Items, "Soda"), "", SoundType.Effect, Color.white, 1);
             trashSound = AssetsLoader.CreateSound("Soda_end", Paths.GetPath(PathsEnum.Items, "Soda"), "", SoundType.Effect, Color.white, 1);
+
+            if (diet)
+            {
+                spr.sprite = AssetsLoader.CreateSprite("DietSodaSprite", Paths.GetPath(PathsEnum.Items, "DietSoda"), 12);
+                speedModifier = new MovementModifier(Vector3.zero, 1.45f);
+                lenghtMaxCount = 3;
+            }
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,7 +40,7 @@ namespace nbppfe.CustomContent.CustomItems
             entity.Initialize(pm.ec, transform.position);
             pm.Am.moveMods.Add(speedModifier);
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(splashSound);
-            StartCoroutine(Fade(0.5f, 4f));
+            StartCoroutine(Fade(1.5f, 1f));
             return true;
         }
 
@@ -66,7 +74,8 @@ namespace nbppfe.CustomContent.CustomItems
         public SpriteRenderer spr;
         public SoundObject splashSound;
         public SoundObject trashSound;
-        public MovementModifier speedModifier = new MovementModifier(Vector3.zero, 2.1f);
+        public MovementModifier speedModifier = new MovementModifier(Vector3.zero, 3f);
+        public int lenghtMaxCount = 1;
         public Cooldown cooldown = new Cooldown(25, 0);
     }
 }

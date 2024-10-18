@@ -14,6 +14,7 @@ using nbppfe.BasicClasses.Functions;
 using PlusLevelLoader;
 using nbppfe.Enums;
 using nbppfe.Extensions;
+using MTM101BaldAPI.Reflection;
 
 namespace nbbpfe.FundamentalsManager.Loaders
 {
@@ -38,6 +39,13 @@ namespace nbbpfe.FundamentalsManager.Loaders
                  Color.black,
                  Resources.FindObjectsOfTypeAll<StandardDoorMats>().Last()
              ));
+
+            var cheapContainer = new GameObject("CheapStoreContainer").AddComponent<RoomFunctionContainer>();
+            cheapContainer.ReflectionSetVariable("functions", new List<RoomFunction>());
+            cheapContainer.AddFunction(cheapContainer.gameObject.AddComponent<CheapShopFunction>());
+            cheapContainer.gameObject.ConvertToPrefab(true);
+            PlusLevelLoaderPlugin.Instance.roomSettings["CheapStore"].container = cheapContainer;
+
 
             PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapWall", AssetsLoader.CreateTexture("CheapStoreWall", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
             PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapFloor", AssetsLoader.CreateTexture("CheapStoreFloor", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));

@@ -2,18 +2,15 @@
 
 namespace nbppfe.FundamentalSystems
 {
-    public class SlipArea : MonoBehaviour, IEntityTrigger
+    public class StickyArea : MonoBehaviour, IEntityTrigger
     {
         public void EntityTriggerEnter(Collider other)
         {
-            if (other.CompareTag("NPC") || other.CompareTag("Player") && enabled && !touched)
+            if (other.CompareTag("NPC") && other.GetComponent<Entity>().Grounded && enabled || other.CompareTag("Player") && other.GetComponent<Entity>().Grounded && enabled)
             {
                 if (audMan != null && onEnterSound != null)
                     audMan.PlaySingle(onEnterSound);
-                Debug.Log("Slip");
-                touched = true;
-                other.GetComponent<Entity>().Teleport(other.GetComponent<Entity>().CurrentRoom.ec.CellFromPosition(other.transform.position).FloorWorldPosition);
-                other.GetComponent<Entity>().AddForce(force);
+                other.GetComponent<ActivityModifier>().moveMods.Add(moveMod);
             }
         }
 
@@ -24,11 +21,12 @@ namespace nbppfe.FundamentalSystems
 
         public void EntityTriggerExit(Collider other)
         {
+            if (other.CompareTag("NPC") || other.CompareTag("Player") && enabled)
+                other.GetComponent<ActivityModifier>().moveMods.Remove(moveMod); 
         }
 
-        public Force force;
+        public MovementModifier moveMod;
         public AudioManager audMan;
         public SoundObject onEnterSound;
-        public bool touched;
     }
 }

@@ -118,7 +118,11 @@
         TheLibrarianHoax,
         YouThoughtBot,
         BSODOTRON,
-        GlobeTheGlobe
+        GlobeTheGlobe,
+        Slimely,
+        Clouder,
+        Harry,
+
     }
 }
 

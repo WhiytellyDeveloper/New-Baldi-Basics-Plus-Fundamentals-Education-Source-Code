@@ -22,14 +22,16 @@ namespace nbppfe.CustomContent.CustomItems
             cooldown.endAction = OnCooldownEnd;
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(usedSound);
             npcShoveld = npc;
-            force = new Force(-pm.GetPlayerCamera().transform.forward, 75f, 45f);
-            npc.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
+            force = new Force(-pm.GetPlayerCamera().transform.forward, 75f, -45f);
             npc.Navigator.Am.moveMods.Add(movMod);
             npc.Navigator.Entity.AddForce(force);
         }
 
-        private void Update() =>
+        private void Update()
+        {
+            npcShoveld.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
             cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);
+        }
         
         private void OnCooldownEnd()
         {

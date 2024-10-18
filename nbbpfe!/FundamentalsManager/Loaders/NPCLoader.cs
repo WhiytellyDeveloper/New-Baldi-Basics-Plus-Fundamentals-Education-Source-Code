@@ -74,12 +74,21 @@ namespace nbppfe.FundamentalsManager.Loaders
             */
 
             NPC emmilyGutter = new NPCBuilder<EmillyGutter>(BasePlugin.Instance.Info)
-            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Faculty])
+            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#00FF49", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Hall])
             .AddLooker().SetMaxSightDistance(80)
+            .IgnoreBelts()
             .AddPotentialRoomAsset(AssetsLoader.Get<RoomAsset>("EmellyGutterFacutlyRoom1"), 100)
             .SetMinMaxAudioDistance(45, 100)
             .Build(-1.705f, AssetsLoader.SetHexaColor("#A36508"), "EmillyGutter_0")
             .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [75, 45, 20, 54]);
+
+            NPC Slimely = new NPCBuilder<Slimely>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "Slimely", npcEnum: CustomNPCsEnum.Slimely, hexaCode: "#A36508", spriteSheetPrefix: "", debug: true, categorys: [RoomCategory.Hall])
+            .IgnoreBelts()
+            .SetMinMaxAudioDistance(100, 145)
+            .Build(-2.18f, AssetsLoader.SetHexaColor("#A36508"), "Slimely_0")
+            .MakeItForcedNPC(["F1", "END"]);
+
         }
     }
 
