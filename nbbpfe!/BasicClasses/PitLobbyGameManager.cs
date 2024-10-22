@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using nbppfe.BasicClasses.CustomObjects;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +64,7 @@ namespace nbppfe.BasicClasses
 
         public override void LoadNextLevel()
         {
-            base.PrepareToLoad();
+            PrepareToLoad();
             if (Singleton<ElevatorScreen>.Instance != null)
             {
                 elevatorScreen = Singleton<ElevatorScreen>.Instance;
@@ -72,7 +72,7 @@ namespace nbppfe.BasicClasses
                 elevatorScreen.OnLoadReady += base.LoadNextLevel;
                 return;
             }
-            elevatorScreen = Object.Instantiate<ElevatorScreen>(elevatorScreenPre);
+            elevatorScreen = Instantiate(elevatorScreenPre);
             elevatorScreen.OnLoadReady += base.LoadNextLevel;
             elevatorScreen.Initialize();
 

@@ -1,6 +1,6 @@
 ﻿using MTM101BaldAPI.PlusExtensions;
-using nbbpfe.FundamentalsManager;
 using MTM101BaldAPI.Components;
+using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 
 namespace nbppfe.CustomContent.CustomItems
@@ -20,7 +20,7 @@ namespace nbppfe.CustomContent.CustomItems
 
         private void Update() =>
             cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);
-        
+
 
         public void EffectsEnd()
         {
@@ -29,7 +29,7 @@ namespace nbppfe.CustomContent.CustomItems
             Destroy(gameObject);
         }
 
-        public Cooldown cooldown = new Cooldown(30, 0); 
+        public Cooldown cooldown = new Cooldown(30, 0);
         public ValueModifier staminaDrop = new ValueModifier(0.2f), staminaRise = new ValueModifier(1.75f);
     }
 }

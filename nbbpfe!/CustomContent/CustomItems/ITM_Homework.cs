@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using PixelInternalAPI.Extensions;
 using System.Collections;
 using UnityEngine;

@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using System.Linq;

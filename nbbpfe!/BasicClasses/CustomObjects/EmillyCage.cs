@@ -12,10 +12,10 @@ namespace nbppfe.BasicClasses.CustomObjects
             owner = newOwner;
 
         public void Open() =>
-            StartCoroutine(AnimateBars(Vector3.one, new Vector3(0, 7.5f, 0), 0.05f, open));    
+            StartCoroutine(AnimateBars(Vector3.one, new Vector3(0, 7.5f, 0), 0.05f, open));
 
         public void Close() =>
-            StartCoroutine(AnimateBars(new Vector3(1, 10, 1), new Vector3(0, 3f, 0), 0.05f, close));   
+            StartCoroutine(AnimateBars(new Vector3(1, 10, 1), new Vector3(0, 3f, 0), 0.05f, close));
 
         private IEnumerator AnimateBars(Vector3 targetScale, Vector3 targetPositionOffset, float duration, SoundObject sound)
         {

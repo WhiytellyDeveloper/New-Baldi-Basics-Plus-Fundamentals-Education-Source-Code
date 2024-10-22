@@ -36,11 +36,11 @@ namespace nbppfe.CustomContent.CustomItems.ItemTypes
                 guiltSet = true;
 
                 if (destroyOnUse)
-                    Destroy(base.gameObject);
+                    Destroy(gameObject);
             });
 
             if (!guiltSet && destroyOnUse)
-                Destroy(base.gameObject);
+                Destroy(gameObject);
 
             return guiltSet && returnTrue;
         }

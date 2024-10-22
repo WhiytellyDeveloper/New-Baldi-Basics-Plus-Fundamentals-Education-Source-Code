@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using nbbpfe.FundamentalsManager;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Classes;
 using PixelInternalAPI.Extensions;
@@ -10,7 +10,8 @@ namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Box : Item, IItemPrefab, IEntityTrigger, IClickable<int>
     {
-        public void Setup() {
+        public void Setup()
+        {
             closed = AssetsLoader.CreateSprite("Box", Paths.GetPath(PathsEnum.Items, "Box"), 100);
             open = AssetsLoader.CreateSprite("Box_Open", Paths.GetPath(PathsEnum.Items, "Box"), 100);
             renderer = ObjectCreationExtensions.CreateSpriteBillboard(open);
@@ -38,7 +39,7 @@ namespace nbppfe.CustomContent.CustomItems
 
         private void Update() =>
             entity.UpdateInternalMovement(direction * 45 * pm.ec.EnvironmentTimeScale);
-        
+
         private IEnumerator ThrowAnim()
         {
             inAnimation = true;

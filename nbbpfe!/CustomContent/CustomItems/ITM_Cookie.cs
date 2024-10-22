@@ -1,7 +1,7 @@
 ﻿using MTM101BaldAPI.Registers;
-using nbbpfe.Enums;
-using nbbpfe.FundamentalsManager;
+using nbppfe.Enums;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Extensions;
 using System;
@@ -22,7 +22,7 @@ namespace nbppfe.CustomContent.CustomItems
             usedItem.item = usedItem.item.DuplicatePrefab();
             usedItem.item.GetComponent<ITM_Cookie>().usedItem = null;
             this.usedItem = usedItem;
-            CustomItemsEnum.Cookie.ToItem().itemSpriteLarge = AssetsLoader.CreateSprite("Cookie_IconLarge", Paths.GetPath(PathsEnum.Items, "Cookie") , 50);
+            CustomItemsEnum.Cookie.ToItem().itemSpriteLarge = AssetsLoader.CreateSprite("Cookie_IconLarge", Paths.GetPath(PathsEnum.Items, "Cookie"), 50);
             CustomItemsEnum.Cookie.ToItem().itemSpriteSmall = AssetsLoader.CreateSprite("Cookie_IconSmall", Paths.GetPath(PathsEnum.Items, "Cookie"), 1);
         }
 

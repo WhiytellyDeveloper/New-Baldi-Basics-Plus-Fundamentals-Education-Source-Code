@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace nbbpfe.FundamentalsManager
+namespace nbppfe.FundamentalsManager
 {
     public static class AssetsLoader
     {
@@ -15,7 +15,7 @@ namespace nbbpfe.FundamentalsManager
                 return assetMan.Get<Texture2D>(textureName);
 
             Texture2D texture = AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine("Textures", folder, textureName + ".png"));
-            assetMan.Add<Texture2D>(textureName, texture);
+            assetMan.Add(textureName, texture);
             return texture;
         }
 
@@ -24,14 +24,14 @@ namespace nbbpfe.FundamentalsManager
             Texture2D[] textures = AssetLoader.TexturesFromMod(BasePlugin.Instance, folder, Path.Combine("Textures"));
 
             foreach (Texture2D tex in textures)
-                assetMan.Add<Texture2D>(Path.GetFileNameWithoutExtension(tex.name), tex);
+                assetMan.Add(Path.GetFileNameWithoutExtension(tex.name), tex);
             return textures;
         }
 
         public static Sprite CreateSprite(string spriteName, string folder, int pixelPerUnit)
         {
             Sprite sprite = AssetLoader.SpriteFromTexture2D(AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine("Textures", folder, spriteName + ".png")), pixelPerUnit);
-            assetMan.Add<Sprite>(spriteName, sprite);
+            assetMan.Add(spriteName, sprite);
             return sprite;
         }
 
@@ -49,7 +49,7 @@ namespace nbbpfe.FundamentalsManager
                     sprites[i].name = Path.GetFileNameWithoutExtension(files[i]);
 
                 if (addToAssetMan)
-                    AssetsLoader.assetMan.AddRange<Sprite>(sprites);
+                    assetMan.AddRange(sprites);
             }
             return sprites;
         }
@@ -65,7 +65,7 @@ namespace nbbpfe.FundamentalsManager
             }
 
             sound.volumeMultiplier = vauleMultiplier;
-            assetMan.Add<SoundObject>(soundName, sound);
+            assetMan.Add(soundName, sound);
             return sound;
         }
 
@@ -76,11 +76,11 @@ namespace nbbpfe.FundamentalsManager
             return _color;
         }
 
-        public static string LoadMidi(string midiName)
+        public static string LoadMidi(string midiName, string id)
         {
             string midi = null;
-            midi = AssetLoader.MidiFromMod(midiName, BasePlugin.Instance, Path.Combine("Midi", midiName + ".midi"));
-            assetMan.Add<string>(midiName, midi);
+            midi = AssetLoader.MidiFromFile(midiName, id);
+            assetMan.Add(midiName, midi);
             return midi;
         }
 

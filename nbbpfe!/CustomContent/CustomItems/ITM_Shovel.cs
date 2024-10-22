@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using nbppfe.CustomContent.CustomItems.ItemTypes;
 using nbppfe.Extensions;
 using nbppfe.FundamentalSystems;
@@ -11,9 +11,9 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup() =>
            usedSound = AssetsLoader.CreateSound("ShovelSound", Paths.GetPath(PathsEnum.Items, "Shovel"), "Sfx_Bang", SoundType.Effect, Color.white, 1);
-        
 
-//---------------------------------------------------------------------------------------------------
+
+        //---------------------------------------------------------------------------------------------------
 
         public override void OnUse(PlayerManager pm, NPC npc)
         {
@@ -32,7 +32,7 @@ namespace nbppfe.CustomContent.CustomItems
             npcShoveld.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
             cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);
         }
-        
+
         private void OnCooldownEnd()
         {
             npcShoveld.Navigator.Entity.RemoveForce(force);

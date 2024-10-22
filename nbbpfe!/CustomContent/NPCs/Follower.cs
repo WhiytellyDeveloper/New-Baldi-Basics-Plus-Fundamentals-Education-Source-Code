@@ -1,8 +1,8 @@
-﻿using nbppfe.Extensions;
-using nbppfe.PrefabSystem;
-using UnityEngine;
-using nbbpfe.FundamentalsManager;
+﻿using UnityEngine;
 using System.Collections;
+using nbppfe.PrefabSystem;
+using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 
 namespace nbppfe.CustomContent.NPCs
 {
@@ -56,9 +56,10 @@ namespace nbppfe.CustomContent.NPCs
         public Fog fog;
     }
 
-    public class Follower_StateBase : NpcState {
+    public class Follower_StateBase : NpcState
+    {
         protected Follower fol;
-        public Follower_StateBase(Follower follower) : base(follower) { fol = follower; }      
+        public Follower_StateBase(Follower follower) : base(follower) { fol = follower; }
     }
 
     public class Follower_Wandering : Follower_StateBase
@@ -105,7 +106,7 @@ namespace nbppfe.CustomContent.NPCs
             base.OnStateTriggerEnter(other);
 
             if (other.gameObject == pm.gameObject)
-                fol.behaviorStateMachine.ChangeState(new Follower_Following(fol, pm));         
+                fol.behaviorStateMachine.ChangeState(new Follower_Following(fol, pm));
         }
     }
 
@@ -141,8 +142,8 @@ namespace nbppfe.CustomContent.NPCs
         {
             base.OnStateTriggerEnter(other);
 
-            if (other.gameObject == pm.gameObject)   
-                fol.Navigator.Entity.SetFrozen(true);         
+            if (other.gameObject == pm.gameObject)
+                fol.Navigator.Entity.SetFrozen(true);
         }
 
         public override void OnStateTriggerExit(Collider other)
@@ -150,7 +151,7 @@ namespace nbppfe.CustomContent.NPCs
             base.OnStateTriggerExit(other);
 
             if (other.gameObject == pm.gameObject)
-                fol.Navigator.Entity.SetFrozen(false);        
+                fol.Navigator.Entity.SetFrozen(false);
         }
     }
 }

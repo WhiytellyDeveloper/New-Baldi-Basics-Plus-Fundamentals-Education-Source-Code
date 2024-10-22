@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace nbbpfe.CustomData
+namespace nbppfe.CustomData
 {
     [Serializable]
     public class FileItemData

@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using System.Collections;
@@ -87,7 +87,7 @@ namespace nbppfe.CustomContent.NPCs
 
     public class Kawa_Wandering : Kawa_StateBase
     {
-        public Kawa_Wandering(Kawa kawa) : base (kawa) { }
+        public Kawa_Wandering(Kawa kawa) : base(kawa) { }
 
         public override void Initialize()
         {

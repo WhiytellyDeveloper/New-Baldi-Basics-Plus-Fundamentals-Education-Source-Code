@@ -2,7 +2,7 @@
 using HarmonyLib;
 using MTM101BaldAPI;
 using MTM101BaldAPI.AssetTools;
-using nbbpfe.FundamentalsManager;
+using nbppfe.FundamentalsManager;
 using PlusLevelFormat;
 using PlusLevelLoader;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace nbppfe.ModsCompabilitys
         [HarmonyPostfix]
         static void InitializeStuff(PlusLevelEditor __instance)
         {
-            __instance.toolCats.Find((ToolCategory x) => x.name == "halls").tools.AddRange(rooms);
+            __instance.toolCats.Find((x) => x.name == "halls").tools.AddRange(rooms);
             __instance.toolCats.Find(x => x.name == "objects").tools.AddRange(objects);
         }
 
@@ -46,13 +46,13 @@ namespace nbppfe.ModsCompabilitys
 
         static void AddRotatingObject(string name, GameObject obj, Vector3 offset)
         {
-            objects.Add(new (name));
+            objects.Add(new(name));
             EditorObjectType objConverted = EditorObjectType.CreateFromGameObject<EditorPrefab, PrefabLocation>(name, obj, offset, false);
             BaldiLevelEditorPlugin.editorObjects.Add(objConverted);
         }
 
         public static void AddRoom(string room) =>
-            rooms.Add(new (room));
+            rooms.Add(new(room));
 
         public static List<CustomObjectEditor> objects = [];
         public static List<CustomRoomEditor> rooms = [];

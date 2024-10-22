@@ -15,6 +15,6 @@ namespace nbppfe.Patches
         {
             if (__instance.gameObject.GetComponent<INPCPrefab>() != null)
                 __instance.gameObject.GetComponent<INPCPrefab>().PostLoading();
-        }       
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace nbppfe.Patches
         [HarmonyPrefix]
         internal static void OnCollect(CoreGameManager __instance) =>
             __instance.gameObject.GetOrAddComponent<FundamentalsGameController>();
-        
+
     }
 
     [HarmonyPatch(typeof(GameInitializer), "Initialize")]
@@ -26,10 +26,17 @@ namespace nbppfe.Patches
             if (!initialized && Singleton<CoreGameManager>.Instance.sceneObject.levelTitle == "F1")
             {
                 initialized = true;
-                Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.lobbyScene;
-                GameObject.FindObjectOfType<ElevatorScreen>().UpdateFloorDisplay();
+
+                if (!BasePlugin.Instance.configs.disablelobby.Value)
+                    Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.lobbyScene;
+                else if (!BasePlugin.Instance.configs.disablef0.Value && BasePlugin.Instance.configs.disablelobby.Value)
+                    Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.F0;
+                else if (BasePlugin.Instance.configs.disablef0.Value && BasePlugin.Instance.configs.disablelobby.Value)
+                    Debug.Log("Nothing is executed here");
+
+                Object.FindObjectOfType<ElevatorScreen>().UpdateFloorDisplay();
             }
-            
+
         }
     }
 
@@ -37,7 +44,8 @@ namespace nbppfe.Patches
     internal static class ImportantPatch
     {
         [HarmonyPrefix]
-        internal static void Placeholder() {
+        internal static void Placeholder()
+        {
             PitLobbyPatch.initialized = false;
             Singleton<FundamentalsGameController>.Instance.OnExit();
         }
@@ -47,7 +55,8 @@ namespace nbppfe.Patches
     internal static class ImportantPatch2
     {
         [HarmonyPrefix]
-        internal static void Placeholder() { 
+        internal static void Placeholder()
+        {
             Singleton<FundamentalsGameController>.Instance.OnReloadLevel();
         }
     }
@@ -56,8 +65,9 @@ namespace nbppfe.Patches
     internal static class NotebookPatch
     {
         [HarmonyPrefix]
-        internal static void OnCollect(int count) {
-            Singleton<FundamentalsGameController>.Instance.noteboooks =+ count;
+        internal static void OnCollect(int count)
+        {
+            Singleton<FundamentalsGameController>.Instance.noteboooks = +count;
         }
     }
 
@@ -65,7 +75,8 @@ namespace nbppfe.Patches
     internal static class NotebooksPatch
     {
         [HarmonyPrefix]
-        internal static void OnCollect() {
+        internal static void OnCollect()
+        {
             Singleton<FundamentalsGameController>.Instance.AddNotebooks();
         }
     }

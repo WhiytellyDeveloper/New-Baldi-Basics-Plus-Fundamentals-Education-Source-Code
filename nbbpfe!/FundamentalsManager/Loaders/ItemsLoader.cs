@@ -3,10 +3,11 @@ using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI.ObjectCreation;
 using MTM101BaldAPI.Reflection;
 using MTM101BaldAPI.Registers;
-using nbbpfe.CustomData;
-using nbbpfe.Enums;
 using nbppfe.CustomContent.CustomItems;
 using nbppfe.CustomContent.CustomItems.ItemTypes;
+using nbppfe.CustomData;
+using nbppfe.Enums;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI;
 using PixelInternalAPI.Extensions;
@@ -14,9 +15,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
+using static nbppfe.FundamentalsManager.FundamentalLoaderManager;
 
-namespace nbbpfe.FundamentalsManager.Loaders
+namespace nbppfe.FundamentalsManager.Loaders
 {
     public static partial class ItemsLoader
     {
@@ -122,13 +123,13 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 50, 60, 52])
             .MakeItPartyItem(130)
             .MakeItFieldTripItem(60);
-  
-             LoadItem<ITM_Coffe>("Coffe", CustomItemsEnum.Coffe)
-            .MakeItWeightedItem(["F3", "F4", "END"], [15, 22, 40])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [25, 75, 30, 42])
-            .MakeItMysteryItem(95)
-            .MakeItPartyItem(185)
-            .MakeItGuaranteedFieldTripItem();
+
+            LoadItem<ITM_Coffe>("Coffe", CustomItemsEnum.Coffe)
+           .MakeItWeightedItem(["F3", "F4", "END"], [15, 22, 20])
+           .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [25, 75, 30, 42])
+           .MakeItMysteryItem(95)
+           .MakeItPartyItem(185)
+           .MakeItGuaranteedFieldTripItem();
 
             LoadItem<ITM_Box>("Box", CustomItemsEnum.Box)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 75, 30, 43, 62])
@@ -163,7 +164,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 50, 55, 60])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15, 20, 25, 30])
             .MakeItFieldTripItem(45);
-       
+
             LoadItem<ITM_WaterBucket>("WaterBucket", CustomItemsEnum.WaterBucket)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 60, 53, 25, 42])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 52, 48, 32, 70])
@@ -231,7 +232,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
             {
                 if (floors.Contains(floor.Floor))
                 {
-                    floor.items.Add(new WeightedItemObject { selection = item, weight = weights[weight] });
+                    floor.items.Add(new WeightedItemObject { selection = item, weight = Mathf.FloorToInt(weights[weight] * 0.75f) });
                     weight++;
                 }
             }
@@ -245,7 +246,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
             {
                 if (floors.Contains(floor.Floor))
                 {
-                    floor.shopItems.Add(new WeightedItemObject { selection = item, weight = weights[weight] });
+                    floor.shopItems.Add(new WeightedItemObject { selection = item, weight = Mathf.FloorToInt(weights[weight] * 0.75f)  });
                     weight++;
                 }
             }

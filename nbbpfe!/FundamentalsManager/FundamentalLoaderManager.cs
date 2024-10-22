@@ -1,11 +1,10 @@
 ﻿using MTM101BaldAPI.Reflection;
-using nbbpfe.FundamentalsManager.Loaders;
 using nbppfe.Extensions;
 using nbppfe.FundamentalsManager.Loaders;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace nbbpfe.FundamentalsManager
+namespace nbppfe.FundamentalsManager
 {
     public static class FundamentalLoaderManager
     {
@@ -19,16 +18,29 @@ namespace nbbpfe.FundamentalsManager
             CustomObjectsLoader.Load();
             RoomsLoader.LoadRooms();
             NPCLoader.SetupNPCs();
+            EventsLoader.Setup();
             SceneLoader.Load();
         }
 
-        public static List<FloorData> floors = new List<FloorData>{
+        public static FloorData GetFloorByName(string name)
+        {
+            foreach (FloorData data in floors)
+            {
+                if (data.Floor.Contains(name))
+                    return data;
+            }
+            return null;
+        }
+
+        public static List<FloorData> floors = [
+            new FloorData("F0"),
             new FloorData("F1"),
             new FloorData("F2"),
             new FloorData("F3"),
             new FloorData("F4"),
+            new FloorData("F5"),
             new FloorData("END")
-        };
+        ];
 
         public static SoundObject GenericThrowSound;
         public static SoundObject GenericDrinkingSound;
@@ -63,6 +75,10 @@ namespace nbbpfe.FundamentalsManager
 
             public List<WeightedNPC> NPCs = [];
             public List<NPC> forcedNPCs = [];
+
+            public List<WeightedRandomEvent> events = [];
+
+            public List<RoomGroup> roomGroups = [];
         }
     }
 

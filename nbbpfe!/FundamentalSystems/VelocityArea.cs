@@ -22,7 +22,7 @@ namespace nbppfe.FundamentalSystems
         public void EntityTriggerExit(Collider other)
         {
             if (other.CompareTag("NPC") || other.CompareTag("Player") && enabled)
-                other.GetComponent<ActivityModifier>().moveMods.Remove(moveMod); 
+                other.GetComponent<ActivityModifier>().moveMods.Remove(moveMod);
         }
 
         public MovementModifier moveMod;

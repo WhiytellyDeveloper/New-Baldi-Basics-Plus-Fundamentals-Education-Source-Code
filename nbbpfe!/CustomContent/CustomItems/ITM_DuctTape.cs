@@ -7,9 +7,9 @@ namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_DuctTape : Item, IItemPrefab
     {
-        public void Setup() =>   
+        public void Setup() =>
             slapSound = Resources.FindObjectsOfTypeAll<SoundObject>().Where(x => x.name == "Slap").First();
-        
+
 
         //-------------------------------------------------------------------------------
 

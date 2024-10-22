@@ -1,19 +1,20 @@
-﻿using nbppfe.Extensions;
-using nbppfe.FundamentalsManager.Loaders;
-using nbppfe.FundamentalSystems;
-using nbppfe.PrefabSystem;
-using nbppfe.Enums;
-using UnityEngine;
+﻿using UnityEngine;
 using MTM101BaldAPI.Components;
 using PixelInternalAPI.Extensions;
 using System.Linq;
+using nbppfe.PrefabSystem;
+using nbppfe.Extensions;
+using nbppfe.FundamentalSystems;
+using nbppfe.Enums;
+using nbppfe.FundamentalsManager.Loaders;
 using nbppfe.BasicClasses.CustomObjects;
 
 namespace nbppfe.CustomContent.NPCs
 {
     public class EmillyGutter : NPC, INPCPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             Poster.textData[0].size = new IntVector2(Poster.textData[0].size.x + 35, Poster.textData[0].size.z);
             Poster.textData[0].position = new IntVector2(25, 48);
             Poster.textData[1].position = new IntVector2(140, 100);
@@ -25,16 +26,17 @@ namespace nbppfe.CustomContent.NPCs
             audMan = GetComponent<AudioManager>();
         }
 
-        public void PostLoading() {
+        public void PostLoading()
+        {
             cageCooldown.endAction = ToWandering;
             atackedCooldown.endAction = RemoveInPlayerEfects;
 
-            animator.animations.Add("Idle", new(1, [ sprites[0] ]));
-            animator.animations.Add("Start-Scared", new(2, [sprites[7], sprites[1] ]));
-            animator.animations.Add("Scared", new(1, [ sprites[1] ]));
-            animator.animations.Add("Pre-Atack", new( [ sprites[2] ], 0.5f));
-            animator.animations.Add("Running", new(10, [ sprites[3], sprites[4], sprites[5], sprites[4]]));
-            animator.animations.Add("Sleeping", new(1, [ sprites[6] ]));
+            animator.animations.Add("Idle", new(1, [sprites[0]]));
+            animator.animations.Add("Start-Scared", new(2, [sprites[7], sprites[1]]));
+            animator.animations.Add("Scared", new(1, [sprites[1]]));
+            animator.animations.Add("Pre-Atack", new([sprites[2]], 0.5f));
+            animator.animations.Add("Running", new(10, [sprites[3], sprites[4], sprites[5], sprites[4]]));
+            animator.animations.Add("Sleeping", new(1, [sprites[6]]));
         }
 
         //-------------------------------------------------------------------------------------------------------------------------------------
@@ -194,7 +196,7 @@ namespace nbppfe.CustomContent.NPCs
             base.OnStateTriggerEnter(other);
 
             if (other.gameObject == pm.gameObject)
-                emi.AtackPlayer(other);       
+                emi.AtackPlayer(other);
         }
 
         public override void Exit()

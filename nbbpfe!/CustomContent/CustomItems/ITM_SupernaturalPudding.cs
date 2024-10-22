@@ -1,5 +1,4 @@
-﻿
-using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 
 namespace nbppfe.CustomContent.CustomItems
 {

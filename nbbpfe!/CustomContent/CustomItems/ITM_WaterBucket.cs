@@ -1,5 +1,4 @@
-﻿using nbbpfe.Enums;
-using nbbpfe.FundamentalsManager;
+﻿using nbppfe.Enums;
 using nbppfe.Extensions;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
@@ -8,12 +7,14 @@ using UnityEngine;
 using System.Collections;
 using PixelInternalAPI.Classes;
 using System.Linq;
+using nbppfe.FundamentalsManager;
 
 namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_WaterBucket : Item, IItemPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             var sprite = CustomItemsEnum.WaterBucket.ToItem().itemSpriteLarge;
             floatingSpr = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(0, LayerStorage.billboardLayer);
             floatingSpr.flipY = true;
@@ -79,7 +80,7 @@ namespace nbppfe.CustomContent.CustomItems
 
         public void OnEnter() =>
             GetComponent<ForceArea>().force = new Force(GetComponent<ForceArea>().col.transform.forward, 75f, -42f);
-        
+
 
         public SpriteRenderer groundedSpr;
         public SpriteRenderer floatingSpr;

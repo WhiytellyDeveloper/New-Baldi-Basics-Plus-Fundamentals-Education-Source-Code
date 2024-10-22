@@ -1,12 +1,12 @@
 ﻿using nbppfe.PrefabSystem;
 using PixelInternalAPI.Extensions;
-using nbbpfe.FundamentalsManager;
 using PixelInternalAPI.Classes;
 using UnityEngine;
 using System.Collections;
 using nbppfe.FundamentalSystems;
 using nbppfe.Extensions;
 using nbppfe.CustomContent.CustomItems.ItemTypes;
+using nbppfe.FundamentalsManager;
 
 namespace nbppfe.CustomContent.CustomItems
 {
@@ -68,6 +68,7 @@ namespace nbppfe.CustomContent.CustomItems
         {
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(trashSound);
             pm.Am.moveMods.Remove(speedModifier);
+            Destroy(gameObject);
         }
 
         public Entity entity;

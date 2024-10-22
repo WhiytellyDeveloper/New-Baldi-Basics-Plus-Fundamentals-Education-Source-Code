@@ -1,19 +1,19 @@
 ﻿using MTM101BaldAPI.ObjectCreation;
-using nbbpfe.FundamentalsManager;
-using nbppfe.CustomContent.NPCs;
-using nbppfe.CustomData;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using nbppfe.Extensions;
-using nbppfe.Enums;
 using System.Collections.Generic;
 using PixelInternalAPI.Extensions;
 using Newtonsoft.Json;
-using nbppfe.PrefabSystem;
-using static nbbpfe.FundamentalsManager.FundamentalLoaderManager;
-using nbbpfe.FundamentalsManager.Loaders;
+using static nbppfe.FundamentalsManager.FundamentalLoaderManager;
+using nbppfe.FundamentalsManager.Loaders;
 using MTM101BaldAPI;
+using nbppfe.PrefabSystem;
+using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
+using nbppfe.Enums;
+using nbppfe.CustomData;
+using nbppfe.CustomContent.NPCs;
 
 namespace nbppfe.FundamentalsManager.Loaders
 {
@@ -74,21 +74,12 @@ namespace nbppfe.FundamentalsManager.Loaders
             */
 
             NPC emmilyGutter = new NPCBuilder<EmillyGutter>(BasePlugin.Instance.Info)
-            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#00FF49", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Hall])
+            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Faculty])
             .AddLooker().SetMaxSightDistance(80)
-            .IgnoreBelts()
             .AddPotentialRoomAsset(AssetsLoader.Get<RoomAsset>("EmellyGutterFacutlyRoom1"), 100)
             .SetMinMaxAudioDistance(45, 100)
             .Build(-1.705f, AssetsLoader.SetHexaColor("#A36508"), "EmillyGutter_0")
             .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [75, 45, 20, 54]);
-
-            NPC Slimely = new NPCBuilder<Slimely>(BasePlugin.Instance.Info)
-            .SetupAll(npcName: "Slimely", npcEnum: CustomNPCsEnum.Slimely, hexaCode: "#A36508", spriteSheetPrefix: "", debug: true, categorys: [RoomCategory.Hall])
-            .IgnoreBelts()
-            .SetMinMaxAudioDistance(100, 145)
-            .Build(-2.18f, AssetsLoader.SetHexaColor("#A36508"), "Slimely_0")
-            .MakeItForcedNPC(["F1", "END"]);
-
         }
     }
 
@@ -108,7 +99,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             string[] sprites = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.png", SearchOption.AllDirectories);
             Texture2D posterTexture = Resources.FindObjectsOfTypeAll<PosterObject>().Where(x => x.name.Contains("Chk_BaldiSays")).First().baseTexture; //If don't have texture, will be obvius lol
 
-            foreach(string sprite in sprites)
+            foreach (string sprite in sprites)
             {
                 if (sprite.Contains("pri_"))
                     posterTexture = AssetsLoader.CreateTexture(Path.GetFileNameWithoutExtension(sprite), Paths.GetPath(PathsEnum.NPCs, npcName));
@@ -132,7 +123,7 @@ namespace nbppfe.FundamentalsManager.Loaders
                 newTexture.SetPixels(pixels);
                 newTexture.Apply();
                 byte[] pngData = newTexture.EncodeToPNG();
-                System.IO.File.WriteAllBytes(path, pngData);
+                File.WriteAllBytes(path, pngData);
                 Object.DestroyImmediate(newTexture);
             }
 
@@ -157,7 +148,7 @@ namespace nbppfe.FundamentalsManager.Loaders
                                     string debugFolderPath = Path.Combine(Paths.GetPath(PathsEnum.NPCs, npcName), "Debug");
                                     if (!Directory.Exists(debugFolderPath) && debug)
                                         Directory.CreateDirectory(debugFolderPath);
-                                    
+
                                     for (int i = 0; i < newSprites.Length; i++)
                                     {
                                         if (debug)
@@ -219,7 +210,7 @@ namespace nbppfe.FundamentalsManager.Loaders
 
                     SoundObject soundObj = AssetsLoader.CreateSound(soundName, Paths.GetPath(PathsEnum.NPCs, npcName), soundTypeIdentifier, type, AssetsLoader.SetHexaColor(hexaSound), 1);
                     sounds.Add(soundObj);
-                    AssetsLoader.assetMan.Add<SoundObject>(soundName, soundObj);
+                    AssetsLoader.assetMan.Add(soundName, soundObj);
                 }
             }
             NPCLoader.soundsObjects.Add(npcEnum, sounds.ToArray());
@@ -228,8 +219,8 @@ namespace nbppfe.FundamentalsManager.Loaders
 
         public static NPCBuilder<T> SetupAll<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaCode, string spriteSheetPrefix = "", bool debug = false, params RoomCategory[] categorys) where T : NPC
         {
-            builder.SetMetaName(NPCLoaderExtenssion.LoadFile(npcName).pri_namekey);
-            builder.SetName(NPCLoaderExtenssion.LoadFile(npcName).name);
+            builder.SetMetaName(LoadFile(npcName).pri_namekey);
+            builder.SetName(LoadFile(npcName).name);
             builder.SetEnum(npcEnum.ToString());
             builder.SetupPoster(npcName);
             builder.AddSpawnableRoomCategories(categorys);
@@ -247,7 +238,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             npc.Navigator.npc = npc;
             npc.Navigator.ec = npc.ec;
             npc.spriteRenderer[0].transform.localPosition = new Vector3(0, height, 0);
-            npc.spriteRenderer[0].sprite =  AssetsLoader.assetMan.Get<Sprite>(startSprite);
+            npc.spriteRenderer[0].sprite = AssetsLoader.assetMan.Get<Sprite>(startSprite);
             npc.spriteRenderer[0].ResizeCollider(npc.baseTrigger[0]);
             if (npc.GetComponent<INPCPrefab>() != null)
                 npc.GetComponent<INPCPrefab>().Setup();

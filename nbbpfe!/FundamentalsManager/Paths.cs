@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace nbbpfe.FundamentalsManager
+namespace nbppfe.FundamentalsManager
 {
     public static class Paths
     {
@@ -18,9 +18,11 @@ namespace nbbpfe.FundamentalsManager
             paths.Add(PathsEnum.Posters, "Posters");
             paths.Add(PathsEnum.Editor, "Editor");
             paths.Add(PathsEnum.CustomObjects, "CustomObjects");
+            paths.Add(PathsEnum.Events, "Events");
         }
 
-        public static string GetPath(PathsEnum path, params string[] strings) {
+        public static string GetPath(PathsEnum path, params string[] strings)
+        {
             return Path.Combine(AssetLoader.GetModPath(BasePlugin.Instance), paths[path], Path.Combine(strings));
         }
 

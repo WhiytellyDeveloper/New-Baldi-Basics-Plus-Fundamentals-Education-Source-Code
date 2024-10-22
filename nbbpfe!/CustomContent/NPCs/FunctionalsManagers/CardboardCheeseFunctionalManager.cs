@@ -16,7 +16,7 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
             GameObject itemCoverObject = GameObject.Find($"ItemCover_{slot}");
             Image imageComponent = itemCoverObject.GetComponent<Image>();
 
-            int[] selectedSprite = (slot == 0) ? initialSlotSprite : (slot == maxItem) ? endSlotSprite : middleSlotSprite;
+            int[] selectedSprite = slot == 0 ? initialSlotSprite : slot == maxItem ? endSlotSprite : middleSlotSprite;
             if (reverse)
                 StartCoroutine(AnimateEndSlot(imageComponent, selectedSprite, slot, player));
             else
@@ -49,14 +49,15 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
 
 
 
-        public Sprite getSlotSprite(int slot) {
+        public Sprite getSlotSprite(int slot)
+        {
             return Resources.FindObjectsOfTypeAll<Sprite>().Where(x => x.name == $"CardboardCheese_Slot_{slot}").First();
         }
 
         public Sprite getDynamicSlotSprite(int slot, int player)
         {
             int maxItem = Singleton<CoreGameManager>.Instance.GetPlayer(player).itm.maxItem;
-            int index = (slot == 0) ? 0 : (slot == maxItem) ? 2 : 1;
+            int index = slot == 0 ? 0 : slot == maxItem ? 2 : 1;
             return Resources.FindObjectsOfTypeAll<Sprite>().First(x => x.name == $"ItemSlot_Dynamic_{index}");
         }
 

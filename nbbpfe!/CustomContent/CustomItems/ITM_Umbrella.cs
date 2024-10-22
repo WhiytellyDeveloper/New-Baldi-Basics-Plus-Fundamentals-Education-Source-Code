@@ -1,18 +1,19 @@
 ﻿using MTM101BaldAPI.Reflection;
-using nbbpfe.FundamentalsManager;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using UnityEngine;
 
 namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Umbrella : Item, IItemPrefab
-    {   
-        public void Setup() {
+    {
+        public void Setup()
+        {
             umbrellaOpen = AssetsLoader.CreateSound("UmbrellaOpen", Paths.GetPath(PathsEnum.Items, "Umbrella"), "Sfx_UmbrellaOpen", SoundType.Effect, Color.white, 1);
             playerGroundHit = AssetsLoader.CreateSound("UmbrellaImpact", Paths.GetPath(PathsEnum.Items, "Umbrella"), "Sfx_UmbrellaClose", SoundType.Effect, Color.white, 1);
         }
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {

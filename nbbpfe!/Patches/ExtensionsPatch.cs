@@ -10,7 +10,7 @@ namespace nbppfe.Patches
         [HarmonyPostfix]
         internal static void AddExtension(Window __instance) =>
             __instance.gameObject.GetOrAddComponent<WindowExtension>();
-        
+
     }
 
     [HarmonyPatch(typeof(StandardDoor), "Start")]

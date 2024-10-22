@@ -1,5 +1,5 @@
-﻿using nbbpfe.FundamentalsManager;
-using nbppfe.Extensions;
+﻿using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using System.Collections;
@@ -26,7 +26,8 @@ namespace nbppfe.CustomContent.NPCs
             unlookedVoiceline = AssetsLoader.Get<SoundObject>("Dia_Unlooked");
         }
 
-        public void PostLoading() {
+        public void PostLoading()
+        {
             lookingTime = new Cooldown(20, 0);
             cooldown = new Cooldown(30, 0, null, null, false, true);
         }
@@ -59,7 +60,8 @@ namespace nbppfe.CustomContent.NPCs
         public Cooldown cooldown, lookingTime;
     }
 
-    public class DigitalArtist_BaseState : NpcState {
+    public class DigitalArtist_BaseState : NpcState
+    {
         protected DigitalArtist dia;
         public DigitalArtist_BaseState(DigitalArtist npc) : base(npc) { this.npc = npc; dia = npc; }
     }
@@ -159,7 +161,7 @@ namespace nbppfe.CustomContent.NPCs
         {
             base.OnStateTriggerEnter(other);
 
-            if (other.gameObject == pm.gameObject) 
+            if (other.gameObject == pm.gameObject)
             {
                 Singleton<CoreGameManager>.Instance.AddPoints(-25, pm.playerNumber, true);
                 dia.cooldown.Restart();

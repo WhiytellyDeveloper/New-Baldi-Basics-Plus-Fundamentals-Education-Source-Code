@@ -1,5 +1,4 @@
-﻿
-namespace nbbpfe.Enums
+﻿namespace nbppfe.Enums
 {
     public enum CustomItemsEnum
     {

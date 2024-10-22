@@ -1,4 +1,4 @@
-﻿using nbbpfe.Enums;
+﻿using nbppfe.Enums;
 using nbppfe.Extensions;
 using nbppfe.FundamentalSystems;
 using nbppfe.Patches;
@@ -18,7 +18,7 @@ namespace nbppfe.CustomContent.CustomItems
             onMistake = CustomItemsEnum.NoClipController.ToItem().item.GetComponent<ITM_NoClipController>().error;
         }
 
-//-----------------------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
@@ -57,7 +57,7 @@ namespace nbppfe.CustomContent.CustomItems
             if (itemEnum == CustomItemsEnum.OrangeVisionPad)
             {
                 foreach (Pickup item in pm.ec.items)
-                    item.itemSprite.gameObject.layer = LayerMask.NameToLayer("Overlay");         
+                    item.itemSprite.gameObject.layer = LayerMask.NameToLayer("Overlay");
             }
 
             return true;
@@ -66,7 +66,7 @@ namespace nbppfe.CustomContent.CustomItems
         private void Update() =>
           cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);
 
-        
+
 
         public void OnCooldownEnd()
         {

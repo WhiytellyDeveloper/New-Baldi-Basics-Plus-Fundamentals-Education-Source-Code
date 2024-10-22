@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MTM101BaldAPI.Reflection;
+using nbppfe.FundamentalsManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,45 +14,77 @@ namespace nbppfe.BasicClasses.Functions
         {
             var items = Resources.FindObjectsOfTypeAll<ItemObject>();
 
-            foreach(var item in items)
+            foreach (var item in items)
                 originalDescriptions.Add(item, item.descKey);
-            
+
+            audBell = (SoundObject)Resources.FindObjectsOfTypeAll<StoreRoomFunction>().FirstOrDefault().ReflectionGetVariable("audBell");
         }
 
         public override void OnGenerationFinished()
         {
             base.OnGenerationFinished();
+            foreach (Pickup pickup in pickups)
+                TogglePriceDescription(pickup, false);
 
             foreach (Pickup pickup in room.ec.items)
             {
                 if (room.ec.CellFromPosition(pickup.transform.position).room == room)
+                {
+                    pickup.OnItemPurchased += ItemPurchased;
                     pickups.Add(pickup);
+                }
             }
 
+            foreach (MeshRenderer renderers in room.objectObject.GetComponentsInChildren<MeshRenderer>())
+            {
+                if (renderers.name.Contains("Counter"))
+                    renderers.material.mainTexture = AssetsLoader.Get<Texture2D>("CheapStoreCounterAtlas");
+            }
             Restock();
         }
 
         public void Restock()
         {
-            var itemList = Resources.FindObjectsOfTypeAll<SceneObject>().Where(x => x.name.Contains("2")).FirstOrDefault().shopItems;
+            var sceneObject = Singleton<CoreGameManager>.Instance.sceneObject;
+            var itemList = sceneObject != null ? sceneObject.shopItems : null;
 
-            if (Singleton<CoreGameManager>.Instance.sceneObject.storeUsesNextLevelData)
+            if (sceneObject != null && sceneObject.storeUsesNextLevelData)
                 itemList = Singleton<CoreGameManager>.Instance.nextLevel.shopItems;
 
-            if (itemList.Length == 0 || itemList == null)
-                itemList = Resources.FindObjectsOfTypeAll<SceneObject>().Where(x => x.name.Contains("1")).FirstOrDefault().shopItems;
+            if (itemList == null || itemList.Length == 0)
+            {
+                sceneObject = Resources.FindObjectsOfTypeAll<SceneObject>().Where(x => x.name.Contains("3")).FirstOrDefault();
+                itemList = sceneObject != null ? sceneObject.shopItems : null;
+            }
+
+            if (itemList == null || itemList.Length == 0)
+            {
+                Debug.LogWarning("Nenhum item disponível para reabastecer a loja.");
+                return;
+            }
+
+            List<WeightedSelection<ItemObject>> availableItems = itemList
+                .Select(item => new WeightedSelection<ItemObject> { selection = item.selection, weight = item.weight })
+                .ToList();
 
             foreach (Pickup pickup in pickups)
             {
+                if (availableItems.Count == 0)
+                    break;
+
+                ItemObject selectedItem = WeightedSelection<ItemObject>.ControlledRandomSelectionList(availableItems, new System.Random());
+
                 pickup.icon.spriteRenderer.enabled = false;
-                pickup.AssignItem(WeightedSelection<ItemObject>.RandomSelection(itemList));
+                pickup.AssignItem(selectedItem);
                 pickup.free = false;
-                pickup.price = ((int)(pickup.item.price / UnityEngine.Random.Range(2, 4.2f)));
+                pickup.price = ((int)(pickup.price /2.7f));
                 pickup.showDescription = true;
                 TogglePriceDescription(pickup, true);
+                availableItems.RemoveAll(w => w.selection == selectedItem);
             }
-
         }
+
+
 
         private void TogglePriceDescription(Pickup pickup, bool showPrice)
         {
@@ -64,14 +98,61 @@ namespace nbppfe.BasicClasses.Functions
                 pickup.item.descKey = originalDescriptions[pickup.item];
         }
 
+        public void DisableCheapStore(bool value)
+        {
+            foreach (var cell in room.cells)
+                cell.SetLight(!value);
+
+            foreach (Door door in room.doors)
+            {
+                if (value)
+                    door.Lock(false);
+                else
+                    door.Unlock();
+            }
+        }
+
         public override void OnPlayerEnter(PlayerManager player)
         {
             base.OnPlayerEnter(player);
-
             Singleton<CoreGameManager>.Instance.GetHud(player.playerNumber).PointsAnimator.ShowDisplay(true);
+
+            if (closeOnExit)
+                DisableCheapStore(false);
+
+            foreach (Pickup pickup in pickups)
+                TogglePriceDescription(pickup, true);
+        }
+
+        public override void OnPlayerExit(PlayerManager player)
+        {
+            base.OnPlayerExit(player);
+            Singleton<CoreGameManager>.Instance.GetHud(player.playerNumber).PointsAnimator.ShowDisplay(false);
+
+            foreach (Pickup pickup in pickups)
+                TogglePriceDescription(pickup, false);
+
+            if (closeOnExit)
+                DisableCheapStore(true);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (Pickup pickup in pickups)
+                TogglePriceDescription(pickup, false);
+        }
+
+        private void ItemPurchased(Pickup pickup, int player)
+        {
+            foreach (Pickup _pickup in pickups)
+                _pickup.gameObject.SetActive(false);
+            Singleton<CoreGameManager>.Instance.audMan.PlaySingle(audBell);
+            closeOnExit = true;
         }
 
         private Dictionary<ItemObject, string> originalDescriptions = [];
         private List<Pickup> pickups = [];
+        public SoundObject audBell;
+        public bool closeOnExit;
     }
 }

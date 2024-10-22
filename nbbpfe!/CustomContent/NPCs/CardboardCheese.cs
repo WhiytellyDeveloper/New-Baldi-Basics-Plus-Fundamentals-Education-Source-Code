@@ -1,5 +1,5 @@
-﻿using nbbpfe.FundamentalsManager;
-using nbppfe.CustomContent.NPCs.FunctionalsManagers;
+﻿using nbppfe.CustomContent.NPCs.FunctionalsManagers;
+using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Extensions;
@@ -10,7 +10,8 @@ namespace nbppfe.CustomContent.NPCs
 {
     public class CardboardCheese : NPC, INPCPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             Sprite misc = AssetsLoader.Get<Sprite>("CartboardCheeseV2_Misc");
             SpriteRenderer renderer = ObjectCreationExtensions.CreateSpriteBillboard(misc, false);
             renderer.transform.localPosition = new Vector3(0.5f, 0, 2);
@@ -21,7 +22,8 @@ namespace nbppfe.CustomContent.NPCs
             cheesedItemsVoicelines = [AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems1"), AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems2"), AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems3")];
         }
 
-        public void PostLoading() {
+        public void PostLoading()
+        {
             cooldown = new Cooldown(10, 0, Active);
         }
 
@@ -42,7 +44,7 @@ namespace nbppfe.CustomContent.NPCs
         protected override void VirtualUpdate()
         {
             base.VirtualUpdate();
-            if (!active) 
+            if (!active)
                 cooldown.UpdateCooldown(ec.NpcTimeScale);
         }
 
@@ -95,11 +97,11 @@ namespace nbppfe.CustomContent.NPCs
             {
                 for (int j = 0; j < ec.levelSize.z; j++)
                 {
-                    if (!ec.cells[i, j].Null &&ec.cells[i, j].room.type == RoomType.Hall && !ec.cells[i, j].open && !ec.cells[i, j].HasAnyHardCoverage)
-                        tiles.Add(ec.cells[i, j]);         
+                    if (!ec.cells[i, j].Null && ec.cells[i, j].room.type == RoomType.Hall && !ec.cells[i, j].open && !ec.cells[i, j].HasAnyHardCoverage)
+                        tiles.Add(ec.cells[i, j]);
                 }
             }
-            spawn =tiles[Random.Range(0, tiles.Count)];
+            spawn = tiles[Random.Range(0, tiles.Count)];
             bool flag = false;
             while (!flag)
             {
@@ -108,9 +110,9 @@ namespace nbppfe.CustomContent.NPCs
                 int num = 0;
                 while (num < Singleton<CoreGameManager>.Instance.setPlayers && flag)
                 {
-                    if ((spawn.FloorWorldPosition + Vector3.up * 5f - Singleton<CoreGameManager>.Instance.GetPlayer(num).transform.position).magnitude <= playerBuffer || ec.TrapCheck(this.spawn))
+                    if ((spawn.FloorWorldPosition + Vector3.up * 5f - Singleton<CoreGameManager>.Instance.GetPlayer(num).transform.position).magnitude <= playerBuffer || ec.TrapCheck(spawn))
                         flag = false;
-                    
+
                     num++;
                 }
             }

@@ -1,7 +1,7 @@
 ﻿using MTM101BaldAPI;
 using MTM101BaldAPI.Reflection;
-using nbbpfe.FundamentalsManager;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Classes;
@@ -36,7 +36,7 @@ namespace nbppfe.CustomContent.CustomItems
             clockSound = (SoundObject)Items.AlarmClock.ToItem().item.GetComponent<ITM_AlarmClock>().ReflectionGetVariable("audWind");
         }
 
-//----------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------
 
         public override bool Use(PlayerManager pm)
         {
@@ -54,7 +54,7 @@ namespace nbppfe.CustomContent.CustomItems
             time.UpdateCooldown(pm.ec.EnvironmentTimeScale);
             text.text = ((int)time.cooldown).ToString();
             float timer = Mathf.Clamp(time.cooldown, timeSteps[choosedTimeId], 60);
-            float speedFactor = (timeSteps[choosedTimeId] / timer);
+            float speedFactor = timeSteps[choosedTimeId] / timer;
             float currentRotationSpeed = Mathf.Lerp(rotationSpeed, 200, speedFactor);
             portal.transform.parent.Rotate(0, currentRotationSpeed * Time.deltaTime, 0);
         }
@@ -63,14 +63,14 @@ namespace nbppfe.CustomContent.CustomItems
         {
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(teleport);
             pm.plm.Entity.Teleport(transform.position);
-            Destroy(base.gameObject);
+            Destroy(gameObject);
         }
 
         public void Clicked(int player)
         {
             choosedTimeId++;
 
-            if (choosedTimeId >= timeSteps.Length) 
+            if (choosedTimeId >= timeSteps.Length)
                 choosedTimeId = 0;
 
             time.cooldown = timeSteps[choosedTimeId] + 1;

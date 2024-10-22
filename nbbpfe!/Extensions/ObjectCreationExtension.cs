@@ -42,7 +42,7 @@ namespace nbppfe.Extensions
         new (0, 1f, 0),
         new (0, 0, 0),
         new (1.004f, 1f, 0),
-		new (1f, 0, 0),
+        new (1f, 0, 0),
 
         new (0, 0, 1f),
         new (1f, 0, 1f),
@@ -61,17 +61,17 @@ namespace nbppfe.Extensions
 
         static readonly int[] triangles = [
         0, 2, 1,
-		1, 2, 3,
+        1, 2, 3,
         4, 5, 6,
-		5, 7, 6,
+        5, 7, 6,
         6, 7, 8,
-		7, 9 ,8,
+        7, 9 ,8,
         1, 3, 4,
-		3, 5, 4,
+        3, 5, 4,
         1, 11,10,
-		1, 4, 11,
+        1, 4, 11,
         3, 12, 5,
-		5, 12, 13];
+        5, 12, 13];
 
         /*
 

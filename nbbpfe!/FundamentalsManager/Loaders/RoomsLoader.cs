@@ -1,27 +1,29 @@
 ﻿using MTM101BaldAPI.AssetTools;
-using nbbpfe.BasicClasses;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using nbbpfe.FundamentalsManager;
 using UnityEngine;
 using Newtonsoft.Json;
 using EditorCustomRooms;
 using MTM101BaldAPI;
 using PixelInternalAPI.Extensions;
-using nbppfe.BasicClasses.Functions;
 using PlusLevelLoader;
-using nbppfe.Enums;
-using nbppfe.Extensions;
 using MTM101BaldAPI.Reflection;
+using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
+using nbppfe.BasicClasses;
+using nbppfe.Enums;
+using nbppfe.BasicClasses.Functions;
 
-namespace nbbpfe.FundamentalsManager.Loaders
+namespace nbppfe.FundamentalsManager.Loaders
 {
     public static partial class RoomsLoader
     {
         public static void LoadRooms()
         {
+            var light1 = Resources.FindObjectsOfTypeAll<Transform>().Where(x => x.name == "HangingLight").FirstOrDefault();
+
             LoadTextures(RoomTextures.Hall, "Hall");
             LoadTextures(RoomTextures.Class, "Class");
             LoadTextures(RoomTextures.Faculty, "Faculty");
@@ -40,16 +42,29 @@ namespace nbbpfe.FundamentalsManager.Loaders
                  Resources.FindObjectsOfTypeAll<StandardDoorMats>().Last()
              ));
 
+            AssetsLoader.CreateTexture("CheapStoreCounterAtlas", Paths.GetPath(PathsEnum.Rooms, "CheapStore"));
             var cheapContainer = new GameObject("CheapStoreContainer").AddComponent<RoomFunctionContainer>();
             cheapContainer.ReflectionSetVariable("functions", new List<RoomFunction>());
             cheapContainer.AddFunction(cheapContainer.gameObject.AddComponent<CheapShopFunction>());
+            var cheapSwingDoorFunction = cheapContainer.gameObject.AddComponent<SpecialRoomSwingingDoorsBuilder>();
+            cheapSwingDoorFunction.ReflectionSetVariable("swingDoorPre", Resources.FindObjectsOfTypeAll<SwingDoor>().Where(x => x.name.Contains("Door_Auto")).First());
+            cheapContainer.AddFunction(cheapSwingDoorFunction);
             cheapContainer.gameObject.ConvertToPrefab(true);
+
             PlusLevelLoaderPlugin.Instance.roomSettings["CheapStore"].container = cheapContainer;
-
-
             PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapWall", AssetsLoader.CreateTexture("CheapStoreWall", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
             PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapFloor", AssetsLoader.CreateTexture("CheapStoreFloor", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
             PlusLevelLoaderPlugin.Instance.textureAliases.Add("CheapCeiling", AssetsLoader.CreateTexture("CheapStoreCeiling", Paths.GetPath(PathsEnum.Rooms, "CheapStore")));
+
+            Dictionary<string, RoomAsset> cheapStores = CreateRooms("CheapStore", 0, true, cheapContainer, false, false, null, false, [PlusLevelLoaderPlugin.Instance.textureAliases["CheapWall"], PlusLevelLoaderPlugin.Instance.textureAliases["CheapFloor"], PlusLevelLoaderPlugin.Instance.textureAliases["CheapCeiling"]]);
+            //CheapStore1
+
+            AddGroupToFloor(floor: ["F2", "F4"], name: "Cheap Stores", min: 1, max: 1, sticky: 1,
+                rooms: [cheapStores["CheapStore1"].ToWeighted<WeightedRoomAsset, RoomAsset>(100)],
+                lights: [light1.ToWeighted<WeightedTransform, Transform>(100)],
+                walls: [PlusLevelLoaderPlugin.Instance.textureAliases["CheapWall"].ToWeighted<WeightedTexture2D, Texture2D>(100)],
+                floors: [PlusLevelLoaderPlugin.Instance.textureAliases["CheapFloor"].ToWeighted<WeightedTexture2D, Texture2D>(100)],
+                ceilings: [PlusLevelLoaderPlugin.Instance.textureAliases["CheapCeiling"].ToWeighted<WeightedTexture2D, Texture2D>(100)]);
         }
 
         public static void LoadTextures(RoomTextures roomTextures, string roomPath)
@@ -65,7 +80,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
                 string fileName = Path.GetFileNameWithoutExtension(file);
                 foreach (var floor in FundamentalLoaderManager.floors)
                 {
-                    if (!file.Contains(floor.Floor + "!")) continue;
+                    if (!fileName.Contains(floor.Floor + "!")) continue;
 
                     WeightedTexture2D weightedTexture = new WeightedTexture2D
                     {
@@ -75,7 +90,7 @@ namespace nbbpfe.FundamentalsManager.Loaders
                                 ceilingSelections.Contains(fileName) ? data.ceilingTextures.FirstOrDefault(c => c.selection == fileName)?.weight ?? 0 : 0
                     };
 
- 
+
 
                     if (wallSelections.Contains(fileName))
                         floor.wallTextures[roomTextures].Add(weightedTexture);
@@ -96,42 +111,65 @@ namespace nbbpfe.FundamentalsManager.Loaders
             foreach (var file in Directory.GetFiles(Paths.GetPath(PathsEnum.Rooms, path), "*.cbld"))
             {
                 if (File.ReadAllBytes(file).Length == 0) continue;
-                    
-      
-                    UnityEngine.Debug.LogWarning(file);
-                    var asset = RoomFactory.CreateAssetsFromPath(file, maxValue, isOffLimits, container, isAHallway, secretRoom, mapBg, keepTextures, squaredShape);
-                    foreach (var room in asset)
+
+
+                Debug.LogWarning(file);
+                var asset = RoomFactory.CreateAssetsFromPath(file, maxValue, isOffLimits, container, isAHallway, secretRoom, mapBg, keepTextures, squaredShape);
+                foreach (var room in asset)
+                {
+                    if (roomsTextures != null)
                     {
-                        if (roomsTextures != null)
-                        {
-                            room.wallTex = roomsTextures[0];
-                            room.florTex = roomsTextures[1];
-                            room.ceilTex = roomsTextures[2];
-                        }
-                        if (posters != null)
-                            room.posters = posters.ToList();
-
-                        room.posterChance = posterChance;
-
-                        string roomName = Path.GetFileNameWithoutExtension(file);
-                        UnityEngine.Debug.LogWarning(roomName);
-                        if (!assets.ContainsKey(roomName))
-                        {
-                            assets.Add(roomName, room);
-                            AssetsLoader.assetMan.Add<RoomAsset>(roomName, room);
-                        }
-
+                        room.wallTex = roomsTextures[0];
+                        room.florTex = roomsTextures[1];
+                        room.ceilTex = roomsTextures[2];
                     }
-                
-   
+                    if (posters != null)
+                        room.posters = posters.ToList();
+
+                    room.posterChance = posterChance;
+
+                    string roomName = Path.GetFileNameWithoutExtension(file);
+                    Debug.LogWarning(roomName);
+                    if (!assets.ContainsKey(roomName))
+                    {
+                        assets.Add(roomName, room);
+                        AssetsLoader.assetMan.Add(roomName, room);
+                    }
+
+                }
+
+
             }
 
             return assets;
         }
+
+        public static void AddGroupToFloor(string[] floor, string name, int min, int max, int sticky, WeightedRoomAsset[] rooms, WeightedTransform[] lights, WeightedTexture2D[] walls, WeightedTexture2D[] floors, WeightedTexture2D[] ceilings)
+        {
+            foreach (string _floor in floor)
+            {
+                FundamentalLoaderManager.GetFloorByName(_floor).roomGroups = new List<RoomGroup>
+                {
+                    new RoomGroup{
+                         name = name,
+                         minRooms = min,
+                         maxRooms = max,
+                         stickToHallChance = sticky,
+                         potentialRooms = rooms,
+                         light = lights,
+                         wallTexture = walls,
+                         floorTexture = floors,
+                         ceilingTexture = ceilings
+                    }
+                };
+
+            }
+        }
     }
 
     [Serializable]
-    public class RoomTextureData {
+    public class RoomTextureData
+    {
         public List<WeightedStringFile> wallTextures = new List<WeightedStringFile> { new WeightedStringFile { selection = "None", weight = 0 } };
         public List<WeightedStringFile> floorTextures = new List<WeightedStringFile> { new WeightedStringFile { selection = "None", weight = 0 } };
         public List<WeightedStringFile> ceilingTextures = new List<WeightedStringFile> { new WeightedStringFile { selection = "None", weight = 0 } };

@@ -1,8 +1,8 @@
 ﻿using MTM101BaldAPI.Reflection;
 using MTM101BaldAPI.Registers;
-using nbbpfe.Enums;
-using nbbpfe.FundamentalsManager;
+using nbppfe.Enums;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Classes;
 using PixelInternalAPI.Extensions;
@@ -12,7 +12,8 @@ namespace nbppfe.CustomContent.CustomItems
 {
     internal class ITM_Magnet : Item, IItemPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             onThrow = FundamentalLoaderManager.GenericThrowSound;
 
             var spriteRenderer = ObjectCreationExtensions.CreateSpriteBillboard(CustomItemsEnum.Magnet.ToItem().itemSpriteLarge);
@@ -62,7 +63,7 @@ namespace nbppfe.CustomContent.CustomItems
                         {
                             if (pm.ec.CellFromPosition(transform.position).room == pm.ec.CellFromPosition(activity.transform.position).room)
                                 cancel = true;
-                            
+
                         }
 
                         if (pm.ec.activities.Count == 0 && !cancel)
@@ -96,7 +97,7 @@ namespace nbppfe.CustomContent.CustomItems
             return false;
         }
 
-        private void Update() =>  
+        private void Update() =>
             entity.UpdateInternalMovement(direction * 45 * pm.ec.EnvironmentTimeScale);
 
         protected bool CheckForDoor(Transform t)

@@ -10,12 +10,13 @@ namespace nbppfe.CustomContent.NPCs
 {
     public class Slimely : NPC, INPCPrefab
     {
-        public void Setup() {
+        public void Setup()
+        {
             animator = spriteRenderer[0].AddAnimatorToSprite<CustomSpriteAnimator>();
             sprites = NPCLoader.spritesFormSpritesheet[CustomNPCsEnum.Slimely];
         }
 
-        public void PostLoading() 
+        public void PostLoading()
         {
             animator.animations.Add("Idle", new(sprites.Take(1).ToArray(), 0));
             animator.animations.Add("Squishing", new(sprites.Skip(1).Take(5).ToArray(), 0.25f));
@@ -46,7 +47,7 @@ namespace nbppfe.CustomContent.NPCs
         public MovementModifier movMod = new(Vector3.zero, 0.5f);
     }
 
-    public class Slimely_StateBase : NpcState 
+    public class Slimely_StateBase : NpcState
     {
         public Slimely sli;
         public Slimely_StateBase(Slimely sli) : base(sli)
@@ -84,7 +85,8 @@ namespace nbppfe.CustomContent.NPCs
     public class Slimely_Squished : Slimely_StateBase
     {
         private Entity target;
-        public Slimely_Squished(Slimely sli, Entity target) : base(sli) { 
+        public Slimely_Squished(Slimely sli, Entity target) : base(sli)
+        {
             this.target = target;
         }
 

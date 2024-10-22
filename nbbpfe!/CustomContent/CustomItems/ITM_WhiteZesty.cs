@@ -1,4 +1,4 @@
-﻿using nbbpfe.FundamentalsManager;
+﻿using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using UnityEngine;
 

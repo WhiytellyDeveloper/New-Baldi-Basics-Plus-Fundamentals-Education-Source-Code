@@ -1,9 +1,8 @@
 ﻿using MTM101BaldAPI;
 using MTM101BaldAPI.Components;
 using MTM101BaldAPI.Registers;
-using nbbpfe.Enums;
-using nbbpfe.FundamentalsManager;
 using nbppfe.Enums;
+using nbppfe.FundamentalsManager;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,23 +20,28 @@ namespace nbppfe.Extensions
             return c;
         }
 
-        public static GameCamera GetPlayerCamera(this PlayerManager player) {
+        public static GameCamera GetPlayerCamera(this PlayerManager player)
+        {
             return Singleton<CoreGameManager>.Instance.GetCamera(player.playerNumber);
         }
 
-        public static Items ToItemEnum(this CustomItemsEnum itemEnum) {
+        public static Items ToItemEnum(this CustomItemsEnum itemEnum)
+        {
             return EnumExtensions.GetFromExtendedName<Items>(itemEnum.ToString());
         }
 
-        public static ItemObject ToItem(this Items itemEnum) {
+        public static ItemObject ToItem(this Items itemEnum)
+        {
             return ItemMetaStorage.Instance.FindByEnum(itemEnum).value;
         }
 
-        public static ItemObject ToItem(this CustomItemsEnum itemEnum) {
-            return ItemMetaStorage.Instance.FindByEnumFromMod(ToItemEnum(itemEnum), BasePlugin.Instance.Info).value;
+        public static ItemObject ToItem(this CustomItemsEnum itemEnum)
+        {
+            return ItemMetaStorage.Instance.FindByEnumFromMod(itemEnum.ToItemEnum(), BasePlugin.Instance.Info).value;
         }
 
-        public static RoomCategory ToRoomEnum(this CustomRoomsEnum roomEnum) {
+        public static RoomCategory ToRoomEnum(this CustomRoomsEnum roomEnum)
+        {
             RoomCategory category = RoomCategory.Null;
 
             if (!enums.Contains(roomEnum.ToString()))
@@ -47,12 +51,14 @@ namespace nbppfe.Extensions
             return category;
         }
 
-        public static RoomAssetMeta ToRoom(this RoomCategory roomEnum) {
+        public static RoomAssetMeta ToRoom(this RoomCategory roomEnum)
+        {
             return RoomAssetMetaStorage.Instance.Get(roomEnum);
         }
 
-        public static RoomAssetMeta ToRoom(this CustomRoomsEnum roomEnum) {
-            return RoomAssetMetaStorage.Instance.Get(ToRoomEnum(roomEnum));
+        public static RoomAssetMeta ToRoom(this CustomRoomsEnum roomEnum)
+        {
+            return RoomAssetMetaStorage.Instance.Get(roomEnum.ToRoomEnum());
         }
 
         public static void ResizeCollider(this SpriteRenderer spriteRenderer, Collider colliderComponent)
@@ -60,7 +66,7 @@ namespace nbppfe.Extensions
             Vector3 spriteSize = spriteRenderer.bounds.size;
             if (colliderComponent is BoxCollider)
                 ((BoxCollider)colliderComponent).size = spriteSize;
-            
+
             else if (colliderComponent is CapsuleCollider)
             {
                 CapsuleCollider capsuleCollider = (CapsuleCollider)colliderComponent;
@@ -75,15 +81,15 @@ namespace nbppfe.Extensions
                 ((SphereCollider)colliderComponent).radius = radius;
             }
 
-            else 
-                Debug.LogError("Collider type is not supported by this script!");   
+            else
+                Debug.LogError("Collider type is not supported by this script!");
         }
 
 
         public static float GetSpriteSize(this SpriteRenderer spriteRenderer)
         {
             Vector3 spriteSize = spriteRenderer.bounds.size;
-             float radius = Mathf.Max(spriteSize.x, Mathf.Max(spriteSize.y, spriteSize.z)) / 2f;
+            float radius = Mathf.Max(spriteSize.x, Mathf.Max(spriteSize.y, spriteSize.z)) / 2f;
             return radius;
         }
 
@@ -100,7 +106,8 @@ namespace nbppfe.Extensions
             navigator.maxSpeed = maxSpeed;
         }
 
-        public static float GetDistanceFrom(this Vector3 pos1, Vector3 pos2) {
+        public static float GetDistanceFrom(this Vector3 pos1, Vector3 pos2)
+        {
             return Vector3.Distance(pos1, pos2);
         }
 
@@ -127,6 +134,49 @@ namespace nbppfe.Extensions
             var animator = renderer.gameObject.AddComponent<T>();
             animator.spriteRenderer = renderer;
             return animator;
+        }
+
+        public static T ToWeighted<T, A>(this object obj, int weighted)
+            where T : WeightedSelection<A>, new()
+            where A : class
+        {
+            var castedObject = obj as A;
+
+            if (castedObject == null)
+                throw new InvalidCastException($"Não foi possível converter o objeto para o tipo {typeof(A).Name}.");
+
+            T weightedSelection = new T
+            {
+                selection = castedObject,
+                weight = weighted
+            };
+
+            return weightedSelection;
+        }
+
+        public static T CatchRandomItem<T>(this T[] array) where T : class
+        {
+            return array[UnityEngine.Random.RandomRangeInt(0, array.Length)];
+        }
+
+        public static T CatchRandomItem<T>(this List<T> array) where T : class
+        {
+            return array[UnityEngine.Random.RandomRangeInt(0, array.Count)];
+        }
+
+        public static void ApplyOverlay(this Texture2D baseTex, Texture2D overlayTex)
+        {
+            for (int x = 0; x < overlayTex.width; x++)
+            {
+                for (int y = 0; y < overlayTex.height; y++)
+                {
+                    Color overlayPixel = overlayTex.GetPixel(x, y);
+                    if (overlayPixel.a > 0)
+                        baseTex.SetPixel(x, y, overlayPixel);   
+                }
+            }
+
+            baseTex.Apply();
         }
 
         private static List<string> enums = [];

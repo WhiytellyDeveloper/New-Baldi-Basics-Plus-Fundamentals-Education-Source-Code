@@ -1,7 +1,7 @@
 ﻿using MTM101BaldAPI;
-using nbbpfe.FundamentalsManager;
 using nbppfe.BasicClasses.CustomObjects;
 using nbppfe.Extensions;
+using nbppfe.FundamentalsManager;
 using PixelInternalAPI.Extensions;
 using PlusLevelLoader;
 using System;
@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace nbppfe.FundamentalsManager.Loaders
 {
-    public static class CustomObjectsLoader 
+    public static class CustomObjectsLoader
     {
         public static void Load()
         {
@@ -52,7 +52,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             Sprite spriteFlower = AssetsLoader.CreateSprite("EVERYTHINGWILLNOTBEOKAY", Paths.GetPath(PathsEnum.PreMadeFloors, "PitLobby"), 80);
             var flower = ObjectCreationExtensions.CreateSpriteBillboard(spriteFlower);
             flower.gameObject.ConvertToPrefab(true);
-            AssetsLoader.assetMan.Add("Flower",flower.gameObject);
+            AssetsLoader.assetMan.Add("Flower", flower.gameObject);
             PlusLevelLoaderPlugin.Instance.prefabAliases.Add("Flower", flower.gameObject);
 
             Texture2D cageTexture = AssetsLoader.CreateTexture("DiamongPlateFloor", Paths.GetPath(PathsEnum.Misc));

@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
 using MTM101BaldAPI;
 using MTM101BaldAPI.Reflection;
-using nbbpfe.Enums;
 using nbppfe.CustomContent.NPCs.FunctionalsManagers;
+using nbppfe.Enums;
 using PixelInternalAPI.Extensions;
 using System.Reflection;
 using UnityEngine;
@@ -48,7 +48,7 @@ namespace nbppfe.Patches
             if (player.itm.IsSlotLocked(player.itm.selectedItem))
             {
                 if (Singleton<CardboardCheeseFunctionalManager>.Instance != null)
-                    Singleton<CardboardCheeseFunctionalManager>.Instance.tryUnlock(player.itm.selectedItem, player.playerNumber);          
+                    Singleton<CardboardCheeseFunctionalManager>.Instance.tryUnlock(player.itm.selectedItem, player.playerNumber);
                 return false;
             }
             return true;
@@ -63,7 +63,7 @@ namespace nbppfe.Patches
         [HarmonyPatch(nameof(Pickup.Clicked))]
         public static void Clicked_Prefix(Pickup __instance) =>
             lastPíckupClicked = __instance;
-        
+
     }
 
     //I just copied this from the pixelGuy in the animation mod, out of pure laziness in programming it :/

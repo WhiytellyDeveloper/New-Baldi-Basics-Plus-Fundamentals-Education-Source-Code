@@ -1,5 +1,5 @@
-﻿using nbbpfe.Enums;
-using nbppfe.CustomContent.CustomItems;
+﻿using nbppfe.CustomContent.CustomItems;
+using nbppfe.Enums;
 using nbppfe.Extensions;
 using System;
 using System.Collections.Generic;
@@ -19,14 +19,14 @@ namespace nbppfe.BasicClasses.Functions
                 {
                     if (player.ec.CellFromPosition(activity.transform.position).room == room && !activity.IsCompleted)
                     {
-                        Instantiate<Item>(CustomItemsEnum.HomeworkTierA.ToItem().item).GetComponent<ITM_Homework>().OnUse();
+                        Instantiate(CustomItemsEnum.HomeworkTierA.ToItem().item).GetComponent<ITM_Homework>().OnUse();
                         activity.Completed(player.playerNumber, true, activity);
                         foreach (Notebook notebook in player.ec.notebooks)
                         {
                             if (player.ec.CellFromPosition(notebook.transform.position).room == room)
                                 notebook.Clicked(player.playerNumber);
                         }
-                            player.itm.Remove(CustomItemsEnum.HomeworkTierA.ToItemEnum());
+                        player.itm.Remove(CustomItemsEnum.HomeworkTierA.ToItemEnum());
                     }
                 }
             }

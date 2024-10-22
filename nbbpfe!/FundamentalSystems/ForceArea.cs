@@ -44,6 +44,6 @@ namespace nbppfe.FundamentalSystems
         private bool someOneEnter;
         public bool destroyAfterUse = true;
         public Action preEnter;
-        public Collider col; 
+        public Collider col;
     }
 }
