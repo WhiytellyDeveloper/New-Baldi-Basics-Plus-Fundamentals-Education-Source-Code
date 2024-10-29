@@ -76,4 +76,18 @@ namespace nbppfe.Patches
 
         public static ItemObject lastRemovedItem;
     }
+
+    [HarmonyPatch(typeof(SubtitleController), "Hide")]
+    public class CaptionTest
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(SubtitleController __instance)
+        {
+            if (__instance.text.text.Contains(Singleton<LocalizationManager>.Instance.GetLocalizedText("Sfx_CompassPoint")))
+                return false;
+
+            return true;
+        }
+
+    }
 }

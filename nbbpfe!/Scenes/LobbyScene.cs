@@ -34,7 +34,7 @@ namespace nbppfe.Scenes
                     lobbyScene.name = "main_lobby";
                     lobbyScene.usesMap = false;
                     lobbyScene.levelNo = -1;
-                    lobbyScene.nextLevel = SceneLoader.F0;
+                    lobbyScene.nextLevel = mainLevel;
                     lobbyScene.levelTitle = "LBY";
                     lobbyScene.skybox = mainLevel.skybox;
                     lobbyScene.manager = lobbyManager;

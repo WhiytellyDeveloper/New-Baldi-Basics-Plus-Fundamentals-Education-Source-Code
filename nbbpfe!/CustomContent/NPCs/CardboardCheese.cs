@@ -1,10 +1,14 @@
 ﻿using nbppfe.CustomContent.NPCs.FunctionalsManagers;
 using nbppfe.FundamentalsManager;
+using nbppfe.FundamentalsManager.Loaders;
 using nbppfe.FundamentalSystems;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
+using nbppfe.Enums;
+using System.Linq;
+using MTM101BaldAPI;
 
 namespace nbppfe.CustomContent.NPCs
 {
@@ -13,18 +17,20 @@ namespace nbppfe.CustomContent.NPCs
         public void Setup()
         {
             Sprite misc = AssetsLoader.Get<Sprite>("CartboardCheeseV2_Misc");
-            SpriteRenderer renderer = ObjectCreationExtensions.CreateSpriteBillboard(misc, false);
-            renderer.transform.localPosition = new Vector3(0.5f, 0, 2);
-            renderer.transform.SetParent(transform);
+            SpriteRenderer renderer = ObjectCreationExtensions.CreateSpriteBillboard(misc);
+            renderer.transform.localPosition = new Vector3(1.5f, -3.55f, 1.2f);
+            renderer.transform.SetParent(spriteBase.transform);
             audMan = GetComponent<AudioManager>();
-            helloVoicelines = [AssetsLoader.Get<SoundObject>("CardboardCheese_Hello1"), AssetsLoader.Get<SoundObject>("CardboardCheese_Hello2")];
-            noItemsVoicelines = [AssetsLoader.Get<SoundObject>("CardboardCheese_NoItems1"), AssetsLoader.Get<SoundObject>("CardboardCheese_NoItems2"), AssetsLoader.Get<SoundObject>("CardboardCheese_NoItems3")];
-            cheesedItemsVoicelines = [AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems1"), AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems2"), AssetsLoader.Get<SoundObject>("CardboardCheese_CheesedItems3")];
+            helloVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(3).Take(3).ToArray();
+            noItemsVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(6).Take(3).ToArray();
+            cheesedItemsVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Take(3).ToArray();
+            wanderingVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(9).Take(5).ToArray();
         }
 
         public void PostLoading()
         {
-            cooldown = new Cooldown(10, 0, Active);
+            cooldown = new(13, 0, Active);
+            wvCooldown = new(18, 0, SayRandomVoiceline);
         }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,20 +38,16 @@ namespace nbppfe.CustomContent.NPCs
         public override void Initialize()
         {
             base.Initialize();
-
-            if (Singleton<CardboardCheeseFunctionalManager>.Instance == null)
-                Singleton<CoreGameManager>.Instance.gameObject.AddComponent<CardboardCheeseFunctionalManager>();
-
-            transform.rotation = ec.CellFromPosition(transform.position).AllOpenNavDirections[0].ToRotation();
-
+            Singleton<CoreGameManager>.Instance.gameObject.GetOrAddComponent<CardboardCheeseFunctionalManager>();
             behaviorStateMachine.ChangeState(new CardboardCheese_Disable(this));
         }
 
         protected override void VirtualUpdate()
         {
             base.VirtualUpdate();
-            if (!active)
+            if (!active)            
                 cooldown.UpdateCooldown(ec.NpcTimeScale);
+            wvCooldown.UpdateCooldown(ec.NpcTimeScale);
         }
 
         public override void Despawn()
@@ -56,11 +58,11 @@ namespace nbppfe.CustomContent.NPCs
                 Singleton<CardboardCheeseFunctionalManager>.Instance.CheesedSlot(i, 0, true);
         }
 
-        public void TryCheesedSlot(PlayerManager playerManager, ItemManager itemManager)
+        public bool TryCheesedSlot(PlayerManager playerManager, ItemManager itemManager)
         {
             int selectedSlot;
             bool slotFound = false;
-            int maxAttempts = itemManager.maxItem;
+            int maxAttempts = itemManager.maxItem * 5;
 
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
@@ -84,11 +86,12 @@ namespace nbppfe.CustomContent.NPCs
                 audMan.FlushQueue(true);
                 audMan.QueueRandomAudio(cheesedItemsVoicelines);
             }
+
+            return slotFound;
         }
 
         public void Active() =>
             behaviorStateMachine.ChangeState(new CardboardCheese_Active(this));
-
 
         public void Spawn()
         {
@@ -97,7 +100,7 @@ namespace nbppfe.CustomContent.NPCs
             {
                 for (int j = 0; j < ec.levelSize.z; j++)
                 {
-                    if (!ec.cells[i, j].Null && ec.cells[i, j].room.type == RoomType.Hall && !ec.cells[i, j].open && !ec.cells[i, j].HasAnyHardCoverage)
+                    if (!ec.cells[i, j].Null && ec.cells[i, j].room.type == RoomType.Hall && !ec.cells[i, j].open && !ec.cells[i, j].HasAnyHardCoverage && ec.cells[i, j].shape == TileShape.Straight)
                         tiles.Add(ec.cells[i, j]);
                 }
             }
@@ -119,13 +122,21 @@ namespace nbppfe.CustomContent.NPCs
             transform.position = spawn.FloorWorldPosition + Vector3.up * 5f;
         }
 
-
+        public void SayRandomVoiceline()
+        {
+            if (!playerLooking && active)
+            {
+                audMan.FlushQueue(true);
+                audMan.QueueRandomAudio(wanderingVoicelines);
+            }
+            cooldown.Restart();
+        }
 
         public AudioManager audMan;
         public SoundObject[] helloVoicelines, wanderingVoicelines, noItemsVoicelines, cheesedItemsVoicelines;
-        public Cooldown cooldown;
-        public bool active;
-        public List<Cell> tiles;
+        public Cooldown cooldown, wvCooldown;
+        public bool active, playerLooking;
+        public List<Cell> tiles = [];
         private Cell spawn;
         private float playerBuffer = 20f;
     }
@@ -147,11 +158,11 @@ namespace nbppfe.CustomContent.NPCs
         public override void Initialize()
         {
             base.Initialize();
-            ChangeNavigationState(new NavigationState_Disabled(cardCheese));
-            cardCheese.Navigator.Entity.SetFrozen(true);
-            cardCheese.Navigator.Entity.SetActive(true);
-            cardCheese.spriteBase.gameObject.SetActive(true);
+            cardCheese.Spawn();
             cardCheese.active = true;
+            cardCheese.spriteBase.gameObject.SetActive(true);
+            cardCheese.Navigator.Entity.SetFrozen(true);
+            cardCheese.Navigator.Entity.SetIgnoreAddend(true);
         }
 
         public override void OnStateTriggerEnter(Collider other)
@@ -160,8 +171,8 @@ namespace nbppfe.CustomContent.NPCs
 
             if (other.tag.Equals("Player"))
             {
-                cardCheese.TryCheesedSlot(other.GetComponent<PlayerManager>(), other.GetComponent<PlayerManager>().itm);
-                cardCheese.behaviorStateMachine.ChangeState(new CardboardCheese_Disable(cardCheese));
+                if (cardCheese.TryCheesedSlot(other.GetComponent<PlayerManager>(), other.GetComponent<PlayerManager>().itm))
+                    cardCheese.behaviorStateMachine.ChangeState(new CardboardCheese_Disable(cardCheese));
             }
         }
 
@@ -170,6 +181,18 @@ namespace nbppfe.CustomContent.NPCs
             base.PlayerInSight(player);
             cardCheese.audMan.FlushQueue(true);
             cardCheese.audMan.QueueRandomAudio(cardCheese.helloVoicelines);
+        }
+
+        public override void PlayerInSight(PlayerManager player)
+        {
+            base.PlayerInSight(player);
+            cardCheese.playerLooking = true;
+        }
+
+        public override void PlayerLost(PlayerManager player)
+        {
+            base.PlayerLost(player);
+            cardCheese.playerLooking = false;
         }
     }
 
@@ -180,10 +203,10 @@ namespace nbppfe.CustomContent.NPCs
         public override void Initialize()
         {
             base.Initialize();
-            cardCheese.Spawn();
-            cardCheese.spriteRenderer[0].transform.position = new Vector3(0, -10, 0);
-            cardCheese.Navigator.Entity.SetActive(false);
+            cardCheese.cooldown.Restart();
+            ChangeNavigationState(new NavigationState_Disabled(npc));
             cardCheese.active = false;
+            cardCheese.spriteBase.gameObject.SetActive(false);
         }
     }
 }

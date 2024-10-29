@@ -9,15 +9,17 @@ namespace nbppfe.CustomContent.CustomItems
 {
     public class ITM_Shovel : NPCItem, IItemPrefab
     {
-        public void Setup() =>
-           usedSound = AssetsLoader.CreateSound("ShovelSound", Paths.GetPath(PathsEnum.Items, "Shovel"), "Sfx_Bang", SoundType.Effect, Color.white, 1);
+        public void Setup()
+        {
+            usedSound = AssetsLoader.CreateSound("ShovelSound", Paths.GetPath(PathsEnum.Items, "Shovel"), "Sfx_Bang", SoundType.Effect, Color.white, 1);
+            windHitSound = FundamentalLoaderManager.GenericAirSound;
+        }
 
 
         //---------------------------------------------------------------------------------------------------
 
-        public override void OnUse(PlayerManager pm, NPC npc)
+        public override bool OnUse(PlayerManager pm, NPC npc)
         {
-            base.OnUse(pm, npc);
             this.pm = pm;
             cooldown.endAction = OnCooldownEnd;
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(usedSound);
@@ -25,6 +27,7 @@ namespace nbppfe.CustomContent.CustomItems
             force = new Force(-pm.GetPlayerCamera().transform.forward, 75f, -45f);
             npc.Navigator.Am.moveMods.Add(movMod);
             npc.Navigator.Entity.AddForce(force);
+            return true;
         }
 
         private void Update()
@@ -40,11 +43,16 @@ namespace nbppfe.CustomContent.CustomItems
             npcShoveld.Navigator.Am.moveMods.Remove(movMod);
         }
 
+        public override void OnMissNPC()
+        {
+            base.OnMissNPC();
+            Singleton<CoreGameManager>.Instance.audMan.PlaySingle(windHitSound);
+        }
 
         public MovementModifier movMod = new MovementModifier(Vector3.zero, 0);
         public Force force;
         public Cooldown cooldown = new Cooldown(4, 0);
         public NPC npcShoveld;
-        public SoundObject usedSound;
+        public SoundObject usedSound, windHitSound;
     }
 }

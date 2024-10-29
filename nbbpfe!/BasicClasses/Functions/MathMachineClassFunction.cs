@@ -26,6 +26,7 @@ namespace nbppfe.BasicClasses.Functions
                             if (player.ec.CellFromPosition(notebook.transform.position).room == room)
                                 notebook.Clicked(player.playerNumber);
                         }
+                        Instantiate<ITM_Homework>(CustomItemsEnum.HomeworkTierA.ToItem().item.GetComponent<ITM_Homework>()).OnUse();
                         player.itm.Remove(CustomItemsEnum.HomeworkTierA.ToItemEnum());
                     }
                 }

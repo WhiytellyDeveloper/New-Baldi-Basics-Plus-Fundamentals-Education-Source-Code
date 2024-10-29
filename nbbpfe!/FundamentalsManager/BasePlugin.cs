@@ -31,7 +31,6 @@ namespace nbppfe.FundamentalsManager
             Instance = this;
 
             configs.disablelobby = Config.Bind("Floors Settings", "Disable Initial Lobby", false, "When activating, disable the initial lobby that is executed before f1 or f0 if activated. (Making this decision will disable a lot of the mod's content.)");
-            configs.disablef0 = Config.Bind("Floors Settings", "Disable Floor 0", false, "When enabling, disable floor 0 will not be executed before floor 1. (It will not be executed at all)");
 
             harmony.PatchAllConditionals();
             Debug.Log("Thx for playing ;)");
@@ -55,9 +54,6 @@ namespace nbppfe.FundamentalsManager
                         ld.maxSpecialBuilders += 2;
                         ld.additionalNPCs += 3;
                         ld.maxItemValue = 130;
-
-                        if (!configs.disablef0.Value)
-                            ld.exitCount = 2;
                         List<WeightedNPC> npcsToRemove = new List<WeightedNPC>();
 
                         foreach (WeightedNPC npc in ld.potentialNPCs)
@@ -69,7 +65,6 @@ namespace nbppfe.FundamentalsManager
                         foreach (WeightedNPC npc in npcsToRemove)
                             ld.potentialNPCs.Remove(npc);
 
-                        ld.forcedNpcs = new NPC[0];
                         ld.forcedNpcs = ld.forcedNpcs.AddItem(NPCMetaStorage.Instance.Get(Character.Sweep).value).ToArray();
 
                         break;
@@ -80,9 +75,6 @@ namespace nbppfe.FundamentalsManager
                         ld.maxSpecialBuilders += 3;
                         ld.additionalNPCs += 5;
                         ld.maxItemValue /= 2;
-
-                        if (!configs.disablef0.Value)
-                            ld.exitCount = 3;
                         List<WeightedNPC> _npcsToRemove = new List<WeightedNPC>();
 
                         foreach (WeightedNPC npc in ld.potentialNPCs)
@@ -156,7 +148,6 @@ namespace nbppfe.FundamentalsManager
                         ld.minSpecialBuilders += 2;
                         ld.maxSpecialBuilders += 5;
                         ld.additionalNPCs += 5;
-                        ld.maxItemValue /= 2;
                         ld.roomGroup.First(x => x.name == "Class").stickToHallChance = 0.6f;
                         foreach (WeightedRoomAsset classRoom in f1.roomGroup.First(x => x.name == "Class").potentialRooms)
                         {
@@ -259,6 +250,6 @@ namespace nbppfe.FundamentalsManager
 
     public class Configs
     {
-        internal ConfigEntry<bool> disablelobby, disablef0, disablef4, disablef5;
+        internal ConfigEntry<bool> disablelobby, disablef4, disablef5;
     }
 }

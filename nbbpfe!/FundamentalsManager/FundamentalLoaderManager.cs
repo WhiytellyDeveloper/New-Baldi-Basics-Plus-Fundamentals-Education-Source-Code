@@ -1,4 +1,5 @@
-﻿using MTM101BaldAPI.Reflection;
+﻿using MTM101BaldAPI.AssetTools;
+using MTM101BaldAPI.Reflection;
 using nbppfe.Extensions;
 using nbppfe.FundamentalsManager.Loaders;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace nbppfe.FundamentalsManager
             GenericThrowSound = AssetsLoader.CreateSound("throwSound", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
             GenericDrinkingSound = AssetsLoader.CreateSound("drinkingSound1", Paths.GetPath(PathsEnum.Misc), "", SoundType.Effect, Color.white, 1);
             GenericEatSound = (SoundObject)Items.ZestyBar.ToItem().item.GetComponent<ITM_ZestyBar>().ReflectionGetVariable("audEat");
-
+            GenericTrackerSound = AssetsLoader.CreateSound("trackerSound", Paths.GetPath(PathsEnum.Misc), "Sfx_Bweeip", SoundType.Effect, Color.white, 1);
+            GenericAirSound = AssetsLoader.CreateSound("WindHit", Paths.GetPath(PathsEnum.Items, "BaseballBat"), "Sfx_WindHit", SoundType.Effect, Color.white, 1);
             ItemsLoader.LoadItems();
             CustomObjectsLoader.Load();
             RoomsLoader.LoadRooms();
@@ -33,7 +35,6 @@ namespace nbppfe.FundamentalsManager
         }
 
         public static List<FloorData> floors = [
-            new FloorData("F0"),
             new FloorData("F1"),
             new FloorData("F2"),
             new FloorData("F3"),
@@ -45,6 +46,8 @@ namespace nbppfe.FundamentalsManager
         public static SoundObject GenericThrowSound;
         public static SoundObject GenericDrinkingSound;
         public static SoundObject GenericEatSound;
+        public static SoundObject GenericTrackerSound;
+        public static SoundObject GenericAirSound;
 
         public class FloorData(string floor = "None")
         {

@@ -29,10 +29,6 @@ namespace nbppfe.Patches
 
                 if (!BasePlugin.Instance.configs.disablelobby.Value)
                     Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.lobbyScene;
-                else if (!BasePlugin.Instance.configs.disablef0.Value && BasePlugin.Instance.configs.disablelobby.Value)
-                    Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.F0;
-                else if (BasePlugin.Instance.configs.disablef0.Value && BasePlugin.Instance.configs.disablelobby.Value)
-                    Debug.Log("Nothing is executed here");
 
                 Object.FindObjectOfType<ElevatorScreen>().UpdateFloorDisplay();
             }

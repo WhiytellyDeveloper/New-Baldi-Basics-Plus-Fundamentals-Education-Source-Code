@@ -23,7 +23,7 @@ namespace nbppfe.FundamentalsManager.Loaders
 
         public static void Load()
         {
-            new Floor0Scene().LoadEverything();
+            //new Floor0Scene().LoadEverything();
             new LobbyScene().LoadEverything();
         }
 

@@ -16,15 +16,17 @@ namespace nbppfe.CustomContent.CustomItems
         public void Setup()
         {
             var sprite = CustomItemsEnum.WaterBucket.ToItem().itemSpriteLarge;
-            floatingSpr = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(0, LayerStorage.billboardLayer);
-            floatingSpr.flipY = true;
-            floatingSpr.transform.SetParent(transform);
+            var holder = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(out var renderer, 0, LayerStorage.billboardLayer);
+            floatingSpr = holder.renderers[0].GetComponent<SpriteRenderer>();
+            floatingSpr.GetComponent<SpriteRenderer>().flipY = true;
+            holder.transform.SetParent(transform);
 
             var waterGrounded = gameObject.AddComponent<ForceArea>();
             waterGrounded.audMan = waterGrounded.gameObject.CreatePropagatedAudioManager(45, 105);
-            groundedSpr = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("water", Paths.GetPath(PathsEnum.Items, "WaterBucket"), 15), false).AddSpriteHolder(-5 + 0.01f);
+            var holder2 = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("water", Paths.GetPath(PathsEnum.Items, "WaterBucket"), 15), false).AddSpriteHolder(out var renderer2, -5 + 0.01f);
+            groundedSpr = holder2.renderers[0].GetComponent<SpriteRenderer>();
             groundedSpr.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-            groundedSpr.transform.SetParent(waterGrounded.transform);
+            holder2.transform.SetParent(waterGrounded.transform);
             entity = gameObject.CreateEntity(1.5f, 1.5f);
             gameObject.layer = LayerStorage.standardEntities;
         }

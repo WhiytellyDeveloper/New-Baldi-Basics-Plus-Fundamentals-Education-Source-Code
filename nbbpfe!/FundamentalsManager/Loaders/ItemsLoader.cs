@@ -7,6 +7,7 @@ using nbppfe.CustomContent.CustomItems;
 using nbppfe.CustomContent.CustomItems.ItemTypes;
 using nbppfe.CustomData;
 using nbppfe.Enums;
+using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using PixelInternalAPI;
@@ -21,6 +22,9 @@ namespace nbppfe.FundamentalsManager.Loaders
 {
     public static partial class ItemsLoader
     {
+
+        public static Dictionary<Item, bool> isDiet = [];
+
         public static void LoadItems()
         {
             LoadItem<ITM_CommonTeleporter>("CommonTeleporter", CustomItemsEnum.CommonTeleporter)
@@ -38,7 +42,9 @@ namespace nbppfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_Soda>("Soda", CustomItemsEnum.Soda)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 50, 40, 30, 35])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 20, 10, 50]);
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 20, 10, 50])
+            .MakeItPartyItem(45)
+            .MakeItFieldTripItem(70);
 
             LoadItem<ITM_Soda>("DietSoda", CustomItemsEnum.DietSoda, true)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [53, 30, 50, 60, 70])
@@ -54,27 +60,27 @@ namespace nbppfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 30, 22, 32, 18])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 55, 32, 30]);
 
-            LoadItem<ITM_BullyPresent>("BullyPresent", CustomItemsEnum.BullyPresent)
+            LoadItem<Item>("BullyPresent", CustomItemsEnum.BullyPresent)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [35, 22, 40, 12, 44])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [37, 30, 20, 40, 44]);
 
             LoadItem<ITM_Glue>("Glue", CustomItemsEnum.Glue)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 20, 10, 50])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 10, 30, 20, 40])
-            .MakeItPartyItem(75)
-            .MakeItFieldTripItem(50);
+            .MakeItFieldTripItem(57);
+
+            LoadItem<ITM_Glue>("GlueStick", CustomItemsEnum.StickGlue, true)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45, 30, 20, 10, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 28, 30, 20, 40])
+            .MakeItFieldTripItem(35);
 
             LoadItem<ITM_Pretzel>("Pretzel", CustomItemsEnum.Pretzel)
             .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 60, 55, 80])
             .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [70, 67, 15, 95])
             .MakeItFieldTripItem(58);
 
-            //LoadItem<ITM_SoupInCan>("SoupCan", CustomItemsEnum.CanSoup)
-            //.MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [70, 80, 50, 2, 100])
-            //.MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [100, 10, 80, 20, 70]);
-
             LoadItem<ITM_NoClipController>("NoClipController", CustomItemsEnum.NoClipController)
-            .MakeItWeightedItem(["F3", "F4", "END"], [15, 12, 30])
+            .MakeItWeightedItem(["F3", "F4", "END"], [10, 12, 30])
             .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [20, 32, 5, 40])
             .MakeItPartyItem(175)
             .MakeItMysteryItem(50)
@@ -174,6 +180,158 @@ namespace nbppfe.FundamentalsManager.Loaders
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 70, 30, 40, 34])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 75, 35, 45, 55])
             .MakeItFieldTripItem(46);
+
+            LoadItem<ITM_FidgetSpinner>("FidgetSpinner", CustomItemsEnum.OutdatedFidgetSpinner)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 22, 12, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 27, 17, 35])
+            .MakeItPartyItem(52)
+            .MakeItFieldTripItem(70);
+
+            LoadItem<ITM_HandHook>("HandHook", CustomItemsEnum.HandHook)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 23, 40])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 60, 46, 80])
+            .MakeItPartyItem(40)
+            .MakeItFieldTripItem(50);
+
+            LoadItem<ITM_GrilledCheese>("GrilledCheese", CustomItemsEnum.GrilledCheese)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 25, 40, 40])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [35, 25, 20, 35, 35]);
+
+            LoadItem<ITM_GenericSoda>("GenericSoda", CustomItemsEnum.GenericSoda)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [12, 21, 30, 24, 37])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [21, 12, 3, 42, 73])
+            .MakeItFieldTripItem(45)
+            .MakeItMysteryItem(80);
+
+            LoadItem<ITM_GenericSoda>("DietGenericSoda", CustomItemsEnum.DietGenericSoda, true)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [22, 30, 38, 33, 45])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 60, 76, 66, 90]);
+
+            LoadItem<ITM_Tea>("Tea", CustomItemsEnum.Tea)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [12, 32, 20, 34, 38])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 12, 22, 23, 34])
+            .MakeItFieldTripItem(80)
+            .MakeItPartyItem(25);
+
+            LoadItem<ITM_Tea>("DietTea", CustomItemsEnum.DietTea, true)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 37, 40, 48, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 24, 44, 36, 68])
+            .MakeItFieldTripItem(40);
+
+            LoadItem<ITM_AdvertenceBook>("AdvertenceBook", CustomItemsEnum.AdvertenceBook)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [36, 24, 30, 28, 42])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 42, 30, 40, 55])
+            .MakeItFieldTripItem(40);
+
+            LoadItem<ITM_AdvertenceBook>("ConnectedAdvertenceBook", CustomItemsEnum.ConnectedAdvertenceBook)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [28, 24, 12, 15])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 24, 44, 36, 68])
+            .MakeItFieldTripItem(40);
+
+            //You who ask yourself, why don't you use the diet which is practically the same thing. It simply doesn't work for ANY reason. WHY??????
+            CustomItemsEnum.ConnectedAdvertenceBook.ToItem().item.GetComponent<ITM_AdvertenceBook>().connected = true;
+
+            LoadItem<ITM_Compass>("Compass", CustomItemsEnum.Compass)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 25, 40, 12, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [28, 34, 33, 48, 32])
+            .MakeItFieldTripItem(22);
+
+            LoadItem<ITM_MapPoint>("MapPoint", CustomItemsEnum.MapPoint)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 50, 30, 44, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 40, 50, 20, 40]);
+
+            LoadItem<ITM_BaseballBat>("BaseballBat", CustomItemsEnum.BaseballBat)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 40, 50, 42, 66])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [25, 42, 13, 45, 30])
+            .MakeItFieldTripItem(40);
+
+            LoadItem<ITM_SafteyGlasses>("SafteyGlasses", CustomItemsEnum.SafteyGlasses)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 30, 20, 15])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [11, 22, 33, 22, 11])
+            .MakeItFieldTripItem(45);
+
+            LoadItem<ITM_FreezeClock>("FreezeClock", CustomItemsEnum.FreezeClock)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 11, 10, 14, 10])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [13, 16, 17, 18, 14])
+            .MakeItMysteryItem(50)
+            .MakeItPartyItem(80)
+            .MakeItFieldTripItem(90);
+
+            LoadItem<ITM_Horn>("Horn", CustomItemsEnum.Horn)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 25, 40, 12, 48])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 32, 50, 12, 70]);
+
+            LoadItem<ITM_BanHammer>("BanHammer", CustomItemsEnum.BanHammer)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 30, 20, 15])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [11, 22, 33, 22, 11])
+            .MakeItGuaranteedFieldTripItem()
+            .MakeItMysteryItem(60);
+
+            LoadItem<ITM_Swapper>("Swapper", CustomItemsEnum.Swapper)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 30, 21, 38, 48])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [32, 45, 32, 38, 50])
+            .MakeItFieldTripItem(32);
+
+            /*
+            LoadItem<ITM_Lantern>("Lantern", CustomItemsEnum.Lantern)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 30, 21, 38, 48])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [32, 45, 32, 38, 50])
+            .MakeItFieldTripItem(32);
+            */
+
+            LoadItem<ITM_PlayerCardboard>("PlayerCardboard", CustomItemsEnum.PlayerCardboard)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 28, 40, 25, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 37, 42, 38, 52])
+            .MakeItFieldTripItem(70);
+
+            LoadItem<ITM_GatwayTeleporter>("GatewayTeleporter", CustomItemsEnum.GatewayTeleporter)
+            .MakeItWeightedItem(["F2", "F3", "F4"], [20, 14, 22])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4"], [22, 34, 13])
+            .MakeItPartyItem(70)
+            .MakeItFieldTripItem(65);
+
+            LoadItem<ITM_IceCreamStick>("FreezingIceCream", CustomItemsEnum.StickIceCream)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4"], [30, 20, 40, 48])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4"], [15, 10, 20, 24])
+            .MakeItPartyItem(70)
+            .MakeItFieldTripItem(65);
+
+            LoadItem<ITM_Traumatized>("Traumatized", CustomItemsEnum.Traumatized)
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [34, 40, 48, 52])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [33, 22, 11, 44])
+            .MakeItFieldTripItem(72);
+
+            LoadItem<ITM_EntityTeleporter>("EntityTeleporter", CustomItemsEnum.EntityTeleporter)
+            .MakeItWeightedItem(["F1","F2", "F3", "F4", "END"], [1, 30, 42, 13, 38])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [6, 44, 22, 15, 38])
+            .MakeItFieldTripItem(72);
+
+            LoadItem<ITM_JumpBoots>("JumpBoots", CustomItemsEnum.JumpBoots)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [14, 5, 18, 2, 33])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 32, 55, 22, 60])
+            .MakeItPartyItem(70)
+            .MakeItFieldTripItem(100);
+
+            /*
+            LoadItem<ITM_YTPsMultiplier>("MultiplierMachine", CustomItemsEnum.YTPsMultiplier)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [6, 12, 11, 8, 10])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [12, 24, 22, 16, 20])
+            .MakeItPartyItem(24)
+            .MakeItFieldTripItem(25);
+            */
+
+            LoadItem<ITM_InvisblePaintBucket>("InvisiblePaintBucket", CustomItemsEnum.InvisiblePaintBucket)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 25, 44, 30, 28, 49])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 44, 50, 22, 30])
+            .MakeItPartyItem(80)
+            .MakeItGuaranteedFieldTripItem();
+
+            LoadItem<ITM_PaintGun>("PaintGun", CustomItemsEnum.PaintGun)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 25, 44, 30, 28, 49])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 44, 50, 22, 30])
+            .MakeItPartyItem(80)
+            .MakeItGuaranteedFieldTripItem();
+
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum, bool diet = false) where T : Item

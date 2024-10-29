@@ -12,8 +12,8 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup()
         {
-            closed = AssetsLoader.CreateSprite("Box", Paths.GetPath(PathsEnum.Items, "Box"), 100);
-            open = AssetsLoader.CreateSprite("Box_Open", Paths.GetPath(PathsEnum.Items, "Box"), 100);
+            closed = AssetsLoader.CreateSprite("RealBox", Paths.GetPath(PathsEnum.Items, "Box"), 100);
+            open = AssetsLoader.CreateSprite("RealBox_Open", Paths.GetPath(PathsEnum.Items, "Box"), 100);
             renderer = ObjectCreationExtensions.CreateSpriteBillboard(open);
             renderer.transform.SetParent(transform);
             entity = gameObject.CreateEntity(renderer.GetSpriteSize(), renderer.GetSpriteSize(), renderer.transform).SetEntityCollisionLayerMask(LayerStorage.gumCollisionMask);
@@ -27,6 +27,7 @@ namespace nbppfe.CustomContent.CustomItems
             transform.position = pm.transform.position;
             direction = pm.GetPlayerCamera().transform.forward;
             entity.Initialize(pm.ec, transform.position);
+            Singleton<CoreGameManager>.Instance.audMan.PlaySingle(FundamentalLoaderManager.GenericThrowSound);
             entity.OnEntityMoveInitialCollision += (hit) =>
             {
                 if (!isNotDestroyIfHitAWallOrSomethingLikeThat)

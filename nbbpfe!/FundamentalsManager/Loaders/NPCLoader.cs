@@ -25,28 +25,18 @@ namespace nbppfe.FundamentalsManager.Loaders
         public static void SetupNPCs()
         {
             NPC kawa = new NPCBuilder<Kawa>(BasePlugin.Instance.Info)
-            .SetupAll("Kawa", CustomNPCsEnum.Kawa, "#C9D3EF", "", false, [RoomCategory.Faculty, RoomCategory.Special])
+            .SetupAll("Kawa", CustomNPCsEnum.Kawa, "#C9D3EF", true, false, [RoomCategory.Faculty, RoomCategory.Special])
             .SetMinMaxAudioDistance(50, 100)
             .IgnoreBelts()
             .Build(-1.046f, AssetsLoader.SetHexaColor("#C9D3EF"), "Kawa_0")
-            .MakeItWeightedNPC(["F1", "F2", "END"], [46, 30, 70]);
+            .MakeItWeightedNPC(["F1", "F2", "END"], [46, 30, 75]);
 
-            /* Later...
             NPC cardboardCheese = new NPCBuilder<CardboardCheese>(BasePlugin.Instance.Info)
-            .SetName(NPCLoaderExtenssion.LoadFile("CardboardCheese").name)
-            .SetEnum(CustomNPCsEnum.CardboardCheese.ToString())
-            .SetMinMaxAudioDistance(150, 300)
-            .AddSpawnableRoomCategories(RoomCategory.Hall)
-            .AddLooker()
-            .SetMaxSightDistance(1500)
-            .SetupPoster("CardboardCheese")
-            .SetupSprites("CardboardCheese", false, "", true) //NormalSprites
-            .SetupSprites("CardboardCheese", true, "_Slot") //Spritesheet
-            .SetupSounds("CardboardCheese", "#D99245", true)
-            .SetStationary()
-            .Build(-0.733f, AssetsLoader.SetHexaColor("#D99245"), "CartboardCheeseV2")
-            .MakeItForcedNPC(["F1", "END"]);
-            */
+           .SetupAll("CardboardCheese", CustomNPCsEnum.CardboardCheese, "#D99245", false, true, [RoomCategory.Hall])
+           .AddLooker().SetMaxSightDistance(120)
+           .SetMinMaxAudioDistance(150, 240)
+           .Build(-0.733f, AssetsLoader.SetHexaColor("#D99245"), "CartboardCheeseV2")
+           .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [20, 40, 34, 75]);
 
             /* Later... 2 lol
             NPC shadowFollower = new NPCBuilder<Follower>(BasePlugin.Instance.Info)
@@ -74,7 +64,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             */
 
             NPC emmilyGutter = new NPCBuilder<EmillyGutter>(BasePlugin.Instance.Info)
-            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", spriteSheetPrefix: "", debug: false, categorys: [RoomCategory.Faculty])
+            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", useSpriteSheetName:true, debug: false, categorys: [RoomCategory.Faculty])
             .AddLooker().SetMaxSightDistance(80)
             .AddPotentialRoomAsset(AssetsLoader.Get<RoomAsset>("EmellyGutterFacutlyRoom1"), 100)
             .SetMinMaxAudioDistance(45, 100)
@@ -109,7 +99,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             return builder;
         }
 
-        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, bool spriteSheet, string spriteSheetPostfix = "", bool debug = false) where T : NPC
+        public static NPCBuilder<T> SetupSprites<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, bool spriteSheet, bool useNameOnSpriteSheet, bool debug = false) where T : NPC
         {
             FileNPCData data = LoadFile(npcName);
             string[] sprites = Directory.GetFiles(Paths.GetPath(PathsEnum.NPCs, npcName), "*.png", SearchOption.AllDirectories);
@@ -151,10 +141,22 @@ namespace nbppfe.FundamentalsManager.Loaders
 
                                     for (int i = 0; i < newSprites.Length; i++)
                                     {
-                                        if (debug)
-                                            Debug.Log($"{npcName}{spriteSheetPostfix}_{i}");
-                                        newSprites[i].name = $"{npcName}{spriteSheetPostfix}_{i}";
-                                        AssetsLoader.assetMan.Add($"{npcName}{spriteSheetPostfix}_{i}", newSprites[i]);
+                                        if (useNameOnSpriteSheet)
+                                        {
+                                            if (debug)
+                                                Debug.Log($"{npcName}_{i}");
+                                            newSprites[i].name = $"{npcName}_{i}";
+                                            AssetsLoader.assetMan.Add($"{npcName}_{i}", newSprites[i]);
+                                        }
+                                        else
+                                        {
+                                            if (debug)
+                                                Debug.Log($"{Path.GetFileNameWithoutExtension(sprite)}_{i}");
+                                            newSprites[i].name = $"{Path.GetFileNameWithoutExtension(sprite)}_{i}";
+                                            AssetsLoader.assetMan.Add($"{Path.GetFileNameWithoutExtension(sprite)}_{i}", newSprites[i]);
+                                        }
+
+
                                         if (debug)
                                         {
                                             string spritePath = Path.Combine(debugFolderPath, $"{newSprites[i].name}.png");
@@ -217,15 +219,15 @@ namespace nbppfe.FundamentalsManager.Loaders
             return builder;
         }
 
-        public static NPCBuilder<T> SetupAll<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaCode, string spriteSheetPrefix = "", bool debug = false, params RoomCategory[] categorys) where T : NPC
+        public static NPCBuilder<T> SetupAll<T>(this NPCBuilder<T> builder, string npcName, CustomNPCsEnum npcEnum, string hexaCode, bool useSpriteSheetName, bool debug = false, params RoomCategory[] categorys) where T : NPC
         {
             builder.SetMetaName(LoadFile(npcName).pri_namekey);
             builder.SetName(LoadFile(npcName).name);
             builder.SetEnum(npcEnum.ToString());
             builder.SetupPoster(npcName);
             builder.AddSpawnableRoomCategories(categorys);
-            builder.SetupSprites(npcName, npcEnum, false, "", debug);
-            builder.SetupSprites(npcName, npcEnum, true, spriteSheetPrefix, debug);
+            builder.SetupSprites(npcName, npcEnum, false, useSpriteSheetName, debug);
+            builder.SetupSprites(npcName, npcEnum, true, useSpriteSheetName, debug);
             builder.SetupSounds(npcName, npcEnum, hexaCode, debug);
             return builder;
         }

@@ -72,12 +72,12 @@ namespace nbppfe.BasicClasses.Functions
                 if (availableItems.Count == 0)
                     break;
 
-                ItemObject selectedItem = WeightedSelection<ItemObject>.ControlledRandomSelectionList(availableItems, new System.Random());
+                ItemObject selectedItem = WeightedSelection<ItemObject>.ControlledRandomSelectionList(availableItems, new System.Random(Singleton<CoreGameManager>.Instance.Seed()));
 
                 pickup.icon.spriteRenderer.enabled = false;
                 pickup.AssignItem(selectedItem);
                 pickup.free = false;
-                pickup.price = ((int)(pickup.price /2.7f));
+                pickup.price = ((int)(pickup.item.price / 2.2f));
                 pickup.showDescription = true;
                 TogglePriceDescription(pickup, true);
                 availableItems.RemoveAll(w => w.selection == selectedItem);

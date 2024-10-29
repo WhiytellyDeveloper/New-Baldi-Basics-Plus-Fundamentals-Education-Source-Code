@@ -21,4 +21,13 @@ namespace nbppfe.Patches
             __instance.gameObject.GetOrAddComponent<StandardDoor>();
 
     }
+
+    [HarmonyPatch(typeof(NPC), nameof(NPC.Initialize))]
+    internal static class NPCPatch
+    {
+        [HarmonyPostfix]
+        internal static void AddExtension(NPC __instance) =>
+            __instance.gameObject.GetOrAddComponent<NpcExtension>();
+
+    }
 }

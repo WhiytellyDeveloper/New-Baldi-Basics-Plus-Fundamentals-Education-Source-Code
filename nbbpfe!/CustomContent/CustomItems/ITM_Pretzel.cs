@@ -1,6 +1,4 @@
-﻿using MTM101BaldAPI.Registers;
-using MTM101BaldAPI;
-using PixelInternalAPI.Extensions;
+﻿using PixelInternalAPI.Extensions;
 using UnityEngine;
 using MTM101BaldAPI.Reflection;
 using PixelInternalAPI.Classes;
@@ -57,33 +55,34 @@ namespace nbppfe.CustomContent.CustomItems
 
         public void EntityTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("NPC") || active) return;
-
-            active = true;
-            npc = other.GetComponent<NPC>();
-
-            if (!npc)
+            if (!other.CompareTag("NPC") || active)
             {
-                if (!npc.looker.enabled)
-                {
-                    if (npc.Character == Character.Bully) return;
-                    return;
-                }
+                active = true;
+                npc = other.GetComponent<NPC>();
 
-                if (npc.Character != Character.Principal)
+                if (npc != null)
                 {
-                    npc.GetComponent<AudioManager>()?.PlaySingle(stickySound);
-                    npc.PlayerLost(pm);
-                    if (npc.looker != null) { npc.looker.enabled = false; }
-                    spriteRenderer.enabled = false;
+                    if (npc.looker.enabled)
+                    {
+                        if (npc.Character != Character.Principal)
+                        {
+                            npc.GetComponent<AudioManager>().PlaySingle(stickySound);
+                            npc.PlayerLost(pm);
 
-                    if (npc.Character == Character.Playtime && npc.GetComponent<Playtime>().Navigator.maxSpeed == 0)
-                        npc.GetComponent<Playtime>().EndJumprope(true);
-                }
-                else
-                {
-                    npc.behaviorStateMachine.ChangeState(new Principal_Pretzel(npc.GetComponent<Principal>(), npc.behaviorStateMachine.currentState, pm));
-                    Destroy(gameObject);
+                            if (npc.looker != null)  
+                                npc.looker.enabled = false; 
+                            
+                            spriteRenderer.enabled = false;
+
+                            if (npc.Character == Character.Playtime && npc.GetComponent<Playtime>().Navigator.maxSpeed == 0)
+                                npc.GetComponent<Playtime>().EndJumprope(true);
+                        }
+                        else
+                        {
+                            npc.behaviorStateMachine.ChangeState(new Principal_Pretzel(npc.GetComponent<Principal>(), npc.behaviorStateMachine.currentState, pm));
+                            Destroy(gameObject);
+                        }
+                    }
                 }
             }
         }
@@ -109,13 +108,13 @@ namespace nbppfe.CustomContent.CustomItems
         public bool active;
         public NPC npc;
         public SpriteRenderer spriteRenderer;
-        public Cooldown cooldown = new Cooldown(20, 0);
+        public Cooldown cooldown = new(20, 0);
     }
 
     public class Principal_Pretzel : Principal_SubState
     {
         protected PlayerManager pm;
-        protected Cooldown cooldown = new Cooldown(1, 0);
+        protected Cooldown cooldown = new(1, 0);
 
         public Principal_Pretzel(Principal pri, NpcState state, PlayerManager player) : base(pri, state)
         {

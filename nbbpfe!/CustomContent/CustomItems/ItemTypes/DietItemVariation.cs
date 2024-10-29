@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace nbppfe.CustomContent.CustomItems.ItemTypes
 {
-    public class DietItemVariation : Item
+    public interface DietItemVariation
     {
-        public bool diet;
+        public bool diet { get; set; }
     }
 }

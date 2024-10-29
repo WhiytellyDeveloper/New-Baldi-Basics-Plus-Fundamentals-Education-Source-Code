@@ -10,12 +10,13 @@ using nbppfe.FundamentalsManager;
 
 namespace nbppfe.CustomContent.CustomItems
 {
-    public class ITM_Soda : DietItemVariation, IItemPrefab
+    public class ITM_Soda : Item, DietItemVariation, IItemPrefab
     {
         public void Setup()
         {
-            spr = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("SodaSprite", Paths.GetPath(PathsEnum.Items, "Soda"), 12)).AddSpriteHolder(0, LayerStorage.ignoreRaycast);
-            spr.transform.SetParent(transform);
+            var holder = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("SodaSprite", Paths.GetPath(PathsEnum.Items, "Soda"), 12)).AddSpriteHolder(out var renderer, 0, LayerStorage.ignoreRaycast);
+            spr = holder.renderers[0].GetComponent<SpriteRenderer>();
+            holder.transform.SetParent(transform);
 
             entity = gameObject.CreateEntity(0.1f, 0.1f, spr.transform).SetEntityCollisionLayerMask(0);
             gameObject.layer = LayerStorage.standardEntities;
@@ -34,6 +35,13 @@ namespace nbppfe.CustomContent.CustomItems
 
         public override bool Use(PlayerManager pm)
         {
+            ITM_Soda[] sodas = FindObjectsOfType<ITM_Soda>();
+            if (sodas.Length > lenghtMaxCount)
+            {
+                Destroy(gameObject);
+                return false;
+            }
+
             this.pm = pm;
             cooldown.endAction = End;
             transform.position = pm.transform.position;
@@ -78,5 +86,7 @@ namespace nbppfe.CustomContent.CustomItems
         public MovementModifier speedModifier = new MovementModifier(Vector3.zero, 3f);
         public int lenghtMaxCount = 1;
         public Cooldown cooldown = new Cooldown(25, 0);
+
+        public bool diet { get; set; }
     }
 }

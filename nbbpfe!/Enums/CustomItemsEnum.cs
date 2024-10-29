@@ -12,9 +12,9 @@
         SweepWhistle,
         BullyPresent,
         Glue,
-        BoxPortal, //Later...
+        StickGlue,
+        BoxPortal,
         Pretzel, //The Excavator Man
-        CanSoup, //Alex Director
         Walkman,
         WhiteZesty,
         Shovel, //The Excavator Man
@@ -26,8 +26,9 @@
         HallPass,
         WaterBucket, //Samuel
         NoClipController,
-        FidgetSpinner, //Maybe not...
+        OutdatedFidgetSpinner,
         Magnet,
+        DietGenericSoda,
         GenericSoda,
         Present,
         Cookie,
@@ -39,6 +40,30 @@
         PurpleVisonPad, //NPCs
         RedVisionPad, //Elevators
         OrangeVisionPad, //Notebooks and Items
-        Umbrella
+        Umbrella,
+        AdvertenceBook,
+        ConnectedAdvertenceBook,
+        HandHook,
+        JellyHandHook,
+        GrilledCheese,
+        MapPoint, //Dorian
+        Compass,
+        BaseballBat,
+        SafteyGlasses,
+        FreezeClock, //Samuel
+        BanHammer,
+        Swapper,
+        SwapperHook,
+        //Lantern,
+        PlayerCardboard,
+        GatewayTeleporter, //Alex Director
+        StickIceCream,
+        YTPsMultiplier,
+        IceCreamMask,
+        Traumatized,
+        EntityTeleporter,
+        JumpBoots,
+        InvisiblePaintBucket,
+        PaintGun
     }
 }

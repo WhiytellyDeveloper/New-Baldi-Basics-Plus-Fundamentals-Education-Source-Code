@@ -51,7 +51,7 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
 
         public Sprite getSlotSprite(int slot)
         {
-            return Resources.FindObjectsOfTypeAll<Sprite>().Where(x => x.name == $"CardboardCheese_Slot_{slot}").First();
+            return Resources.FindObjectsOfTypeAll<Sprite>().Where(x => x.name == $"CheeseItemSlot_SpriteSheet_{slot}").First();
         }
 
         public Sprite getDynamicSlotSprite(int slot, int player)

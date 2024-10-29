@@ -182,8 +182,6 @@ namespace nbppfe.Scenes
             floorObj.timeBonusVal = 45;
 
             floorObj.MarkAsNeverUnload();
-            GeneratorManagement.Invoke("F0", 0, floorObj);
-            Debug.Log("Invoking SceneObject(F0)(0) Generation Changes for Main0 (MTM101BaldAPI.CustomLevelObject)!");
 
             var scene = ScriptableObject.CreateInstance<SceneObject>();
             scene.name = "MainLevel_0";
@@ -199,7 +197,8 @@ namespace nbppfe.Scenes
             scene.totalShopItems = 2;
             scene.shopItems = f1.shopItems;
             scene.MarkAsNeverUnload();
-
+            //GeneratorManagement.Invoke("F0", 0, scene);
+            Debug.Log("Invoking SceneObject(F0)(0) Generation Changes for Main0 (MTM101BaldAPI.CustomLevelObject)!");
             SceneLoader.F0 = scene;
         }
     }

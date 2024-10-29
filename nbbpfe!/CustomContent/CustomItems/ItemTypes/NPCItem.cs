@@ -12,8 +12,8 @@ namespace nbppfe.CustomContent.CustomItems.ItemTypes
     {
         public override bool Use(PlayerManager pm)
         {
-            PostUseItem();
-
+            this.pm = pm;
+            PreUseItem();
             RaycastHit hit;
             LayerMask clickMask = new LayerMask() { value = 131073 };
             if (Physics.Raycast(pm.transform.position, Singleton<CoreGameManager>.Instance.GetCamera(pm.playerNumber).transform.forward, out hit, pm.pc.reach * 3, clickMask))
@@ -32,7 +32,8 @@ namespace nbppfe.CustomContent.CustomItems.ItemTypes
             {
                 if (notAllowedCharacters.Contains(x.Character)) return;
                 if (!x.GetMeta().flags.HasFlag(NPCFlags.HasTrigger)) return;
-                OnUse(pm, x);
+                _return = OnUse(pm, x);
+                PostUseItem();
                 guiltSet = true;
 
                 if (destroyOnUse)
@@ -42,31 +43,41 @@ namespace nbppfe.CustomContent.CustomItems.ItemTypes
             if (!guiltSet && destroyOnUse)
                 Destroy(gameObject);
 
-            return guiltSet && returnTrue;
+            if (!guiltSet)
+                OnMissNPC();
+
+            return guiltSet && _return;
         }
 
-        public virtual void OnUse(PlayerManager pm, NPC npc)
+        public virtual bool OnUse(PlayerManager pm, NPC npc)
         {
 
+            return false;
         }
 
-        public void AddNotAllowedCharacter(params Character[] npcs)
-        {
+        public void AddNotAllowedCharacter(params Character[] npcs) =>
             notAllowedCharacters.AddRange(npcs);
-        }
+        
 
         public virtual void PostUseItem()
         {
 
         }
 
-        public List<Character> notAllowedCharacters = new List<Character>()
+        public virtual void PreUseItem()
         {
-            Character.Chalkles
-        };
+
+        }
+
+        public virtual void OnMissNPC()
+        {
+
+        }
+
+        public List<Character> notAllowedCharacters = [Character.Chalkles];
 
         protected List<NPC> elligableNPCs = new List<NPC>();
         public bool destroyOnUse;
-        public bool returnTrue = true;
+        private bool _return = false;
     }
 }

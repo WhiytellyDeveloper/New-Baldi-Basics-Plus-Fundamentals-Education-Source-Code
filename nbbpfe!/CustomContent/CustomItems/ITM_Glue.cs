@@ -1,36 +1,41 @@
 ﻿using PixelInternalAPI.Extensions;
 using PixelInternalAPI.Classes;
 using UnityEngine;
-using MTM101BaldAPI;
-using MTM101BaldAPI.Registers;
 using System.Collections;
-using System.Collections.Generic;
 using nbppfe.PrefabSystem;
 using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.Enums;
+using nbppfe.CustomContent.CustomItems.ItemTypes;
 
 namespace nbppfe.CustomContent.CustomItems
 {
-    public class ITM_Glue : Item, IItemPrefab
+    public class ITM_Glue : Item, IItemPrefab, DietItemVariation
     {
         public void Setup()
         {
-            var sprite = CustomItemsEnum.Glue.ToItem().itemSpriteLarge;
-            floatingSpr = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(0, LayerStorage.billboardLayer);
+            var sprite = diet ? CustomItemsEnum.StickGlue.ToItem().itemSpriteLarge : CustomItemsEnum.Glue.ToItem().itemSpriteLarge;
+            var holder = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(out var renderer, 0, LayerStorage.billboardLayer);
+            floatingSpr = holder.renderers[0].GetComponent<SpriteRenderer>();
             floatingSpr.flipY = true;
-            floatingSpr.transform.SetParent(transform);
+            holder.transform.SetParent(transform);
 
             var glueGrounded = gameObject.AddComponent<StickyArea>();
             glueGrounded.audMan = glueGrounded.gameObject.CreatePropagatedAudioManager(22, 75);
-            glueGrounded.onEnterSound = AssetsLoader.CreateSound("StickyGlue", Paths.GetPath(PathsEnum.Items, "Glue"), "Sfx_StickyGlue", SoundType.Effect, Color.white, 1);
-            groundedSpr = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("Glue", Paths.GetPath(PathsEnum.Items, "Glue"), 30), false).AddSpriteHolder(-5 + 0.01f);
+
+            if (!diet)
+                glueGrounded.onEnterSound = AssetsLoader.CreateSound("StickyGlue", Paths.GetPath(PathsEnum.Items, "Glue"), "Sfx_StickyGlue", SoundType.Effect, Color.white, 1);
+            else
+                glueGrounded.onEnterSound = AssetsLoader.Get<SoundObject>("StickyGlue");
+
+            var holder2 = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite(diet ? "StickGlue" : "Glue", Paths.GetPath(PathsEnum.Items, diet ? "GlueStick" : "Glue"), 30), false).AddSpriteHolder(out var renderer2, -5 + 0.01f);
+            groundedSpr = holder2.renderers[0].GetComponent<SpriteRenderer>();
             groundedSpr.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
-            groundedSpr.transform.SetParent(glueGrounded.transform);
+            holder2.transform.SetParent(transform);
             entity = gameObject.CreateEntity(1.5f, 1.5f);
             gameObject.layer = LayerStorage.standardEntities;
-
+            modfire = diet ? 0.2f : 0.04f;
         }
 
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +46,7 @@ namespace nbppfe.CustomContent.CustomItems
             transform.position = pm.transform.position;
             transform.forward = pm.GetPlayerCamera().transform.forward;
             entity.Initialize(pm.ec, transform.position);
-            GetComponent<StickyArea>().moveMod = new MovementModifier(Vector3.zero, 0.15f);
+            GetComponent<StickyArea>().moveMod = new (Vector3.zero, modfire);
             GetComponent<StickyArea>().enabled = false; //lol
             groundedSpr.enabled = false;
             StartCoroutine(Fall());
@@ -85,6 +90,7 @@ namespace nbppfe.CustomContent.CustomItems
         public SpriteRenderer floatingSpr;
         public Entity entity;
         public bool moving;
-        public float fallLimit = -4f;
+        public float fallLimit = -4f, modfire = 0.08f;
+        public bool diet { get; set; }
     }
 }

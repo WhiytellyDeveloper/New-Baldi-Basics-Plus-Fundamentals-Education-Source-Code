@@ -17,11 +17,19 @@ namespace nbppfe.CustomContent.CustomItems
 
         public override bool Use(PlayerManager pm)
         {
+            ITM_JumpBoots[] boots = FindObjectsOfType<ITM_JumpBoots>();
+            if (boots.Length != 0)
+            {
+                Destroy(gameObject);
+                return false;
+            }
+
             this.pm = pm;
             pm.SetInvisible(true);
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(umbrellaOpen);
             pm.plm.Entity.SetTrigger(false);
             pm.plm.Entity.SetGrounded(false);
+            pm.itm.Disable(true);
             height = pm.plm.Entity.BaseHeight;
 
             return true;
@@ -29,12 +37,6 @@ namespace nbppfe.CustomContent.CustomItems
 
         private void Update()
         {
-            foreach (Collider npc in FindObjectsOfType<Collider>())
-            {
-                if (npc.isTrigger)
-                    Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), npc, true);
-            }
-
             if (up)
             {
                 height += ascentSpeed * Time.deltaTime;
@@ -52,22 +54,37 @@ namespace nbppfe.CustomContent.CustomItems
                 if (height <= targetHeight)
                 {
                     height = targetHeight;
+
                     pm.plm.Entity.SetTrigger(true);
                     pm.plm.Entity.SetGrounded(true);
                     pm.SetInvisible(false);
+                    pm.itm.Disable(false);
 
                     if (pm.plm.Entity.BaseHeight == height)
-                        Singleton<CoreGameManager>.Instance.audMan.PlaySingle(playerGroundHit);
-                    foreach (Collider npc in FindObjectsOfType<Collider>())
                     {
-                        if (npc.isTrigger)
-                            Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), npc, false);
+                        Singleton<CoreGameManager>.Instance.audMan.PlaySingle(playerGroundHit);
                     }
                     Destroy(gameObject);
                 }
             }
 
             pm.plm.Entity.SetHeight(height);
+
+
+            foreach (Collider npc in FindObjectsOfType<Collider>())
+            {
+                if (npc.isTrigger)
+                    Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), npc, true);
+            }
+        }
+
+        public void OnDestroy()
+        {
+            foreach (Collider npc in FindObjectsOfType<Collider>())
+            {
+                if (npc.isTrigger)
+                    Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), npc, false);
+            }
         }
 
         public float height = 5f;

@@ -179,6 +179,47 @@ namespace nbppfe.Extensions
             baseTex.Apply();
         }
 
+
+        //Made By Pixel Guy
+        public static T SafeInstantiate<T>(this T obj) where T : Component
+        {
+            obj.gameObject.SetActive(false);
+            var inst = UnityEngine.Object.Instantiate(obj); // Instantiate a deactivated object, so Awake() calls aren't *called* - Pixel guy Note
+            obj.gameObject.SetActive(true);
+
+            return inst;
+        }
+
+        public static Character ToNPCEnum(this CustomNPCsEnum itemEnum)
+        {
+            return EnumExtensions.GetFromExtendedName<Character>(itemEnum.ToString());
+        }
+
+        public static NPC ToNPC(this Character itemEnum)
+        {
+            return NPCMetaStorage.Instance.Get(itemEnum).value;
+        }
+
+        public static NPC ToNPC(this CustomNPCsEnum itemEnum)
+        {
+            return NPCMetaStorage.Instance.Get(itemEnum.ToNPCEnum()).value;
+        }
+
+        //Made By Pixel Guy
+        public static void BlockAllDirs(this EnvironmentController ec, IntVector2 pos, bool block)
+        {
+            ec.FreezeNavigationUpdates(true);
+            var origin = ec.CellFromPosition(pos);
+            for (int i = 0; i < 4; i++)
+            {
+                var dir = (Direction)i;
+                var cell = ec.CellFromPosition(pos + dir.ToIntVector2());
+                if (origin.ConstNavigable(dir))
+                    cell.Block(dir.GetOpposite(), block);
+            }
+            ec.FreezeNavigationUpdates(false);
+        }
+
         private static List<string> enums = [];
     }
 }

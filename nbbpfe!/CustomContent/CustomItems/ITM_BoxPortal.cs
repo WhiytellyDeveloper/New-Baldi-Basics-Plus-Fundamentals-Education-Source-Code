@@ -1,5 +1,4 @@
-﻿using MTM101BaldAPI;
-using MTM101BaldAPI.Reflection;
+﻿using MTM101BaldAPI.Reflection;
 using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
@@ -16,12 +15,10 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup()
         {
-            portal = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("NewPortal", Paths.GetPath(PathsEnum.Items, "BoxPortal"), 13), false).AddSpriteHolder(-5 + 0.01f, LayerStorage.iClickableLayer);
-            var holder = portal.transform.parent;
+            var holder = ObjectCreationExtensions.CreateSpriteBillboard(AssetsLoader.CreateSprite("NewPortal", Paths.GetPath(PathsEnum.Items, "BoxPortal"), 13), false).AddSpriteHolder(out var renderer, -5 + 0.01f, LayerStorage.iClickableLayer);
+            portal = holder.renderers[0].GetComponent<SpriteRenderer>();
             gameObject.AddBoxCollider(Vector3.zero, new Vector3(8, 10, 8), true);
-            holder.gameObject.ConvertToPrefab(true);
             holder.transform.SetParent(transform);
-            portal.transform.SetParent(holder.transform);
             portal.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
 
             text = new GameObject("Text", typeof(BillboardRotator), typeof(PickupBob)).AddComponent<TextMeshPro>();

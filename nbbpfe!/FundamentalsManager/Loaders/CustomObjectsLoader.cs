@@ -28,7 +28,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             PlusLevelLoaderPlugin.Instance.prefabAliases.Add("Mirror", mirror.gameObject);
 
             Sprite spriteCarpetWelcome = AssetsLoader.CreateSprite("WelcomebackCarpet", Paths.GetPath(PathsEnum.PreMadeFloors, "PitLobby"), 40);
-            var welcomeCarpet = ObjectCreationExtensions.CreateSpriteBillboard(spriteCarpetWelcome, false).AddSpriteHolder(0.01f);
+            var welcomeCarpet = ObjectCreationExtensions.CreateSpriteBillboard(spriteCarpetWelcome, false).AddSpriteHolder(out var renderer, 0.01f).renderers[0].GetComponent<SpriteRenderer>();
             var welcCapt = welcomeCarpet.transform.parent;
             welcomeCarpet.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
             welcCapt.gameObject.ConvertToPrefab(true);
@@ -36,7 +36,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             PlusLevelLoaderPlugin.Instance.prefabAliases.Add("WelcomebackCarpet", welcCapt.gameObject);
 
             Sprite spriteCarpetPlayground = AssetsLoader.CreateSprite("OutsideCarpet", Paths.GetPath(PathsEnum.PreMadeFloors, "PitLobby"), 40);
-            var playgroundCarpet = ObjectCreationExtensions.CreateSpriteBillboard(spriteCarpetPlayground, false).AddSpriteHolder(0.01f);
+            var playgroundCarpet = ObjectCreationExtensions.CreateSpriteBillboard(spriteCarpetPlayground, false).AddSpriteHolder(out var renderer2, 0.01f).renderers[0].GetComponent<SpriteRenderer>();
             var playgroundCapt = playgroundCarpet.transform.parent;
             playgroundCarpet.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
             playgroundCapt.gameObject.ConvertToPrefab(true);
