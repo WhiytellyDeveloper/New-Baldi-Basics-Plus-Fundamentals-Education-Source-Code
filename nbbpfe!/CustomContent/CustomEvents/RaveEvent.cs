@@ -22,19 +22,13 @@ namespace nbppfe.CustomContent.CustomEvents
         public IEnumerator StartAnimation()
         {
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(blackout);
-            float remainingTime = blackout.subDuration - 0.5f;
 
-            if (remainingTime > 0)
+            foreach (var cell in ec.AllCells())
             {
-                float timePerCell = remainingTime / ec.AllCells().Count;
-
-                foreach (var cell in ec.AllCells())
-                {
-                    cellColors.Add(cell, new KeyValuePair<Color, bool>(cell.lightColor, cell.hasLight));
-                    Singleton<CoreGameManager>.Instance.UpdateLighting(Color.black, cell.position);
-                    yield return new WaitForSeconds(timePerCell / 10);
-                }
+                cellColors.Add(cell, new KeyValuePair<Color, bool>(cell.lightColor, cell.hasLight));
+                Singleton<CoreGameManager>.Instance.UpdateLighting(Color.black, cell.position);
             }
+            yield return new WaitForSeconds(blackout.subDuration);
 
             Singleton<MusicManager>.Instance.PlayMidi(midi, true);
 
@@ -50,6 +44,7 @@ namespace nbppfe.CustomContent.CustomEvents
             }
 
             StartCoroutine(RaveLoop());
+            yield break;
         }
 
 

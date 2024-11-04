@@ -11,7 +11,7 @@
         CoffeAndSugar,
         SweepWhistle,
         BullyPresent,
-        Glue,
+        StckyGlue,
         StickGlue,
         BoxPortal,
         Pretzel, //The Excavator Man
@@ -44,7 +44,6 @@
         AdvertenceBook,
         ConnectedAdvertenceBook,
         HandHook,
-        JellyHandHook,
         GrilledCheese,
         MapPoint, //Dorian
         Compass,
@@ -54,8 +53,8 @@
         BanHammer,
         Swapper,
         SwapperHook,
-        //Lantern,
         PlayerCardboard,
+        FakePlayerCardboard,
         GatewayTeleporter, //Alex Director
         StickIceCream,
         YTPsMultiplier,
@@ -64,6 +63,23 @@
         EntityTeleporter,
         JumpBoots,
         InvisiblePaintBucket,
-        PaintGun
+        PaintGun,
+        FramePortal,
+        PlaceableTeleporter,
+        Rollerblades,
+        ImmatureApple,
+        Bag, //SomeoneThatPlaysBB+
+        OpenBag,
+        PowerTube, //The Excavator Man
+        BallonPacket, //GrainOfSalt
+        W1LBottle,
+        W1LBottleHalf,
+        W1LBottleEmpty,
+        Mirror,
+        TeleportationArrow,
+        Pickaxe,
+        BlueLocker,
+        PercussionHammer,
+        PlasticPercussionHammer
     }
 }

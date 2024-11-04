@@ -1,13 +1,12 @@
 ﻿using MTM101BaldAPI;
+using nbppfe.Enums;
 using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
-using PixelInternalAPI.Extensions;
 using UnityEngine;
 
 namespace nbppfe.CustomContent.CustomItems
 {
-    //Not foinished
     public class ITM_PaintGun : Item, IItemPrefab
     {
         public void Setup()
@@ -15,30 +14,25 @@ namespace nbppfe.CustomContent.CustomItems
             redPortal = AssetsLoader.CreateTexture("RedPortal", Paths.GetPath(PathsEnum.Items, "PaintGun"));
             bluePortal = AssetsLoader.CreateTexture("BluePortal", Paths.GetPath(PathsEnum.Items, "PaintGun"));
 
-            portalPrefab = new GameObject("PaintPortal").AddComponent<PaintPortal>();
-            portalPrefab.gameObject.ConvertToPrefab(true);
-            portalPrefab.entity = portalPrefab.gameObject.CreateEntity(0.8f, 0.8f);
+            audSplash = CustomItemsEnum.InvisiblePaintBucket.ToItem().item.GetComponent<ITM_InvisblePaintBucket>().splashSound;
+            audTeleport = CustomItemsEnum.CommonTeleporter.ToItem().item.GetComponent<ITM_CommonTeleporter>().teleportSound;
+            audShot = AssetsLoader.CreateSound("PaintGunShot", Paths.GetPath(PathsEnum.Items, "PaintGun"), "", SoundType.Effect, Color.white, 2);
         }
 
         public override bool Use(PlayerManager pm)
         {
-            foreach (ITM_PaintGun paintGun in FindObjectsOfType<ITM_PaintGun>())
-            {
-                if (paintGun != this)
-                {
-                    secondPortal = true;
-                    Destroy(gameObject);
-                }
-            }
-
             if (!Physics.Raycast(pm.transform.position, Singleton<CoreGameManager>.Instance.GetCamera(pm.playerNumber).transform.forward, out hit, pm.pc.reach, pm.pc.ClickLayers, QueryTriggerInteraction.Ignore))
             {
-                Destroy(base.gameObject);
+                Destroy(gameObject);
                 block = true;
             }
+
+            if (hit.transform == null)
+                Destroy(gameObject);
+
             if (!hit.transform.CompareTag("Wall"))
             {
-                Destroy(base.gameObject);
+                Destroy(gameObject);
                 block = true;
             }
 
@@ -58,51 +52,72 @@ namespace nbppfe.CustomContent.CustomItems
 
                 if (!block)
                 {
+                    secondPortal = CheckForPaintGunManager().nextIsBlue;
+                    CheckForPaintGunManager().nextIsBlue = !secondPortal;
+                    portalSecond = CheckForPaintGunManager().nextPortal;
+
                     cell.PrepareForPoster();
                     cell.AddPoster(direction, secondPortal ? bluePortal : redPortal);
-                    var portal = Instantiate<PaintPortal>(portalPrefab);
-                    portal.Initialize(pm.ec);
-                    portal.transform.position = pm.ec.CellFromPosition(pm.transform.position).CenterWorldPosition;
+                    portal = hit.transform.gameObject.AddComponent<PaintPortal>();
+                    portal.Initialize(audTeleport);
                     portal.cell = cell;
+
+                    if (secondPortal)
+                    {
+                        portal.secondPortal = portalSecond;
+                        portalSecond.secondPortal = portal;
+                        Destroy(gameObject);
+                    }
+
+                    CheckForPaintGunManager().nextPortal = portal;
+                    Singleton<CoreGameManager>.Instance.audMan.PlaySingle(audShot);
+                    Singleton<CoreGameManager>.Instance.audMan.PlaySingle(audSplash);
                 }
             }
 
-            if (secondPortal)
-                Destroy(gameObject);
-
+            Destroy(gameObject);
             return secondPortal && !block;
+        }
+
+        public MiniPaintGunManager CheckForPaintGunManager()
+        {
+            var miniPaintGunManager = Singleton<CoreGameManager>.Instance.gameObject.GetOrAddComponent<MiniPaintGunManager>();
+            return miniPaintGunManager;
         }
 
         private RaycastHit hit;
         public Texture2D redPortal, bluePortal;
-        public PaintPortal portalPrefab;
+        public PaintPortal portal, portalSecond;
         public bool secondPortal, block;
+        public SoundObject audSplash, audTeleport, audShot;
     }
 
-    public class PaintPortal : MonoBehaviour, IEntityTrigger
+    public class PaintPortal : MonoBehaviour, IClickable<int>
     {
-        public Cell cell = new();
+        public Cell cell;
         public PaintPortal secondPortal;
-        public Entity entity;
+        public SoundObject telSound;
 
-        public void Initialize(EnvironmentController ec)
+        public void Initialize(SoundObject sound) =>
+            telSound = sound;     
+
+        public void Clicked(int player)
         {
-            entity.Initialize(ec, transform.position);
+            if (secondPortal != null)
+            {
+                Singleton<CoreGameManager>.Instance.GetPlayer(player).plm.Entity.Teleport(secondPortal.cell.CenterWorldPosition);
+                Singleton<CoreGameManager>.Instance.audMan.PlaySingle(telSound);
+            }
         }
 
-        public void EntityTriggerEnter(Collider other)
-        {
-            Debug.Log("PlayerEnter");
-        }
+        public void ClickableSighted(int player) { }
+        public void ClickableUnsighted(int player) { }
+        public bool ClickableHidden() { return false; }
+        public bool ClickableRequiresNormalHeight() { return true; }
+    }
 
-        public void EntityTriggerStay(Collider other)
-        {
-
-        }
-
-        public void EntityTriggerExit(Collider other)
-        {
-            Debug.Log("PlayerExit");
-        }
+    public class MiniPaintGunManager : Singleton<MiniPaintGunManager>  {
+        public bool nextIsBlue;
+        public PaintPortal nextPortal;
     }
 }

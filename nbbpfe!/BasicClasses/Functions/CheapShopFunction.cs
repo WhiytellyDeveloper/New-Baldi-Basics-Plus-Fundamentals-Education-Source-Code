@@ -1,9 +1,7 @@
 ﻿using MTM101BaldAPI.Reflection;
 using nbppfe.FundamentalsManager;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace nbppfe.BasicClasses.Functions
@@ -84,8 +82,6 @@ namespace nbppfe.BasicClasses.Functions
             }
         }
 
-
-
         private void TogglePriceDescription(Pickup pickup, bool showPrice)
         {
             if (showPrice)
@@ -96,6 +92,18 @@ namespace nbppfe.BasicClasses.Functions
             }
             else
                 pickup.item.descKey = originalDescriptions[pickup.item];
+        }
+
+        private void TogglePriceDescription(ItemObject item, bool showPrice)
+        {
+            if (showPrice)
+            {
+                string currentDescription = originalDescriptions[item];
+                if (!currentDescription.Contains("\nCost:"))
+                    item.descKey = $"{Singleton<LocalizationManager>.Instance.GetLocalizedText(currentDescription)}\nCost: {item.price}";
+            }
+            else
+                item.descKey = originalDescriptions[item];
         }
 
         public void DisableCheapStore(bool value)
@@ -129,8 +137,8 @@ namespace nbppfe.BasicClasses.Functions
             base.OnPlayerExit(player);
             Singleton<CoreGameManager>.Instance.GetHud(player.playerNumber).PointsAnimator.ShowDisplay(false);
 
-            foreach (Pickup pickup in pickups)
-                TogglePriceDescription(pickup, false);
+            foreach (ItemObject item in originalDescriptions.Keys)
+                TogglePriceDescription(item, false);
 
             if (closeOnExit)
                 DisableCheapStore(true);
@@ -138,8 +146,8 @@ namespace nbppfe.BasicClasses.Functions
 
         private void OnDestroy()
         {
-            foreach (Pickup pickup in pickups)
-                TogglePriceDescription(pickup, false);
+            foreach (ItemObject item in originalDescriptions.Keys)
+                TogglePriceDescription(item, false);
         }
 
         private void ItemPurchased(Pickup pickup, int player)

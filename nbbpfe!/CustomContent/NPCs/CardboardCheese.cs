@@ -25,6 +25,20 @@ namespace nbppfe.CustomContent.NPCs
             noItemsVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(6).Take(3).ToArray();
             cheesedItemsVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Take(3).ToArray();
             wanderingVoicelines = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(9).Take(5).ToArray();
+
+            NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese][13].additionalKeys = [
+                new SubtitleTimedKey
+                {
+                    key = "Looking Gouda!",
+                    time = 2.940f
+                },
+                new SubtitleTimedKey
+                {
+                    key = "That joke was terrible...",
+                    time = 5.198f
+                }];
+
+            Debug.Log(NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese][13].name);
         }
 
         public void PostLoading()
@@ -58,16 +72,16 @@ namespace nbppfe.CustomContent.NPCs
                 Singleton<CardboardCheeseFunctionalManager>.Instance.CheesedSlot(i, 0, true);
         }
 
-        public bool TryCheesedSlot(PlayerManager playerManager, ItemManager itemManager)
+        public bool TryCheesedSlot(PlayerManager playerManager)
         {
             int selectedSlot;
             bool slotFound = false;
-            int maxAttempts = itemManager.maxItem * 5;
+            int maxAttempts = playerManager.itm.maxItem * 5;
 
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                selectedSlot = Random.Range(0, itemManager.maxItem + 1);
-                if (!itemManager.IsSlotLocked(selectedSlot))
+                selectedSlot = Random.Range(0, playerManager.itm.maxItem + 1);
+                if (!playerManager.itm.IsSlotLocked(selectedSlot))
                 {
                     Singleton<CardboardCheeseFunctionalManager>.Instance.CheesedSlot(selectedSlot, playerManager.playerNumber, false);
                     slotFound = true;
@@ -129,7 +143,7 @@ namespace nbppfe.CustomContent.NPCs
                 audMan.FlushQueue(true);
                 audMan.QueueRandomAudio(wanderingVoicelines);
             }
-            cooldown.Restart();
+            wvCooldown.Restart();
         }
 
         public AudioManager audMan;
@@ -169,9 +183,9 @@ namespace nbppfe.CustomContent.NPCs
         {
             base.OnStateTriggerEnter(other);
 
-            if (other.tag.Equals("Player"))
+            if (other.tag == "Player")
             {
-                if (cardCheese.TryCheesedSlot(other.GetComponent<PlayerManager>(), other.GetComponent<PlayerManager>().itm))
+                if (cardCheese.TryCheesedSlot(other.GetComponent<PlayerManager>()))
                     cardCheese.behaviorStateMachine.ChangeState(new CardboardCheese_Disable(cardCheese));
             }
         }

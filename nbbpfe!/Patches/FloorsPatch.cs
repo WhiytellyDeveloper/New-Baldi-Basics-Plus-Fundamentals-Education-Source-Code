@@ -23,16 +23,21 @@ namespace nbppfe.Patches
         [HarmonyPrefix]
         internal static void OverrideFloor()
         {
-            if (!initialized && Singleton<CoreGameManager>.Instance.sceneObject.levelTitle == "F1")
+            if (Singleton<CoreGameManager>.Instance != null)
             {
-                initialized = true;
+                if (Singleton<CoreGameManager>.Instance.sceneObject != null)
+                {
+                    if (!initialized && Singleton<CoreGameManager>.Instance.sceneObject.levelTitle == "F1")
+                    {
+                        initialized = true;
 
-                if (!BasePlugin.Instance.configs.disablelobby.Value)
-                    Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.lobbyScene;
+                        if (!BasePlugin.Instance.configs.disablelobby.Value)
+                            Singleton<CoreGameManager>.Instance.sceneObject = SceneLoader.lobbyScene;
 
-                Object.FindObjectOfType<ElevatorScreen>().UpdateFloorDisplay();
+                        Object.FindObjectOfType<ElevatorScreen>().UpdateFloorDisplay();
+                    }
+                }
             }
-
         }
     }
 

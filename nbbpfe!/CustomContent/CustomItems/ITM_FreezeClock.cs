@@ -32,6 +32,7 @@ namespace nbppfe.CustomContent.CustomItems
         public override bool Use(PlayerManager pm)
         {
             this.pm = pm;
+            cooldown.endAction = OnCooldownEnd;
 
             time.Add(clockSprites[0], 15);
             time.Add(clockSprites[1], 30);
@@ -76,7 +77,7 @@ namespace nbppfe.CustomContent.CustomItems
             if (clicked && !audMan.AnyAudioIsPlaying && renderer.enabled)
                 renderer.enabled = false;
 
-            cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale * 2f);
+            cooldown.UpdateCooldown(1f); //lol
         }
 
         public void OnCooldownEnd()

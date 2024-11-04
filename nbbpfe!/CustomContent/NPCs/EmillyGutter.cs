@@ -24,6 +24,8 @@ namespace nbppfe.CustomContent.NPCs
             voicelines = NPCLoader.soundsObjects[CustomNPCsEnum.EmillyGutter].Take(4).ToArray();
             sounds = NPCLoader.soundsObjects[CustomNPCsEnum.EmillyGutter].Skip(4).ToArray();
             audMan = GetComponent<AudioManager>();
+            staringAudMan = gameObject.CreatePropagatedAudioManager(45, 100);
+            staringAudMan.AddStartingAudiosToAudioManager(true, sounds[1]);
         }
 
         public void PostLoading()
@@ -44,6 +46,7 @@ namespace nbppfe.CustomContent.NPCs
         public override void Initialize()
         {
             base.Initialize();
+            staringAudMan.Pause(true);
             atackedCooldown.Pause(true);
             FindCage();
             behaviorStateMachine.ChangeState(new EmillyGutter_InCage(this));
@@ -87,13 +90,13 @@ namespace nbppfe.CustomContent.NPCs
             behaviorStateMachine.ChangeState(new EmillyGutter_AfterAtack(this));
         }
 
-        public Cooldown cageCooldown = new Cooldown(18, 0), lookingCooldown = new Cooldown(5.654f, 0), atackedCooldown = new Cooldown(14, 0);
+        public Cooldown cageCooldown = new Cooldown(28, 0), lookingCooldown = new Cooldown(5.654f, 0), atackedCooldown = new Cooldown(14, 0);
         public MovementModifier movMod = new MovementModifier(Vector3.zero, 0.45f);
         public CustomSpriteAnimator animator;
         public Sprite[] sprites;
         public SoundObject[] voicelines;
         public SoundObject[] sounds;
-        public AudioManager audMan;
+        public AudioManager audMan, staringAudMan;
         public PlayerManager pm;
         public EmillyCage cage;
         public Vector3 cagePosition;
@@ -158,6 +161,7 @@ namespace nbppfe.CustomContent.NPCs
         public override void Initialize()
         {
             base.Initialize();
+            emi.staringAudMan.Pause(true);
             emi.animator.Play("Start-Scared", 1);
             emi.animator.SetDefaultAnimation("Scared", 1);
             emi.audMan.FlushQueue(true);
@@ -178,6 +182,7 @@ namespace nbppfe.CustomContent.NPCs
         public override void Sighted()
         {
             base.Sighted();
+            emi.staringAudMan.Pause(false);
             emi.lookingCooldown.Pause(false);
             npc.Navigator.Entity.SetFrozen(true);
         }
@@ -185,6 +190,7 @@ namespace nbppfe.CustomContent.NPCs
         public override void Unsighted()
         {
             base.Unsighted();
+            emi.staringAudMan.Pause(true);
             emi.lookingCooldown.Restart();
             emi.lookingCooldown.Pause(true);
             npc.Navigator.SetSpeed(18, 18);

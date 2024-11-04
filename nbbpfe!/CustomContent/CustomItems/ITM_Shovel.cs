@@ -27,14 +27,12 @@ namespace nbppfe.CustomContent.CustomItems
             force = new Force(-pm.GetPlayerCamera().transform.forward, 75f, -45f);
             npc.Navigator.Am.moveMods.Add(movMod);
             npc.Navigator.Entity.AddForce(force);
+            npcShoveld.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
             return true;
         }
 
-        private void Update()
-        {
-            npcShoveld.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
-            cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);
-        }
+        private void Update() =>
+            cooldown.UpdateCooldown(pm.ec.EnvironmentTimeScale);    
 
         private void OnCooldownEnd()
         {

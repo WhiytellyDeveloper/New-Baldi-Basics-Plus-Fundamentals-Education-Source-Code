@@ -48,6 +48,10 @@ namespace nbppfe.CustomContent.CustomItems
             entity.Initialize(pm.ec, pm.transform.position);
             transform.rotation = pm.cameraBase.rotation;
             Singleton<CoreGameManager>.Instance.GetCamera(pm.playerNumber).UpdateTargets(rendererBase, targetIdx);
+
+            foreach (NPC npc in pm.ec.Npcs)
+                npc.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
+
             StartCoroutine(AnimatedJump());
             return true;
         }
@@ -73,22 +77,10 @@ namespace nbppfe.CustomContent.CustomItems
                     overrider.SetFrozen(false);
                     overrider.Release();
                     Singleton<CoreGameManager>.Instance.GetCamera(pm.playerNumber).UpdateTargets(null, targetIdx);
-
-                    foreach (NPC npc in FindObjectsOfType<NPC>())
-                    {
-                        var collider = (Collider)npc.Navigator.Entity.ReflectionGetVariable("trigger");
-                        if (collider.isTrigger)
-                            Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), collider, false);
-                    }
+                    foreach (NPC npc in pm.ec.Npcs)
+                        npc.Navigator.Entity.IgnoreEntity(pm.plm.Entity, false);
                     Destroy(gameObject);
                     yield break;
-                }
-
-                foreach (NPC npc in FindObjectsOfType<NPC>())
-                {
-                    var collider = (Collider)npc.Navigator.Entity.ReflectionGetVariable("trigger");
-                    if (collider.isTrigger)
-                        Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), collider, true);
                 }
 
                 Singleton<CoreGameManager>.Instance.audMan.PlaySingle(boing);
@@ -97,6 +89,7 @@ namespace nbppfe.CustomContent.CustomItems
                 entity.AddForce(force);
                 pm.plm.Entity.Override(overrider);
                 overrider.SetFrozen(true);
+                overrider.SetInteractionState(false);
 
                 float time = 0f;
 
@@ -132,16 +125,6 @@ namespace nbppfe.CustomContent.CustomItems
             }
         }
 
-        public void OnDestroy()
-        {
-            foreach (NPC npc in FindObjectsOfType<NPC>())
-            {
-                var collider = (Collider)npc.Navigator.Entity.ReflectionGetVariable("trigger");
-                if (collider.isTrigger)
-                    Physics.IgnoreCollision((Collider)pm.plm.Entity.ReflectionGetVariable("trigger"), collider, false);
-            }
-        }
-
         protected float height = 0f;
         protected int targetIdx = 15;
         protected const float maxHeight = 4.5f;
@@ -152,7 +135,7 @@ namespace nbppfe.CustomContent.CustomItems
         [SerializeField]
         protected internal Transform rendererBase;
 
-        public Cooldown cooldown = new(45, 0);
+        public Cooldown cooldown = new(25, 0);
 
         public SoundObject boing, groundHit;
     }

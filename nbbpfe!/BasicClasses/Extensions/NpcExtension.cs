@@ -1,6 +1,4 @@
-﻿using MTM101BaldAPI;
-using nbppfe.CustomContent.CustomItems.ItemTypes;
-using nbppfe.Enums;
+﻿using nbppfe.CustomContent.CustomItems.ItemTypes;
 using nbppfe.Extensions;
 using UnityEngine;
 
@@ -14,7 +12,7 @@ namespace nbppfe.BasicClasses.Extensions
 
         public bool ItemFits(Items item)
         {
-            return Items.Quarter == item;
+            return item.ToItem().item.GetComponent<NPCItem>();
         }
     }
 }

@@ -13,30 +13,22 @@ namespace nbppfe.CustomContent.CustomItems
         {
             if (PickupPatch.lastPíckupClicked.item.itemType == CustomItemsEnum.Present.ToItemEnum())
             {
+                Dictionary<Items, int> itemCounts = new Dictionary<Items, int>();
+
                 for (int i = 0; i < ItemMetaStorage.Instance.All().Length; i++)
-                    items.Add(ItemMetaStorage.Instance.All()[i].value);
-
-                Dictionary<ItemObject, int> itemCounts = new Dictionary<ItemObject, int>();
-
-                foreach (ItemObject item in items)
                 {
-                    if (itemCounts.ContainsKey(item))
-                        itemCounts[item]++;
-                    else
-                        itemCounts[item] = 1;
-                }
-
-                foreach (var pair in itemCounts)
-                {
-                    if (pair.Value > 1)
+                    if (!itemCounts.ContainsKey(ItemMetaStorage.Instance.All()[i].value.itemType))
                     {
-                        for (int i = 0; i < pair.Value - 1; i++)
-                            items.Remove(pair.Key);
+                        items.Add(ItemMetaStorage.Instance.All()[i].value);
+                        itemCounts.Add(ItemMetaStorage.Instance.All()[i].value.itemType, 1);
                     }
                 }
 
                 items.Shuffle();
+                items.Remove(Items.None.ToItem());
                 items.Remove(Items.BusPass.ToItem());
+                items.Remove(CustomItemsEnum.Pickaxe.ToItem());
+                items.Remove(CustomItemsEnum.Present.ToItem());
 
                 pm.ec.CreateItem(pm.plm.Entity.CurrentRoom, items[Random.Range(0, items.Count)], new Vector2(PickupPatch.lastPíckupClicked.transform.position.x, PickupPatch.lastPíckupClicked.transform.position.z));
                 Destroy(gameObject);

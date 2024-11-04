@@ -23,7 +23,7 @@ namespace nbppfe.BasicClasses.Functions
                         activity.Completed(player.playerNumber, true, activity);
                         foreach (Notebook notebook in player.ec.notebooks)
                         {
-                            if (player.ec.CellFromPosition(notebook.transform.position).room == room)
+                            if (player.ec.CellFromPosition(notebook.transform.position).room == room && !activity.InBonusMode)
                                 notebook.Clicked(player.playerNumber);
                         }
                         Instantiate<ITM_Homework>(CustomItemsEnum.HomeworkTierA.ToItem().item.GetComponent<ITM_Homework>()).OnUse();

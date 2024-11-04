@@ -15,7 +15,7 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup()
         {
-            var sprite = diet ? CustomItemsEnum.StickGlue.ToItem().itemSpriteLarge : CustomItemsEnum.Glue.ToItem().itemSpriteLarge;
+            var sprite = diet ? CustomItemsEnum.StickGlue.ToItem().itemSpriteLarge : CustomItemsEnum.StckyGlue.ToItem().itemSpriteLarge;
             var holder = ObjectCreationExtensions.CreateSpriteBillboard(sprite, true).AddSpriteHolder(out var renderer, 0, LayerStorage.billboardLayer);
             floatingSpr = holder.renderers[0].GetComponent<SpriteRenderer>();
             floatingSpr.flipY = true;

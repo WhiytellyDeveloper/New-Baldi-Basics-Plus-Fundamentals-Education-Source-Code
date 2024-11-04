@@ -14,7 +14,7 @@ namespace nbppfe.FundamentalsManager
             if (assetMan.ContainsKey(textureName))
                 return assetMan.Get<Texture2D>(textureName);
 
-            Texture2D texture = AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine("Textures", folder, textureName + ".png"));
+            Texture2D texture = AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine(folder, textureName + ".png"));
             assetMan.Add(textureName, texture);
             return texture;
         }
@@ -30,7 +30,7 @@ namespace nbppfe.FundamentalsManager
 
         public static Sprite CreateSprite(string spriteName, string folder, int pixelPerUnit)
         {
-            Sprite sprite = AssetLoader.SpriteFromTexture2D(AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine("Textures", folder, spriteName + ".png")), pixelPerUnit);
+            Sprite sprite = AssetLoader.SpriteFromTexture2D(AssetLoader.TextureFromMod(BasePlugin.Instance, Path.Combine(folder, spriteName + ".png")), pixelPerUnit);
             assetMan.Add(spriteName, sprite);
             return sprite;
         }
@@ -56,7 +56,7 @@ namespace nbppfe.FundamentalsManager
 
         public static SoundObject CreateSound(string soundName, string folder, string subtitleKey, SoundType type, Color color, int vauleMultiplier, params SubtitleTimedKey[] stk)
         {
-            SoundObject sound = ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(BasePlugin.Instance, Path.Combine("Audio", folder, soundName + ".wav")), subtitleKey, type, color);
+            SoundObject sound = ObjectCreators.CreateSoundObject(AssetLoader.AudioClipFromMod(BasePlugin.Instance, Path.Combine(folder, soundName + ".wav")), subtitleKey, type, color);
             sound.additionalKeys = stk;
             if (subtitleKey == "")
             {

@@ -26,7 +26,7 @@ namespace nbppfe.CustomContent.CustomItems
             if (diet)
             {
                 spr.sprite = AssetsLoader.CreateSprite("DietSodaSprite", Paths.GetPath(PathsEnum.Items, "DietSoda"), 12);
-                speedModifier = new MovementModifier(Vector3.zero, 1.45f);
+                speedModifier = new(Vector3.zero, 1.45f);
                 lenghtMaxCount = 3;
             }
         }
@@ -83,9 +83,9 @@ namespace nbppfe.CustomContent.CustomItems
         public SpriteRenderer spr;
         public SoundObject splashSound;
         public SoundObject trashSound;
-        public MovementModifier speedModifier = new MovementModifier(Vector3.zero, 3f);
+        public MovementModifier speedModifier = new(Vector3.zero, 3f);
         public int lenghtMaxCount = 1;
-        public Cooldown cooldown = new Cooldown(25, 0);
+        public Cooldown cooldown = new(25, 0);
 
         public bool diet { get; set; }
     }

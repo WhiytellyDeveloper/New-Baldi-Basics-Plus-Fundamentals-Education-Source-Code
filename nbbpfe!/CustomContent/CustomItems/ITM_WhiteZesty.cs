@@ -13,7 +13,7 @@ namespace nbppfe.CustomContent.CustomItems
 
         public override bool Use(PlayerManager pm)
         {
-            pm.plm.stamina = Random.Range(1, 250);
+            pm.plm.stamina = Random.Range(1, 180);
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(eatSound);
             Destroy(gameObject);
             return true;

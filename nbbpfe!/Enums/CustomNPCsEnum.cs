@@ -122,7 +122,9 @@
         Slimely,
         Clouder,
         Harry,
-
+        IceFlake,
+        Moonshine,
+        Erickin
     }
 }
 

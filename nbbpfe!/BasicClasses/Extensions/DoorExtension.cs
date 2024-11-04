@@ -1,28 +1,22 @@
-﻿using UnityEngine;
+﻿using nbppfe.Enums;
+using nbppfe.Extensions;
+using UnityEngine;
 
 namespace nbppfe.BasicClasses.Extensions
 {
-    public class DoorExtension : MonoBehaviour, IEntityTrigger
+    public class DoorExtension : MonoBehaviour, IItemAcceptor
     {
         private void Awake() =>
             door = GetComponent<StandardDoor>();
 
-        public void EntityTriggerEnter(Collider other)
-        {
-            door.OpenTimed(1, false);
-
-            if (door.locked)
-                door.Lock(false);
+        public void InsertItem(PlayerManager pm, EnvironmentController ec)
+        {           
+            door.LockTimed(30);
         }
 
-        public void EntityTriggerStay(Collider other)
+        public bool ItemFits(Items item)
         {
-
-        }
-
-        public void EntityTriggerExit(Collider other)
-        {
-
+            return CustomItemsEnum.BlueLocker.ToItemEnum() == item && !door.locked;
         }
 
         public StandardDoor door;

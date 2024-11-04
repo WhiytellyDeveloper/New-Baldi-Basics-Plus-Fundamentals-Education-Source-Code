@@ -38,10 +38,11 @@ namespace nbppfe.CustomContent.CustomItems
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(hitSound);
             npc.Navigator.Entity.AddForce(new Force(pm.GetPlayerCamera().transform.forward, 40, -28));
 
+            Destroy(gameObject);
             if (usedItem == null)
                 return true;
-            else
-                pm.itm.SetItem(usedItem, pm.itm.selectedItem);
+
+            pm.itm.SetItem(usedItem, pm.itm.selectedItem);
             return false;
         }
 
@@ -49,6 +50,7 @@ namespace nbppfe.CustomContent.CustomItems
         {
             base.OnMissNPC();
             Singleton<CoreGameManager>.Instance.audMan.PlaySingle(windHitSound);
+            Destroy(gameObject);
         }
 
         public ItemObject usedItem;

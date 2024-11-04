@@ -18,7 +18,7 @@ namespace nbppfe.Patches
     {
         [HarmonyPostfix]
         internal static void AddExtension(StandardDoor __instance) =>
-            __instance.gameObject.GetOrAddComponent<StandardDoor>();
+            __instance.gameObject.AddComponent<DoorExtension>();
 
     }
 
@@ -26,8 +26,11 @@ namespace nbppfe.Patches
     internal static class NPCPatch
     {
         [HarmonyPostfix]
-        internal static void AddExtension(NPC __instance) =>
+        public  static void AddExtension(NPC __instance)
+        {
+            __instance.Navigator.passableObstacles.Remove(PassableObstacle.LockedDoor);
             __instance.gameObject.GetOrAddComponent<NpcExtension>();
+        }
 
     }
 }

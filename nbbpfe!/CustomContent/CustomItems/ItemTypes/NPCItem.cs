@@ -1,10 +1,8 @@
-﻿using System;
-using UnityEngine;
-using MTM101BaldAPI;
+﻿using UnityEngine;
 using MTM101BaldAPI.Registers;
 using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
+using PixelInternalAPI.Classes;
 
 namespace nbppfe.CustomContent.CustomItems.ItemTypes
 {
@@ -71,12 +69,12 @@ namespace nbppfe.CustomContent.CustomItems.ItemTypes
 
         public virtual void OnMissNPC()
         {
-
+            Destroy(gameObject);
         }
 
         public List<Character> notAllowedCharacters = [Character.Chalkles];
 
-        protected List<NPC> elligableNPCs = new List<NPC>();
+        protected List<NPC> elligableNPCs = [];
         public bool destroyOnUse;
         private bool _return = false;
     }

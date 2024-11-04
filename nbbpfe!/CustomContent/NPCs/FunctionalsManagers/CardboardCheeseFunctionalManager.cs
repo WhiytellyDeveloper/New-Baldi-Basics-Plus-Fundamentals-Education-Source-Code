@@ -1,10 +1,10 @@
-﻿using MTM101BaldAPI.Reflection;
-using System;
+﻿using nbppfe.FundamentalsManager.Loaders;
 using System.Collections;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using nbppfe.Enums;
+using System;
 
 namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
 {
@@ -12,6 +12,12 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
     {
         public void CheesedSlot(int slot, int player, bool reverse)
         {
+            lockSlot = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(14).Take(3).ToArray()[2];
+            unlockSlot = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(14).Take(3).ToArray()[0];
+            tryUnlockSlot = NPCLoader.soundsObjects[CustomNPCsEnum.CardboardCheese].Skip(14).Take(3).ToArray()[1];
+
+
+            Singleton<CoreGameManager>.Instance.audMan.PlaySingle(reverse ? lockSlot : unlockSlot);
             int maxItem = Singleton<CoreGameManager>.Instance.GetPlayer(player).itm.maxItem;
             GameObject itemCoverObject = GameObject.Find($"ItemCover_{slot}");
             Image imageComponent = itemCoverObject.GetComponent<Image>();
@@ -24,7 +30,7 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
             Singleton<CoreGameManager>.Instance.GetPlayer(player).itm.LockSlot(slot, !reverse);
 
             if (!reverse)
-                slots[slot] = 20;
+                slots[slot] = UnityEngine.Random.Range(15, 25);
         }
 
         public IEnumerator AnimateStartSlot(Image image, int[] sequences)
@@ -65,6 +71,8 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
         {
             slots[slot] -= 1;
 
+            Singleton<CoreGameManager>.Instance.audMan.PlaySingle(tryUnlockSlot);
+
             if (slots[slot] <= 0)
                 CheesedSlot(slot, player, true);
         }
@@ -76,5 +84,7 @@ namespace nbppfe.CustomContent.NPCs.FunctionalsManagers
         public int[] endSlotSprite = [2, 5, 8, 11];
 
         public int[] slots = new int[99];
+
+        public SoundObject tryUnlockSlot, lockSlot, unlockSlot;
     }
 }

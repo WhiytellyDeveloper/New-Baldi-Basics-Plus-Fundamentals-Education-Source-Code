@@ -14,10 +14,10 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup()
         {
-            var spriteBilboard = ObjectCreationExtensions.CreateSpriteBillboard(CustomItemsEnum.Pretzel.ToItem().itemSpriteLarge);
-            spriteBilboard.transform.SetParent(transform);
+            spriteRenderer = ObjectCreationExtensions.CreateSpriteBillboard(CustomItemsEnum.Pretzel.ToItem().itemSpriteLarge);
+            spriteRenderer.transform.SetParent(transform);
 
-            entity = gameObject.CreateEntity(1f, 1f, spriteBilboard.transform);
+            entity = gameObject.CreateEntity(1f, 1f, spriteRenderer.transform);
             gameObject.layer = LayerStorage.standardEntities;
             stickySound = AssetsLoader.CreateSound("PretzelCatchSound", Paths.GetPath(PathsEnum.Items, "Pretzel"), "Sfx_CatchPretzel", SoundType.Effect, Color.white, 1);
         }

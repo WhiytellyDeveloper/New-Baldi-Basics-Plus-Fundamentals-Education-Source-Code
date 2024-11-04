@@ -2,6 +2,7 @@
 using HarmonyLib;
 using MTM101BaldAPI;
 using MTM101BaldAPI.AssetTools;
+using MTM101BaldAPI.Registers;
 using nbppfe.FundamentalsManager;
 using PlusLevelFormat;
 using PlusLevelLoader;
@@ -10,13 +11,14 @@ using UnityEngine;
 namespace nbppfe.ModsCompabilitys
 {
     [HarmonyPatch]
-    [ConditionalPatchMod("mtm101.rulerp.baldiplus.leveleditor")]
+	[ConditionalPatchMod("mtm101.rulerp.baldiplus.leveleditor")]
     public static class EditorCompability
     {
         [HarmonyPatch(typeof(BasePlugin), nameof(BasePlugin.PostLoading))]
         [HarmonyPostfix]
         private static void MakeEditorSeeAssets()
         {
+            /* NPCs update....
             AssetsLoader.CreateSprites(35, Paths.GetPath(PathsEnum.Editor));
             AddRotatingObject("Mannequin", AssetsLoader.Get<GameObject>("Mannequin"), Vector3.up * 3.54f);
             AddRotatingObject("Mirror", AssetsLoader.Get<GameObject>("Mirror"), Vector3.up * 5f);
@@ -27,6 +29,9 @@ namespace nbppfe.ModsCompabilitys
             AddRotatingObject("Cage", AssetsLoader.Get<GameObject>("Cage"), Vector3.up);
 
             AddRoom("CheapStore");
+            */
+
+            AddAllItems();
         }
 
         [HarmonyPatch(typeof(PlusLevelEditor), "Initialize")]
@@ -35,6 +40,7 @@ namespace nbppfe.ModsCompabilitys
         {
             __instance.toolCats.Find((x) => x.name == "halls").tools.AddRange(rooms);
             __instance.toolCats.Find(x => x.name == "objects").tools.AddRange(objects);
+            __instance.toolCats.Find(x => x.name == "items").tools.AddRange(items);
         }
 
         [HarmonyPatch(typeof(EditorLevel), "InitializeDefaultTextures")]
@@ -54,8 +60,18 @@ namespace nbppfe.ModsCompabilitys
         public static void AddRoom(string room) =>
             rooms.Add(new(room));
 
+        public static void AddAllItems()
+        {
+            foreach (CustomItemEditor item in items)
+            {
+                BaldiLevelEditorPlugin.itemObjects.Add(item.item.name, item.item);
+                PlusLevelLoaderPlugin.Instance.itemObjects.Add(item.item.name, item.item);
+            }
+        }
+
         public static List<CustomObjectEditor> objects = [];
         public static List<CustomRoomEditor> rooms = [];
+        public static List<CustomItemEditor> items = [];
     }
 
     public class CustomObjectEditor : RotateAndPlacePrefab
@@ -80,6 +96,24 @@ namespace nbppfe.ModsCompabilitys
 
         public CustomRoomEditor(string obj) : base(obj) =>
             this.obj = obj;
+
+    }
+
+    public class CustomItemEditor : ItemTool
+    {
+        public string obj;
+        public ItemObject item;
+
+        public override Sprite editorSprite
+        {
+            get { Debug.Log(obj); return item.itemSpriteSmall; }
+        }
+
+        public CustomItemEditor(ItemObject obj) : base(obj.name)
+        {
+            this.item = obj;
+            this.obj = obj.name;
+        }
 
     }
 }

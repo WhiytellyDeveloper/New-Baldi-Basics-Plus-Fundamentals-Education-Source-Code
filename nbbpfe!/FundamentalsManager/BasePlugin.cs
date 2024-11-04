@@ -4,22 +4,24 @@ using MTM101BaldAPI;
 using MTM101BaldAPI.Registers;
 using MTM101BaldAPI.SaveSystem;
 using System.Collections;
-using System.IO;
 using UnityEngine;
-using Newtonsoft.Json;
 using static nbppfe.FundamentalsManager.FundamentalLoaderManager;
 using System.Linq;
 using PixelInternalAPI.Extensions;
 using System.Collections.Generic;
 using nbppfe.BasicClasses.Functions;
-using nbppfe.CustomData;
 using BepInEx.Configuration;
 
 namespace nbppfe.FundamentalsManager
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInDependency("mtm101.rulerp.bbplus.baldidevapi", MTM101BaldiDevAPI.VersionNumber)]
+    [BepInDependency("pixelguy.pixelmodding.baldiplus.pixelinternalapi", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("mtm101.rulerp.baldiplus.levelloader", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("pixelguy.pixelmodding.baldiplus.editorcustomrooms", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("mtm101.rulerp.baldiplus.leveleditor", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("BALDI.exe")]
+
     public class BasePlugin : BaseUnityPlugin
     {
         public static BasePlugin Instance { get; private set; }
@@ -33,7 +35,7 @@ namespace nbppfe.FundamentalsManager
             configs.disablelobby = Config.Bind("Floors Settings", "Disable Initial Lobby", false, "When activating, disable the initial lobby that is executed before f1 or f0 if activated. (Making this decision will disable a lot of the mod's content.)");
 
             harmony.PatchAllConditionals();
-            Debug.Log("Thx for playing ;)");
+            Debug.Log("Thx for playing =)");
 
             LoadingEvents.RegisterOnAssetsLoaded(Info, PreLoading(), false);
             LoadingEvents.RegisterOnAssetsLoaded(Info, PostLoading, true);
@@ -235,7 +237,7 @@ namespace nbppfe.FundamentalsManager
         public void PostLoading()
         {
             foreach (RoomAsset rooms in Resources.FindObjectsOfTypeAll<RoomAsset>().Where(x => x.name.Contains("Class")))
-                rooms.AddRoomFunctionToContainer<MathMachineClassFunction>();       
+                rooms.AddRoomFunctionToContainer<MathMachineClassFunction>();
         }
 
         protected StandardDoorMats backDoor;

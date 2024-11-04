@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using BepInEx.Bootstrap;
+using HarmonyLib;
 using MTM101BaldAPI.AssetTools;
 using MTM101BaldAPI.ObjectCreation;
 using MTM101BaldAPI.Reflection;
@@ -8,10 +9,8 @@ using nbppfe.CustomContent.CustomItems.ItemTypes;
 using nbppfe.CustomData;
 using nbppfe.Enums;
 using nbppfe.Extensions;
-using nbppfe.FundamentalsManager;
+using nbppfe.ModsCompabilitys;
 using nbppfe.PrefabSystem;
-using PixelInternalAPI;
-using PixelInternalAPI.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,316 +21,484 @@ namespace nbppfe.FundamentalsManager.Loaders
 {
     public static partial class ItemsLoader
     {
-
-        public static Dictionary<Item, bool> isDiet = [];
+        public static Dictionary<ItemObject, bool> isDiet = [];
 
         public static void LoadItems()
         {
             LoadItem<ITM_CommonTeleporter>("CommonTeleporter", CustomItemsEnum.CommonTeleporter)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 70, 100, 80, 95])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 70, 50, 40, 80]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 60, 45, 48, 89])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [75, 40, 50, 65, 80])
+            .AddInEditor();
 
             LoadItem<ITM_GenericHammer>("GenericHammer", CustomItemsEnum.GenericHammer)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 40, 55, 60, 62])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 60, 50, 70, 80])
-            .AddKeyTypeItem();
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 70, 50, 20, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 75, 40, 30, 60])
+            .AddInEditor();
 
             LoadItem<ITM_BaseBall>("Baseball", CustomItemsEnum.Baseball)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [30, 36, 24, 52])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [55, 47, 62, 70, 25]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 50, 45, 40])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [60, 65, 75, 65, 60])
+            .AddInEditor();
 
             LoadItem<ITM_Soda>("Soda", CustomItemsEnum.Soda)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 50, 40, 30, 35])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 20, 10, 50])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 15, 30, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 30, 20, 45, 55])
             .MakeItPartyItem(45)
-            .MakeItFieldTripItem(70);
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
 
             LoadItem<ITM_Soda>("DietSoda", CustomItemsEnum.DietSoda, true)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [53, 30, 50, 60, 70])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 15, 10, 5, 25]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 38, 55, 57])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 53, 40, 38, 65])
+            .AddInEditor();
 
             LoadItem<ITM_CoffeAndSugar>("CoffeAndSugar", CustomItemsEnum.CoffeAndSugar)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [20, 30, 40, 55])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [30, 40, 50, 20])
-            .MakeItForcedItem(["F3", "F4"], [1, 2])
-            .MakeItFieldTripItem(70);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 25, 34, 40, 75])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 45, 50, 40, 60])
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
 
             LoadItem<ITM_SweepWhistle>("SweepWhistle", CustomItemsEnum.SweepWhistle)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 30, 22, 32, 18])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 55, 32, 30]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 60, 70, 40, 50, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 70, 66, 40, 56])
+            .AddInEditor()
+            .RequiresANpcToExist(Character.Sweep);
 
             LoadItem<Item>("BullyPresent", CustomItemsEnum.BullyPresent)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [35, 22, 40, 12, 44])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [37, 30, 20, 40, 44]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 50, 44, 48, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 50, 55, 48, 52])
+            .AddInEditor()
+            .RequiresANpcToExist(Character.Bully);
 
-            LoadItem<ITM_Glue>("Glue", CustomItemsEnum.Glue)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 20, 10, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 10, 30, 20, 40])
-            .MakeItFieldTripItem(57);
+            LoadItem<ITM_Glue>("Glue", CustomItemsEnum.StckyGlue)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 30, 15, 20, 23])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 35, 42, 30, 40])
+            .MakeItFieldTripItem(57)
+            .AddInEditor();
 
             LoadItem<ITM_Glue>("GlueStick", CustomItemsEnum.StickGlue, true)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45, 30, 20, 10, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 28, 30, 20, 40])
-            .MakeItFieldTripItem(35);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 63, 40, 38, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 23, 20, 15, 20])
+            .MakeItFieldTripItem(35)
+            .AddInEditor();
 
             LoadItem<ITM_Pretzel>("Pretzel", CustomItemsEnum.Pretzel)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 60, 55, 80])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [70, 67, 15, 95])
-            .MakeItFieldTripItem(58);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 50, 30, 40, 12])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
+            .MakeItFieldTripItem(58)
+            .AddInEditor();
 
             LoadItem<ITM_NoClipController>("NoClipController", CustomItemsEnum.NoClipController)
-            .MakeItWeightedItem(["F3", "F4", "END"], [10, 12, 30])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [20, 32, 5, 40])
+            .MakeItWeightedItem(["F3", "F4", "END"], [20, 10, 40])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [35, 35, 15, 50])
             .MakeItPartyItem(175)
             .MakeItMysteryItem(50)
-            .MakeItGuaranteedFieldTripItem();
+            .MakeItGuaranteedFieldTripItem()
+            .AddInEditor();
 
             LoadItem<ITM_Walkman>("Walkman", CustomItemsEnum.Walkman)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 54, 47, 40, 52])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 20, 25, 30, 35])
-            .MakeItFieldTripItem(70);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [42, 30, 40, 32, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [52, 40, 50, 64, 80])
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
 
             LoadItem<ITM_WhiteZesty>("WhiteZesty", CustomItemsEnum.WhiteZesty)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 40, 60, 70, 65])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [54, 44, 64, 74, 24])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 60, 75, 40, 85])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [75, 40, 50, 80, 60])
             .MakeItForcedItem(["F1", "F2", "END"], [1, 2, 1])
-            .MakeItFieldTripItem(100);
+            .MakeItFieldTripItem(100)
+            .AddInEditor();
 
             LoadItem<ITM_Present>("Present", CustomItemsEnum.Present)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 80, 55, 19, 70])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [80, 30, 70, 14, 100])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 20, 30, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 40, 30, 20, 10])
             .MakeItForcedItem(["F2", "F3", "END"], [1, 1, 1])
-            .MakeItFieldTripItem(66);
+            .MakeItFieldTripItem(66)
+            .AddInEditor();
 
             LoadItem<ITM_Cheese>("Cheese", CustomItemsEnum.Cheese)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 10, 15, 20, 25])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 30, 35, 40])
-            .MakeItFieldTripItem(35);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [25, 35, 25, 35, 45])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [27, 37, 27, 37, 57])
+            .MakeItPartyItem(70)
+            .MakeItFieldTripItem(35)
+            .AddInEditor();
 
             LoadItem<ITM_Cookie>("Cookie", CustomItemsEnum.Cookie)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [80, 70, 95, 40, 100])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 45, 20, 50]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [75, 50, 60, 30, 85])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 50, 60, 45, 50])
+            .AddInEditor();
 
             LoadItem<ITM_Magnet>("Magnet", CustomItemsEnum.Magnet)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 32, 30, 80])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [76, 20, 65, 50, 75])
-            .MakeItPartyItem(162)
-            .MakeItFieldTripItem(85);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 20, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [35, 40, 20, 40, 50])
+            .MakeItPartyItem(72)
+            .MakeItFieldTripItem(85)
+            .AddInEditor();
 
             LoadItem<ITM_Homework>("HomeworkTierA", CustomItemsEnum.HomeworkTierA)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [40, 80, 60, 70])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [35, 40, 48, 50])
-            .MakeItPartyItem(80)
-            .MakeItFieldTripItem(85);
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [44, 55, 44, 60])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [48, 50, 24, 48])
+            .MakeItFieldTripItem(85)
+            .AddInEditor();
 
             LoadItem<ITM_BoxPortal>("BoxPortal", CustomItemsEnum.BoxPortal)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [45, 55, 62, 54])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 50, 60, 52])
-            .MakeItPartyItem(130)
-            .MakeItFieldTripItem(60);
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [50, 40, 60, 75])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 51, 52, 60])
+            .MakeItPartyItem(100)
+            .MakeItFieldTripItem(50)
+            .AddInEditor();
 
             LoadItem<ITM_Coffe>("Coffe", CustomItemsEnum.Coffe)
-           .MakeItWeightedItem(["F3", "F4", "END"], [15, 22, 20])
-           .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [25, 75, 30, 42])
+            .MakeItWeightedItem(["F3", "F4", "END"], [15, 20, 30])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [40, 45, 50, 55])
            .MakeItMysteryItem(95)
            .MakeItPartyItem(185)
-           .MakeItGuaranteedFieldTripItem();
+           .MakeItGuaranteedFieldTripItem()
+           .AddInEditor();
 
             LoadItem<ITM_Box>("Box", CustomItemsEnum.Box)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [50, 75, 30, 43, 62])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 52, 22, 57, 62])
-            .MakeItFieldTripItem(55);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [35, 40, 35, 44, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 40, 30, 50, 40])
+            .MakeItFieldTripItem(55)
+            .AddInEditor();
 
             LoadItem<ITM_SupernaturalPudding>("Pudding", CustomItemsEnum.SupernaturalPudding)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 40, 20, 12, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [24, 50, 45, 30, 64])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 10, 22, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 18, 22, 30, 48])
             .MakeItPartyItem(75)
-            .MakeItFieldTripItem(80);
+            .MakeItFieldTripItem(80)
+            .AddInEditor();
 
             LoadItem<ITM_ColoredVisionPad>("PurpleVisionPad", CustomItemsEnum.PurpleVisonPad)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 40, 32, 40, 30])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [22, 35, 52, 48, 50])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 40, 35, 30, 33])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 42, 30, 40, 20])
             .MakeItFieldTripItem(48)
+            .AddInEditor()
             .item.GetComponent<ITM_ColoredVisionPad>().itemEnum = CustomItemsEnum.PurpleVisonPad;
 
             LoadItem<ITM_ColoredVisionPad>("OrangeVisionPad", CustomItemsEnum.OrangeVisionPad)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [27, 42, 34, 44, 35])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [24, 43, 56, 52, 60])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 30, 20, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [33, 40, 50, 33, 20])
             .MakeItFieldTripItem(49)
+            .AddInEditor()
             .item.GetComponent<ITM_ColoredVisionPad>().itemEnum = CustomItemsEnum.OrangeVisionPad;
 
             LoadItem<ITM_DuctTape>("DuctTape", CustomItemsEnum.DuctTape)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [34, 45, 30, 44])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [18, 30, 19, 31])
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [30, 20, 35, 44])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [45, 35, 30, 50])
             .MakeItPartyItem(24)
-            .MakeItFieldTripItem(100);
+            .MakeItFieldTripItem(100)
+            .AddInEditor();
 
             LoadItem<ITM_Shovel>("Shovel", CustomItemsEnum.Shovel)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 45, 50, 55, 60])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [10, 15, 20, 25, 30])
-            .MakeItFieldTripItem(45);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 50, 42, 44, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [42, 52, 44, 48, 52])
+            .MakeItFieldTripItem(45)
+            .AddInEditor();
 
             LoadItem<ITM_WaterBucket>("WaterBucket", CustomItemsEnum.WaterBucket)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 60, 53, 25, 42])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 52, 48, 32, 70])
-            .MakeItFieldTripItem(65);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [55, 40, 30, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 50, 30, 40, 50])
+            .MakeItFieldTripItem(65)
+            .AddInEditor();
 
             LoadItem<ITM_Umbrella>("Umbrella", CustomItemsEnum.Umbrella)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 70, 30, 40, 34])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 75, 35, 45, 55])
-            .MakeItFieldTripItem(46);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 40, 20, 40, 60])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 80, 40, 80, 75])
+            .MakeItFieldTripItem(46)
+            .MakeItPartyItem(50)
+            .AddInEditor();
 
             LoadItem<ITM_FidgetSpinner>("FidgetSpinner", CustomItemsEnum.OutdatedFidgetSpinner)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 22, 12, 30])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 25, 27, 17, 35])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 20, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 33, 40, 20])
             .MakeItPartyItem(52)
-            .MakeItFieldTripItem(70);
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
 
             LoadItem<ITM_HandHook>("HandHook", CustomItemsEnum.HandHook)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 23, 40])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 60, 46, 80])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 30, 45, 25, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 55, 52, 48, 65])
             .MakeItPartyItem(40)
-            .MakeItFieldTripItem(50);
+            .MakeItFieldTripItem(50)
+            .AddInEditor();
 
             LoadItem<ITM_GrilledCheese>("GrilledCheese", CustomItemsEnum.GrilledCheese)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 25, 40, 40])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [35, 25, 20, 35, 35]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45, 32, 22, 50, 39])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [32, 38, 44, 80, 70])
+            .AddInEditor();
 
             LoadItem<ITM_GenericSoda>("GenericSoda", CustomItemsEnum.GenericSoda)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [12, 21, 30, 24, 37])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [21, 12, 3, 42, 73])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 22, 30, 20, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 30, 20, 15, 30])
             .MakeItFieldTripItem(45)
-            .MakeItMysteryItem(80);
+            .MakeItPartyItem(80)
+            .AddInEditor();
 
             LoadItem<ITM_GenericSoda>("DietGenericSoda", CustomItemsEnum.DietGenericSoda, true)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [22, 30, 38, 33, 45])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 60, 76, 66, 90]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [35, 40, 34, 45, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 50, 48, 52, 58])
+            .AddInEditor();
 
             LoadItem<ITM_Tea>("Tea", CustomItemsEnum.Tea)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [12, 32, 20, 34, 38])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 12, 22, 23, 34])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 10, 30, 30, 20])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 30, 15, 20, 40])
             .MakeItFieldTripItem(80)
-            .MakeItPartyItem(25);
+            .MakeItPartyItem(25)
+            .AddInEditor();
 
             LoadItem<ITM_Tea>("DietTea", CustomItemsEnum.DietTea, true)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 37, 40, 48, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 24, 44, 36, 68])
-            .MakeItFieldTripItem(40);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 30, 20, 18, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 30, 45, 30, 45])
+            .MakeItFieldTripItem(40)
+            .AddInEditor();
 
             LoadItem<ITM_AdvertenceBook>("AdvertenceBook", CustomItemsEnum.AdvertenceBook)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [36, 24, 30, 28, 42])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 42, 30, 40, 55])
-            .MakeItFieldTripItem(40);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 65, 30, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 56, 30, 20, 40])
+            .MakeItFieldTripItem(40)
+            .AddInEditor();
 
             LoadItem<ITM_AdvertenceBook>("ConnectedAdvertenceBook", CustomItemsEnum.ConnectedAdvertenceBook)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [28, 24, 12, 15])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 24, 44, 36, 68])
-            .MakeItFieldTripItem(40);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [22, 30, 20, 15, 25])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 20, 14, 30, 44])
+            .MakeItFieldTripItem(40)
+            .MakeItPartyItem(75)
+            .AddInEditor();
 
             //You who ask yourself, why don't you use the diet which is practically the same thing. It simply doesn't work for ANY reason. WHY??????
             CustomItemsEnum.ConnectedAdvertenceBook.ToItem().item.GetComponent<ITM_AdvertenceBook>().connected = true;
 
             LoadItem<ITM_Compass>("Compass", CustomItemsEnum.Compass)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 25, 40, 12, 50])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [28, 34, 33, 48, 32])
-            .MakeItFieldTripItem(22);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 30, 25, 33, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 50, 30, 50, 66])
+            .MakeItFieldTripItem(22)
+            .AddInEditor();
 
             LoadItem<ITM_MapPoint>("MapPoint", CustomItemsEnum.MapPoint)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 50, 30, 44, 60])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 40, 50, 20, 40]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45, 60, 55, 48, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 50, 45, 45, 60])
+            .AddInEditor();
 
             LoadItem<ITM_BaseballBat>("BaseballBat", CustomItemsEnum.BaseballBat)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 40, 50, 42, 66])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [25, 42, 13, 45, 30])
-            .MakeItFieldTripItem(40);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 40, 15, 45])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [38, 30, 45, 30, 15])
+            .MakeItFieldTripItem(40)
+            .AddInEditor();
 
             LoadItem<ITM_SafteyGlasses>("SafteyGlasses", CustomItemsEnum.SafteyGlasses)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 30, 20, 15])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [11, 22, 33, 22, 11])
-            .MakeItFieldTripItem(45);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 20, 15, 30, 40])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [38, 50, 60, 44, 50])
+            .MakeItFieldTripItem(45)
+            .AddInEditor();
 
             LoadItem<ITM_FreezeClock>("FreezeClock", CustomItemsEnum.FreezeClock)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 11, 10, 14, 10])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [13, 16, 17, 18, 14])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 20, 15, 8, 13])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
             .MakeItMysteryItem(50)
             .MakeItPartyItem(80)
-            .MakeItFieldTripItem(90);
+            .MakeItFieldTripItem(90)
+            .AddInEditor();
 
             LoadItem<ITM_Horn>("Horn", CustomItemsEnum.Horn)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 25, 40, 12, 48])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 32, 50, 12, 70]);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [45, 60, 5, 40, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 30, 20, 15, 30])
+            .AddInEditor();
 
             LoadItem<ITM_BanHammer>("BanHammer", CustomItemsEnum.BanHammer)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 20, 30, 20, 15])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [11, 22, 33, 22, 11])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 5, 22, 18, 20])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 18, 44, 30, 44])
             .MakeItGuaranteedFieldTripItem()
-            .MakeItMysteryItem(60);
+            .MakeItMysteryItem(60)
+            .AddInEditor();
 
             LoadItem<ITM_Swapper>("Swapper", CustomItemsEnum.Swapper)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 30, 21, 38, 48])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [32, 45, 32, 38, 50])
-            .MakeItFieldTripItem(32);
-
-            /*
-            LoadItem<ITM_Lantern>("Lantern", CustomItemsEnum.Lantern)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [24, 30, 21, 38, 48])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [32, 45, 32, 38, 50])
-            .MakeItFieldTripItem(32);
-            */
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 40, 30, 50])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [44, 30, 20, 40, 45])
+            .MakeItFieldTripItem(32)
+            .AddInEditor();
 
             LoadItem<ITM_PlayerCardboard>("PlayerCardboard", CustomItemsEnum.PlayerCardboard)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 28, 40, 25, 44])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [45, 37, 42, 38, 52])
-            .MakeItFieldTripItem(70);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 33, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 30, 20, 20, 40])
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
+
+            LoadItem<ITM_PlayerCardboard>("FakePlayerCardboard", CustomItemsEnum.FakePlayerCardboard, true)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 42, 44, 48, 75])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [20, 32, 40, 44, 45])
+            .MakeItFieldTripItem(45)
+            .AddInEditor()
+            .item.GetComponent<ITM_PlayerCardboard>().fake = true;
 
             LoadItem<ITM_GatwayTeleporter>("GatewayTeleporter", CustomItemsEnum.GatewayTeleporter)
-            .MakeItWeightedItem(["F2", "F3", "F4"], [20, 14, 22])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4"], [22, 34, 13])
+            .MakeItWeightedItem(["F2", "F3", "F4"], [40, 30, 20])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4"], [40, 30, 20])
             .MakeItPartyItem(70)
-            .MakeItFieldTripItem(65);
+            .MakeItFieldTripItem(65)
+            .AddInEditor();
 
             LoadItem<ITM_IceCreamStick>("FreezingIceCream", CustomItemsEnum.StickIceCream)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4"], [30, 20, 40, 48])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4"], [15, 10, 20, 24])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 40, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [33, 20, 15, 30, 40])
             .MakeItPartyItem(70)
-            .MakeItFieldTripItem(65);
+            .MakeItFieldTripItem(65)
+            .AddInEditor();
 
             LoadItem<ITM_Traumatized>("Traumatized", CustomItemsEnum.Traumatized)
-            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [34, 40, 48, 52])
-            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [33, 22, 11, 44])
-            .MakeItFieldTripItem(72);
+            .MakeItWeightedItem(["F2", "F3", "F4", "END"], [38, 30, 20, 45])
+            .MakeItWeightedItemInShop(["F2", "F3", "F4", "END"], [45, 30, 25, 38])
+            .MakeItFieldTripItem(72)
+            .AddInEditor();
 
             LoadItem<ITM_EntityTeleporter>("EntityTeleporter", CustomItemsEnum.EntityTeleporter)
-            .MakeItWeightedItem(["F1","F2", "F3", "F4", "END"], [1, 30, 42, 13, 38])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [6, 44, 22, 15, 38])
-            .MakeItFieldTripItem(72);
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [1, 20, 15, 30, 44])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [5, 30, 20, 34])
+            .MakeItFieldTripItem(72)
+            .AddInEditor();
 
             LoadItem<ITM_JumpBoots>("JumpBoots", CustomItemsEnum.JumpBoots)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [14, 5, 18, 2, 33])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 32, 55, 22, 60])
-            .MakeItPartyItem(70)
-            .MakeItFieldTripItem(100);
-
-            /*
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 20, 14, 8, 20])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [23, 21, 30, 22, 20])
+            .MakeItPartyItem(60)
+            .MakeItFieldTripItem(100)
+            .AddInEditor();
+           
             LoadItem<ITM_YTPsMultiplier>("MultiplierMachine", CustomItemsEnum.YTPsMultiplier)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [6, 12, 11, 8, 10])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [12, 24, 22, 16, 20])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [5, 25, 30, 42, 30])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 34, 43, 45, 40])
             .MakeItPartyItem(24)
-            .MakeItFieldTripItem(25);
-            */
+            .MakeItFieldTripItem(25)
+            .AddInEditor();      
 
             LoadItem<ITM_InvisblePaintBucket>("InvisiblePaintBucket", CustomItemsEnum.InvisiblePaintBucket)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 25, 44, 30, 28, 49])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 44, 50, 22, 30])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 10, 30, 20, 43])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 20, 60, 40, 86])
             .MakeItPartyItem(80)
-            .MakeItGuaranteedFieldTripItem();
+            .MakeItGuaranteedFieldTripItem()
+            .AddInEditor();
 
             LoadItem<ITM_PaintGun>("PaintGun", CustomItemsEnum.PaintGun)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 25, 44, 30, 28, 49])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 44, 50, 22, 30])
-            .MakeItPartyItem(80)
-            .MakeItGuaranteedFieldTripItem();
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 40, 50, 75])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 20, 45, 50, 75])
+            .MakeItFieldTripItem(70)
+            .AddInEditor();
 
+            LoadItem<ITM_PlaceableTeleporter>("PlaceableTeleporter", CustomItemsEnum.PlaceableTeleporter)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 40, 30, 65])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 25, 30, 40, 65])
+            .MakeItFieldTripItem(60)
+            .AddInEditor();
+
+            LoadItem<ITM_Rollerblades>("Rollerblades", CustomItemsEnum.Rollerblades)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [44, 30, 47, 50, 68])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [50, 48, 58, 52, 50])
+            .MakeItFieldTripItem(35)
+            .AddInEditor();
+
+            LoadItem<ITM_SwapperHook>("SwapperHook", CustomItemsEnum.SwapperHook)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 40, 45, 50, 75])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [52, 45, 50, 40, 53])
+            .MakeItPartyItem(100)
+            .MakeItFieldTripItem(60)
+            .AddInEditor();
+
+            LoadItem<ITM_ImmatureApple>("ImmatureApple", CustomItemsEnum.ImmatureApple)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 44, 50, 62, 48])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [48, 44, 50, 52, 75])
+            .MakeItPartyItem(25)
+            .MakeItFieldTripItem(75)
+            .AddInEditor();
+
+            LoadItem<Item>("HallPass", CustomItemsEnum.HallPass)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 40, 10, 65])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [40, 30, 40, 33, 40])
+            .MakeItForcedItem(["F2", "F3", "F4", "END"], [1, 1, 1, 1])
+            .AddInEditor();
+
+            LoadItem<ITM_Bag>("Bag", CustomItemsEnum.Bag)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [15, 25, 30, 28, 36])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 42, 44, 45, 53])
+            .MakeItGuaranteedFieldTripItem()
+            .MakeItPartyItem(50)
+            .AddInEditor();
+
+            var item = LoadItem<ITM_Bag>("Bag", CustomItemsEnum.OpenBag);
+            item.itemSpriteLarge = AssetsLoader.CreateSprite("block!BagOpen_IconLarge", Paths.GetPath(PathsEnum.Items, "Bag"), 50);
+            item.itemSpriteSmall = AssetsLoader.CreateSprite("block!BagOpen_IconSmall", Paths.GetPath(PathsEnum.Items, "Bag"), 1);
+            item.nameKey = "Itm_OpenBag";
+
+            LoadItem<ITM_IceCreamMask>("IceCreamMask", CustomItemsEnum.IceCreamMask)
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
+           .AddInEditor();
+
+            LoadItem<Item>("PowerTube", CustomItemsEnum.PowerTube)
+            .MakeItWeightedItem(["F2", "F3", "F4"], [30, 34, 20])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4"], [50, 75, 66, 50]);
+
+            LoadItem<ITM_BalloonPacket>("BalloonPacket", CustomItemsEnum.BallonPacket)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [0, 0, 0, 0, 0])
+           .MakeItFieldTripItem(70)
+           .AddInEditor();
+
+            //Nothing like a little trick doesn't solve it
+            var full = LoadItem<ITM_1LBottle>("1LBottle", CustomItemsEnum.W1LBottle)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [28, 38, 48, 47, 50])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 20, 15, 40, 44])
+           .AddInEditor();
+            full.item.GetComponent<ITM_1LBottle>().drinkable = true;
+            full.itemSpriteLarge = AssetsLoader.CreateSprite("FullWaterGallon_IconLarge", Paths.GetPath(PathsEnum.Items, "1LBottle"), 50);
+            full.itemSpriteSmall = AssetsLoader.CreateSprite("FullWaterGallon_IconSmall", Paths.GetPath(PathsEnum.Items, "1LBottle"), 50);
+
+            var half = LoadItem<ITM_1LBottle>("1LBottle", CustomItemsEnum.W1LBottleHalf);
+            half.item.GetComponent<ITM_1LBottle>().drinkable = true;
+            half.itemSpriteLarge = AssetsLoader.CreateSprite("block!HalfwayWaterGallon_IconLarge", Paths.GetPath(PathsEnum.Items, "1LBottle"), 50);
+            half.itemSpriteSmall = AssetsLoader.CreateSprite("block!HalfwayWaterGallon_IconSmall", Paths.GetPath(PathsEnum.Items, "1LBottle"), 50);
+            half.nameKey = "Itm_1LBottleHalf";
+            half.name = "1LBottleHalf";
+            half.AddInEditor();
+
+            var empty = LoadItem<ITM_1LBottle>("1LBottle", CustomItemsEnum.W1LBottleEmpty);
+            empty.nameKey = "Itm_1LBottleEmpty";
+            empty.name = "1LBottleEmpty";
+            empty.itemSpriteLarge = AssetsLoader.CreateSprite("block!EmptyWaterGallon_IconLarge", Paths.GetPath(PathsEnum.Items, "1LBottle"), 50);
+            empty.AddInEditor();
+
+            full.item.GetComponent<ITM_1LBottle>().previousItem = half;
+            half.item.GetComponent<ITM_1LBottle>().nextItem = full;
+            half.item.GetComponent<ITM_1LBottle>().previousItem = empty;
+            empty.item.GetComponent<ITM_1LBottle>().nextItem = half;
+
+            LoadItem<ITM_Mirror>("Mirror", CustomItemsEnum.Mirror)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 10, 30, 33, 20])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [15, 30, 20, 34, 45])
+           .MakeItFieldTripItem(45)
+           .AddInEditor();
+
+            LoadItem<ITM_Pickaxe>("Pickaxe", CustomItemsEnum.Pickaxe)
+            .AddInEditor();
+
+            LoadItem<ITM_Acceptable>("BlueLocker", CustomItemsEnum.BlueLocker)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 30, 33, 20, 40])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 40, 32, 33, 45])
+           .AddInEditor();
+
+            LoadItem<ITM_TeleportArrow>("TeleportArrow", CustomItemsEnum.TeleportationArrow)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 15, 30, 33])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [24, 30, 22, 38, 42])
+           .AddInEditor();
+
+            LoadItem<ITM_PercussionHammer>("PercussionHammer", CustomItemsEnum.PercussionHammer)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [10, 15, 22, 17, 22])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [22, 20, 14, 20, 32])
+           .AddInEditor();
+
+            LoadItem<ITM_PercussionHammer>("PlasticPercussionHammer", CustomItemsEnum.PlasticPercussionHammer, true)
+           .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [30, 20, 33, 20, 40])
+           .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 20, 33, 20, 33])
+           .AddInEditor();
         }
 
         public static ItemObject LoadItem<T>(string path, CustomItemsEnum itemEnum, bool diet = false) where T : Item
@@ -347,11 +514,11 @@ namespace nbppfe.FundamentalsManager.Loaders
             Dictionary<string, Sprite> spritesDic = [];
             foreach (string file in sprites)
             {
-                if (file.Contains(item.postfixIconSmall) && !spritesDic.ContainsKey("small"))
+                if (file.Contains(item.postfixIconSmall) && !file.Contains("block1") && !spritesDic.ContainsKey("small"))
                 {
                     spritesDic.Add("small", AssetsLoader.CreateSprite(Path.GetFileNameWithoutExtension(file), Paths.GetPath(PathsEnum.Items, path), 1));
                 }
-                else if (file.Contains(item.postfixIconLarge) && !spritesDic.ContainsKey("large"))
+                else if (file.Contains(item.postfixIconLarge) && !file.Contains("block!") && !spritesDic.ContainsKey("large"))
                     spritesDic.Add("large", AssetsLoader.CreateSprite(Path.GetFileNameWithoutExtension(file), Paths.GetPath(PathsEnum.Items, path), 50));
             }
 
@@ -371,9 +538,17 @@ namespace nbppfe.FundamentalsManager.Loaders
             itemBuilder.SetGeneratorCost(item.cost);
             ItemObject itemObj = itemBuilder.SetItemComponent<T>().Build();
 
+            itemObj.name = item.itemNameKey.Replace("Itm_", "");
+
             if (itemObj.item.GetComponent<DietItemVariation>() != null) itemObj.item.GetComponent<DietItemVariation>().diet = diet;
 
+            isDiet.Add(itemObj, diet);
+            if (diet)
+                itemObj.name.StartsWith("DietItem_");
+
             if (itemObj.item.GetComponent<IItemPrefab>() != null) itemObj.item.GetComponent<IItemPrefab>().Setup();
+
+            if (itemObj.item.GetComponent<ITM_Acceptable>()) itemObj.item.GetComponent<ITM_Acceptable>().ReflectionSetVariable("item", itemEnum.ToItemEnum());
 
             if (item.isFood) itemObj.GetMeta().tags.Add("Food");
             if (item.isDrink) itemObj.GetMeta().tags.Add("Drink");
@@ -390,7 +565,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             {
                 if (floors.Contains(floor.Floor))
                 {
-                    floor.items.Add(new WeightedItemObject { selection = item, weight = Mathf.FloorToInt(weights[weight] * 0.75f) });
+                    floor.items.Add(new WeightedItemObject { selection = item, weight = weights[weight]});
                     weight++;
                 }
             }
@@ -404,7 +579,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             {
                 if (floors.Contains(floor.Floor))
                 {
-                    floor.shopItems.Add(new WeightedItemObject { selection = item, weight = Mathf.FloorToInt(weights[weight] * 0.75f)  });
+                    floor.shopItems.Add(new WeightedItemObject { selection = item, weight = weights[weight]});
                     weight++;
                 }
             }
@@ -453,6 +628,18 @@ namespace nbppfe.FundamentalsManager.Loaders
         {
             List<ItemObject> newArray = (List<ItemObject>)Resources.FindObjectsOfTypeAll<FieldTripBaseRoomFunction>().First().ReflectionGetVariable("guaranteedItems");
             newArray.Add(item); ;
+            return item;
+        }
+
+        public static ItemObject AddInEditor(this ItemObject item)
+        {
+            if (Chainloader.PluginInfos.ContainsKey("mtm101.rulerp.baldiplus.leveleditor"))
+                EditorCompability.items.Add(new(item));
+            return item;
+        }
+
+        public static ItemObject RequiresANpcToExist(this ItemObject item, Character character)
+        {
             return item;
         }
     }
