@@ -37,7 +37,7 @@ namespace nbppfe.CustomContent.CustomItems
         public void Destroy() =>
             Destroy(gameObject);
 
-        public Cooldown cooldown = new Cooldown(25, 0);
+        public Cooldown cooldown = new(25, 0);
         public Canvas canvas;
     }
 }

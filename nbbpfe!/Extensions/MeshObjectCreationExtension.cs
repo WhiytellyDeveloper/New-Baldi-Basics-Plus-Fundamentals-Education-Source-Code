@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace nbppfe.Extensions
 {
-    public static class ObjectCreationExtension
+    public static class MeshObjectCreationExtension
     {
         public static GameObject CreateCube(Texture2D tex, bool useUVMap = true)
         {

@@ -7,6 +7,7 @@ using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalSystems;
 using nbppfe.Enums;
+using MTM101BaldAPI.Components;
 
 namespace nbppfe.CustomContent.CustomItems
 {
@@ -69,9 +70,8 @@ namespace nbppfe.CustomContent.CustomItems
                             npc.GetComponent<AudioManager>().PlaySingle(stickySound);
                             npc.PlayerLost(pm);
 
-                            if (npc.looker != null)  
-                                npc.looker.enabled = false; 
-                            
+                            npc.GetNPCContainer().AddLookerMod(blindMod);
+
                             spriteRenderer.enabled = false;
 
                             if (npc.Character == Character.Playtime && npc.GetComponent<Playtime>().Navigator.maxSpeed == 0)
@@ -97,12 +97,11 @@ namespace nbppfe.CustomContent.CustomItems
 
         public void RemoveEffect()
         {
-            if (npc.looker != null)
-                npc.looker.enabled = true;
+            npc.GetNPCContainer().RemoveLookerMod(blindMod);
             Destroy(gameObject);
         }
 
-
+        public ValueModifier blindMod = new(0f, 0f);
         public SoundObject stickySound;
         public Entity entity;
         public bool active;

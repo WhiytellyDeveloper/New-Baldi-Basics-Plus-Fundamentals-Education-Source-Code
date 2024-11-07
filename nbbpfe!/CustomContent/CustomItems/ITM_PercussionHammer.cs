@@ -1,4 +1,6 @@
-﻿using nbppfe.CustomContent.CustomItems.ItemTypes;
+﻿using MTM101BaldAPI.Reflection;
+using nbppfe.CustomContent.CustomItems.ItemTypes;
+using nbppfe.Extensions;
 using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
 using UnityEngine;
@@ -9,8 +11,8 @@ namespace nbppfe.CustomContent.CustomItems
     {
         public void Setup()
         {
-            squishSound = AssetsLoader.CreateSound("PlayerPercussionHammer", Paths.GetPath(PathsEnum.Items, "PercussionHammer"), "Sfx_Effect_Bang", SoundType.Effect, Color.white, 1);
-            time = diet ? 15 : 45;
+            squishSound = diet ? AssetsLoader.CreateSound("PlayerPercussionHammer", Paths.GetPath(PathsEnum.Items, "PercussionHammer"), "Sfx_Bang", SoundType.Effect, Color.white, 1) : Character.DrReflex.ToNPC().ReflectionGetVariable("audHit") as SoundObject;
+            time = diet ? 12 : 45;
         }
 
         public override bool OnUse(PlayerManager pm, NPC npc)

@@ -38,7 +38,6 @@ namespace nbppfe.FundamentalsManager.Loaders
             foreach (string file in sounds)
             {
                 string newFile = Path.GetFileNameWithoutExtension(file);
-                Debug.Log(newFile);
                 if (newFile.Contains(eventData.voicelineName))
                     eventBuilder.SetSound(AssetsLoader.CreateSound(eventData.voicelineName, Paths.GetPath(PathsEnum.Events, path), eventData.voicelineEventFirstKey, SoundType.Effect, AssetsLoader.SetHexaColor("#0EE716"), 1, eventData.voicelinesKeys));
             }

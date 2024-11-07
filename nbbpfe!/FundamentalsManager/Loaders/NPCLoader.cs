@@ -32,44 +32,45 @@ namespace nbppfe.FundamentalsManager.Loaders
             .MakeItWeightedNPC(["F1", "F2", "END"], [46, 30, 75]);
 
             NPC cardboardCheese = new NPCBuilder<CardboardCheese>(BasePlugin.Instance.Info)
-           .SetupAll("CardboardCheese", CustomNPCsEnum.CardboardCheese, "#D99245", false, true, [RoomCategory.Hall])
+           .SetupAll("CardboardCheese", CustomNPCsEnum.CardboardCheese, "#D99245", false, false, [RoomCategory.Hall])
            .AddLooker().SetMaxSightDistance(120)
            .SetMinMaxAudioDistance(150, 240)
            .Build(-0.733f, AssetsLoader.SetHexaColor("#D99245"), "CartboardCheeseV2")
            .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [20, 40, 34, 75]);
 
-            /* Later... 2 lol
-            NPC shadowFollower = new NPCBuilder<Follower>(BasePlugin.Instance.Info)
-            .SetName(NPCLoaderExtenssion.LoadFile("Follower").name)
-            .SetEnum(CustomNPCsEnum.ShadowFollower.ToString())
-            .AddLooker().SetMaxSightDistance(100)
-            .SetMinMaxAudioDistance(75, 150)
-            .AddSpawnableRoomCategories([RoomCategory.Hall])
-            .SetupPoster("Follower")
-            .SetupSprites("Follower", false)
-            .SetupSounds("Follower", "#31323F", false)
-            .IgnoreBelts()
-            .Build(0f, AssetsLoader.SetHexaColor("#31323F"), "Follower")
-            .MakeItForcedNPC(["F1", "END"]);
-            */
-
-
-            /* Later.. 3 
-            NPC digitalArtistic = new NPCBuilder<DigitalArtist>(BasePlugin.Instance.Info)
-            .SetupAll("DigitalArtistic", CustomNPCsEnum.DigitalArtist, "#1B131B", "", true, [RoomCategory.Hall])
-            .AddLooker().SetMaxSightDistance(135)
-            .SetMinMaxAudioDistance(100, 145)
-            .Build(-1.21f, AssetsLoader.SetHexaColor("#1B131B"), "DigitalArtistic_0")
-            .MakeItForcedNPC(["F1", "END"]);
-            */
-
             NPC emmilyGutter = new NPCBuilder<EmillyGutter>(BasePlugin.Instance.Info)
-            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", useSpriteSheetName:true, debug: false, categorys: [RoomCategory.Faculty])
+            .SetupAll(npcName: "EmillyGutter", npcEnum: CustomNPCsEnum.EmillyGutter, hexaCode: "#A36508", useSpriteSheetName: true, debug: false, categorys: [RoomCategory.Faculty])
             .AddLooker().SetMaxSightDistance(80)
             .AddPotentialRoomAsset(AssetsLoader.Get<RoomAsset>("EmellyGutterFacutlyRoom1"), 100)
             .SetMinMaxAudioDistance(45, 100)
             .Build(-1.705f, AssetsLoader.SetHexaColor("#A36508"), "EmillyGutter_0")
-            .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [75, 45, 20, 54]);
+            .MakeItWeightedNPC(["F2", "F3", "F4", "END"], [48, 45, 20, 54]);
+
+            NPC keith = new NPCBuilder<Keith>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "Keith", npcEnum: CustomNPCsEnum.Keith, hexaCode: "#64FCBF", useSpriteSheetName: true, debug: false, categorys: [RoomCategory.Hall, RoomCategory.Class])
+            .SetMinMaxAudioDistance(80, 275)
+            .Build(-0.1f, AssetsLoader.SetHexaColor("#64FCBF"), "Keith_0")
+            .MakeItWeightedNPC(["F2", "F3", "END"], [38, 44, 57]);
+
+            NPC handleKlap = new NPCBuilder<HandleKlap>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "HandleKlap", npcEnum: CustomNPCsEnum.HandleKlap, hexaCode: "#231921", useSpriteSheetName: true, debug: false, categorys: [RoomCategory.Hall, RoomCategory.Special])
+            .AddLooker().SetMaxSightDistance(25)
+            .IgnorePlayerOnSpawn()
+            .SetMinMaxAudioDistance(90, 115)
+            .Build(-1.258f, AssetsLoader.SetHexaColor("#231921"), "HandleKlap_0")
+            .MakeItWeightedNPC(["F1", "F2", "F3", "END"], [25, 52, 34, 64]);
+
+            NPC stellaLog = new NPCBuilder<StellaLog>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "StellaLog", npcEnum: CustomNPCsEnum.StellaLog, hexaCode: "#9E5050", useSpriteSheetName: true, debug: false, categorys: [RoomCategory.Hall, RoomCategory.Faculty])
+            .SetMinMaxAudioDistance(100, 200)
+            .Build(-1.45f, AssetsLoader.SetHexaColor("#9E5050"), "StellaLog_0")
+            .MakeItWeightedNPC(["F1", "F2", "END"], [30, 50, 75]);
+
+            NPC capracha = new NPCBuilder<Capracha>(BasePlugin.Instance.Info)
+            .SetupAll(npcName: "Capracha", npcEnum: CustomNPCsEnum.Capracha, hexaCode: "#A32425", useSpriteSheetName: true, debug: true, categorys: [RoomCategory.Class, RoomCategory.Hall, RoomCategory.Special])
+            .IgnoreBelts()
+            .Build(-1.512f, AssetsLoader.SetHexaColor("#A32425"), "Capracha_0")
+            .MakeItForcedNPC(["F1", "END"]);
         }
     }
 

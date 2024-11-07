@@ -1,8 +1,11 @@
-﻿using nbppfe.FundamentalsManager;
+﻿using MTM101BaldAPI.Components;
+using nbppfe.FundamentalsManager;
 using nbppfe.PrefabSystem;
+using PixelInternalAPI.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace nbppfe.CustomContent.CustomEvents
 {
@@ -38,8 +41,7 @@ namespace nbppfe.CustomContent.CustomEvents
                 if (baldi)
                 {
                     baldi.GetExtraAnger(28);
-                    baldiDistance = baldi.looker.distance;
-                    baldi.looker.distance = 0;
+                    baldi.GetNPCContainer().AddLookerMod(blindMod);
                 }
             }
 
@@ -66,7 +68,7 @@ namespace nbppfe.CustomContent.CustomEvents
                 if (baldi)
                 {
                     baldi.GetExtraAnger(-28);
-                    baldi.looker.distance = baldiDistance;
+                    baldi.GetNPCContainer().RemoveLookerMod(blindMod);
                 }
             }
             Singleton<MusicManager>.Instance.StopMidi();
@@ -79,6 +81,7 @@ namespace nbppfe.CustomContent.CustomEvents
             }
         }
 
+        public ValueModifier blindMod = new(0f, 0f);
         public SoundObject blackout;
         protected readonly Dictionary<Cell, KeyValuePair<Color, bool>> cellColors = new Dictionary<Cell, KeyValuePair<Color, bool>>();
         public bool updateLight;

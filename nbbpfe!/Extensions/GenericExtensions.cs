@@ -113,6 +113,12 @@ namespace nbppfe.Extensions
             return Vector3.Distance(pos1, pos2);
         }
 
+        public static float GetVector2DistanceFrom(this Vector3 pos1, Vector3 pos2)
+        {
+            return Vector2Int.Distance(new(((int)pos1.x), 0), new(((int)pos2.x), 0));
+        }
+
+
         public static T Duplicate<T>(this T original) where T : ScriptableObject
         {
             if (original == null)

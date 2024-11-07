@@ -211,7 +211,7 @@ namespace nbppfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_FidgetSpinner>("FidgetSpinner", CustomItemsEnum.OutdatedFidgetSpinner)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [20, 15, 30, 20, 44])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 33, 40, 20])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [30, 33, 40, 20, 70])
             .MakeItPartyItem(52)
             .MakeItFieldTripItem(70)
             .AddInEditor();
@@ -287,7 +287,7 @@ namespace nbppfe.FundamentalsManager.Loaders
             .AddInEditor();
 
             LoadItem<ITM_SafteyGlasses>("SafteyGlasses", CustomItemsEnum.SafteyGlasses)
-            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [40, 20, 15, 30, 40])
+            .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [28, 20, 15, 30, 40])
             .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [38, 50, 60, 44, 50])
             .MakeItFieldTripItem(45)
             .AddInEditor();
@@ -353,7 +353,7 @@ namespace nbppfe.FundamentalsManager.Loaders
 
             LoadItem<ITM_EntityTeleporter>("EntityTeleporter", CustomItemsEnum.EntityTeleporter)
             .MakeItWeightedItem(["F1", "F2", "F3", "F4", "END"], [1, 20, 15, 30, 44])
-            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [5, 30, 20, 34])
+            .MakeItWeightedItemInShop(["F1", "F2", "F3", "F4", "END"], [5, 30, 20, 34, 74])
             .MakeItFieldTripItem(72)
             .AddInEditor();
 

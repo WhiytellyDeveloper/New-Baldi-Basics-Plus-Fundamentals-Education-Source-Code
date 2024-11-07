@@ -50,7 +50,10 @@ namespace nbppfe.CustomContent.CustomItems
             Singleton<CoreGameManager>.Instance.GetCamera(pm.playerNumber).UpdateTargets(rendererBase, targetIdx);
 
             foreach (NPC npc in pm.ec.Npcs)
-                npc.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
+            {
+                if (npc.Navigator.Entity == null)
+                    npc.Navigator.Entity.IgnoreEntity(pm.plm.Entity, true);
+            }
 
             StartCoroutine(AnimatedJump());
             return true;

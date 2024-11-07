@@ -1,4 +1,5 @@
-﻿using nbppfe.CustomContent.NPCs.FunctionalsManagers;
+﻿
+using nbppfe.CustomContent.NPCs.FunctionalsManagers;
 using nbppfe.FundamentalsManager;
 using nbppfe.FundamentalsManager.Loaders;
 using nbppfe.FundamentalSystems;
@@ -59,7 +60,7 @@ namespace nbppfe.CustomContent.NPCs
         protected override void VirtualUpdate()
         {
             base.VirtualUpdate();
-            if (!active)            
+            if (!active)
                 cooldown.UpdateCooldown(ec.NpcTimeScale);
             wvCooldown.UpdateCooldown(ec.NpcTimeScale);
         }

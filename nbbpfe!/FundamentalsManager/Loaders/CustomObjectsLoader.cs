@@ -56,11 +56,11 @@ namespace nbppfe.FundamentalsManager.Loaders
             PlusLevelLoaderPlugin.Instance.prefabAliases.Add("Flower", flower.gameObject);
 
             Texture2D cageTexture = AssetsLoader.CreateTexture("DiamongPlateFloor", Paths.GetPath(PathsEnum.Misc));
-            var cageBack = ObjectCreationExtension.CreateCube(cageTexture, false);
+            var cageBack = MeshObjectCreationExtension.CreateCube(cageTexture, false);
             cageBack.transform.localPosition -= new Vector3(0, 0.75f, 0);
             cageBack.transform.localScale = new Vector3(8, -0.5f, 8);
 
-            var cageUp = ObjectCreationExtension.CreateCube(cageTexture, false);
+            var cageUp = MeshObjectCreationExtension.CreateCube(cageTexture, false);
             cageUp.transform.localPosition += new Vector3(0, 8f, 0);
             cageUp.transform.localScale = new Vector3(8, -0.5f, 8);
 
@@ -77,7 +77,7 @@ namespace nbppfe.FundamentalsManager.Loaders
 
             void CreateBar(Vector3 position)
             {
-                var cageBarTest = ObjectCreationExtension.CreateCube(cageTexture, false);
+                var cageBarTest = MeshObjectCreationExtension.CreateCube(cageTexture, false);
                 cageBarTest.transform.localPosition = position;
                 cageBarTest.transform.localScale = new Vector3(1, 10f, 1);
                 cageBarTest.name = "Bar";

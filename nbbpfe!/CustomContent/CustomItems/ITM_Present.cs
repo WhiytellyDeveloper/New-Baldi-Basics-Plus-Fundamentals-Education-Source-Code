@@ -28,6 +28,7 @@ namespace nbppfe.CustomContent.CustomItems
                 items.Remove(Items.None.ToItem());
                 items.Remove(Items.BusPass.ToItem());
                 items.Remove(CustomItemsEnum.Pickaxe.ToItem());
+                items.Remove(Items.Map.ToItem());
                 items.Remove(CustomItemsEnum.Present.ToItem());
 
                 pm.ec.CreateItem(pm.plm.Entity.CurrentRoom, items[Random.Range(0, items.Count)], new Vector2(PickupPatch.lastPíckupClicked.transform.position.x, PickupPatch.lastPíckupClicked.transform.position.z));
